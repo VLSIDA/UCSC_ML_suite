@@ -6,10 +6,10 @@
 git clone https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts.git
 ```
 
-1. Clone into the ORFS flow directory.
+1. Clone benchmarks into the ORFS flow directory.
 
 ```bash
-cd OpenROAD-flow-scripts
+cd OpenROAD-flow-scripts/flow
 git clone git@github.com:VLSIDA/UCSC_ML_suite.git
 ```
 
