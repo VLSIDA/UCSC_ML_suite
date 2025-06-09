@@ -20,7 +20,7 @@ cd UCSC_ML_suite
 ./runorfs.sh
 ```
 
-4. Run a design
+4. Run a design in the Docker image:
 
 ```bash
 cd UCSC_ML_suite
