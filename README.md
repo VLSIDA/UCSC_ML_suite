@@ -1,19 +1,12 @@
 # UCSC_ML_suite
 
-1. Setup/clone ORFS:
+1. Clone this repository:
 
 ```bash
-git clone https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts.git
+git clone --git@github.com:VLSIDA/UCSC_ML_suite.git
 ```
 
-2. Clone benchmarks into the ORFS flow directory.
-
-```bash
-cd OpenROAD-flow-scripts/flow
-git clone git@github.com:VLSIDA/UCSC_ML_suite.git
-```
-
-3. Link the platforms directory, scripts, and Makefile using our setup:
+2. Run the setup to clone ORFS as a submodule and link the setings:
 
 ```bash
 cd UCSC_ML_suite
@@ -21,7 +14,7 @@ cd UCSC_ML_suite
 
 ```
 
-4. Run a design!
+3. Run a design!
 
 ```bash
 make DESIGN_CONFIG=./designs/nangate45/gcd/config.mk
