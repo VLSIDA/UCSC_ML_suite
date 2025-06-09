@@ -23,5 +23,6 @@ cd UCSC_ML_suite
 4. Run a design
 
 ```bash
+cd UCSC_ML_suite
 make DESIGN_CONFIG=./designs/nangate45/gcd/config.mk
 ```
