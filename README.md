@@ -16,6 +16,10 @@ cd UCSC_ML_suite
 
 3. [Run ORFS](https://vlsida.github.io/chip-tutorials/orfs-installation.html#run-orfs-docker-image)
 
+```bash
+./runorfs.sh
+```
+
 4. Run a design
 
 ```bash
