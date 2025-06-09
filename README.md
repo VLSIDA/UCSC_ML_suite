@@ -3,7 +3,7 @@
 1. Clone this repository:
 
 ```bash
-git clone --git@github.com:VLSIDA/UCSC_ML_suite.git
+git clone git@github.com:VLSIDA/UCSC_ML_suite.git
 ```
 
 2. Run the setup to clone ORFS as a submodule and link the settings:
