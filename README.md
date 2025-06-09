@@ -14,7 +14,7 @@ cd UCSC_ML_suite
 
 ```
 
-3. [Run ORFS](https://vlsida.github.io/chip-tutorials/orfs-installation.html#run-orfs-docker-image)
+3. [Run ORFS](https://vlsida.github.io/chip-tutorials/orfs-installation.html#run-orfs-docker-image) (this will run the Docker image corresponding to our submodule):
 
 ```bash
 ./runorfs.sh
