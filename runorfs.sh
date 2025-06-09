@@ -1,6 +1,11 @@
-# !/bin/bash
-TAG="${1:-latest}"
-echo "Running OpenROAD flow with tag: ${TAG}"
+#!/bin/bash
+cd OpenROAD-flow-scripts
+tag=$(git describe --tags 2>/dev/null)
+if [ -z "$tag" ]; then
+  echo "Warning: Commit is not on an exact tag."
+  tag="latest" # fallback tag or handle error
+fi
+echo "Running OpenROAD flow with tag: ${tag}"
 docker run --rm -it \
   -u $(id -u ${USER}):$(id -g ${USER}) \
   -v $(pwd)/flow:/OpenROAD-flow-scripts/flow \
@@ -9,4 +14,4 @@ docker run --rm -it \
   -v ${HOME}/.Xauthority:/.Xauthority \
   --network host \
   --security-opt seccomp=unconfined \
-  openroad/orfs:${TAG}
+  openroad/orfs:${tag}
