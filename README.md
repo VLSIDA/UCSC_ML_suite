@@ -6,7 +6,7 @@
 git clone --git@github.com:VLSIDA/UCSC_ML_suite.git
 ```
 
-2. Run the setup to clone ORFS as a submodule and link the setings:
+2. Run the setup to clone ORFS as a submodule and link the settings:
 
 ```bash
 cd UCSC_ML_suite
