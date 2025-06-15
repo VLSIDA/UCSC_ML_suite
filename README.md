@@ -26,3 +26,6 @@ cd UCSC_ML_suite
 cd UCSC_ML_suite
 make DESIGN_CONFIG=./designs/nangate45/gcd/config.mk
 ```
+## Resources
+
+In order to change (or update) the UCSC_ML_suite repository, you'll need to submit a pull request. For more information on submitting a PR, see [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
