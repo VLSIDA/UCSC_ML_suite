@@ -26,6 +26,16 @@ cd UCSC_ML_suite
 cd UCSC_ML_suite
 make DESIGN_CONFIG=./designs/nangate45/gcd/config.mk
 ```
+## Goal/Objectives
+
+GOAL: Port open source designs to asap7/sky130/nangate45 technologies using ORFS, as a benchmark suite for ML projects.
+
+Objective 1: Setup github CI/CD (to work with google cloud compute engine)
+
+Objective 2: Formulate testbenches to verify the functionality of designs post-flow completion.
+
+Objective 3: Expand suite by creating various versions of designs that fail at specific parts of the flow.
+
 ## Resources
 
 In order to change (or update) the UCSC_ML_suite repository, you'll need to submit a pull request. For more information on submitting a PR, see [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
