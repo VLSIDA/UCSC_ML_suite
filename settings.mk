@@ -1,0 +1,1 @@
+export BENCH_DESIGN_HOME = $(abspath $(dir $(firstword $(MAKEFILE_LIST)))/designs/)
