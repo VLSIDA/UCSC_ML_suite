@@ -1,21 +1,21 @@
 export DESIGN_NAME = liteeth_mac_axi_mii
 export PLATFORM    = nangate45
 export VERILOG_FILES = $(DESIGN_HOME)/src/liteeth_mac_axi_mii/liteeth_mac_axi_mii.v \
-                       $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_32x384_32_sram.v \
-                       $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_32x384_8_sram.v \
-                       $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_42x32_sram.v
+                       $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_32x384_32_sram.v \
+                       $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_32x384_8_sram.v \
+                       $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_42x32_sram.v
 
 export SDC_FILE      = $(DESIGN_HOME)/$(PLATFORM)/$(DESIGN_NAME)/constraint.sdc
 
 export ADDITIONAL_LEFS = \
-  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_32x384_32_sram.lef \
-  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_32x384_8_sram.lef \
-  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_42x32_sram.lef
+  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_32x384_32_sram.lef \
+  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_32x384_8_sram.lef \
+  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_42x32_sram.lef
 
 export ADDITIONAL_LIBS = \
-  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_32x384_32_sram.lib \
-  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_32x384_8_sram.lib \
-  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/liteeth_42x32_sram.lib
+  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_32x384_32_sram.lib \
+  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_32x384_8_sram.lib \
+  $(DESIGN_HOME)/src/liteeth_mac_axi_mii/macros/nangate45/liteeth_42x32_sram.lib
 
 
 ### Parameters ###
