@@ -13,9 +13,6 @@ jobs:
         #     submodules: recursive
 
       - name: Run setup script
-        run: ./setup.sh    
-        
-      - name: Run setup script
         run: ./setup.sh            
 
       - name: Determine ORFS tag
