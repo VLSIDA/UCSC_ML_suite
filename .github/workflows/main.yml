@@ -9,21 +9,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-            submodules: recursive
+        # with:
+        #     submodules: recursive
+      - name: Run ls
+        run: ls -la        
 
-    #   - name: link ORFS files
-    #     run: |
-    #         ln -s OpenROAD-flow-scripts/flow/util .
-    #         ln -s OpenROAD-flow-scripts/flow/scripts .
-    #         ln -s OpenROAD-flow-scripts/flow/platforms .
-    #         ln -s OpenROAD-flow-scripts/flow/Makefile .        
-
-      - name: Setup
+      - name: Run setup script
         run: ./setup.sh              
 
       - name: Run ls
         run: ls -la
-       
-      - name: Run orfs
-        run: ./runorfs.sh   
