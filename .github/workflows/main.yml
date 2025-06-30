@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+            submodules: recursive        
 
-      - name: Run a sample command
-        run: echo "This runs on every push"
+      - name: Run ls
+        run: ls -la
