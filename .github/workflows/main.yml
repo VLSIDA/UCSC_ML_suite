@@ -30,7 +30,7 @@ jobs:
             -v ${{ github.workspace }}:/OpenROAD-flow-scripts/UCSC_ML_suite \
             -w /OpenROAD-flow-scripts \
             openroad/orfs:$tag \
-            bash -c "cd /OpenROAD-flow-scripts/UCSC_ML_suite && ls -la"
+            bash -c "ls -la"
         
       - name: Run ls
         run: ls -la
