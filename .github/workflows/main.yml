@@ -32,12 +32,11 @@ jobs:
                 cd UCSC_ML_suite
 
                 configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
-                echo "Found the following design config files:"
-                echo "$configs"
-                echo ""
 
                 for config in $configs; do
                 echo "Running design: $config"
                 make DESIGN_CONFIG="$config"
                 done
+
+                echo "$configs"
             '
