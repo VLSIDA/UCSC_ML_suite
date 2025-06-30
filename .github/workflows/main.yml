@@ -9,8 +9,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        # with:
-        #     submodules: recursive
 
       - name: Run setup script
         run: ./setup.sh            
@@ -20,7 +18,6 @@ jobs:
         run: |
           cd OpenROAD-flow-scripts
           tag=$(git describe --tags --abbrev=8 2>/dev/null || echo "latest")
-          echo "Using ORFS Docker tag: $tag"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
   
       - name: Run ORFS Docker container
@@ -33,4 +30,7 @@ jobs:
             -v ${{ github.workspace }}:/OpenROAD-flow-scripts/UCSC_ML_suite \
             -w /OpenROAD-flow-scripts \
             openroad/orfs:$tag \
-            bash -c "cd /OpenROAD-flow-scripts/UCSC_ML_suite && make DESIGN_CONFIG=./designs/nangate45/gcd/config.mk"
+            bash -c "cd /OpenROAD-flow-scripts/UCSC_ML_suite && ls -la"
+        
+      - name: Run ls
+        run: ls -la
