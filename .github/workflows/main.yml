@@ -11,11 +11,29 @@ jobs:
         uses: actions/checkout@v4
         # with:
         #     submodules: recursive
-      - name: Run ls
-        run: ls -la        
 
       - name: Run setup script
-        run: ./setup.sh              
+        run: ./setup.sh    
+        
+      - name: Run setup script
+        run: ./setup.sh            
 
-      - name: Run ls
-        run: ls -la
+      - name: Determine ORFS tag
+        id: get_tag
+        run: |
+          cd OpenROAD-flow-scripts
+          tag=$(git describe --tags --abbrev=8 2>/dev/null || echo "latest")
+          echo "Using ORFS Docker tag: $tag"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+  
+      - name: Run ORFS Docker container
+        run: |
+          tag="${{ steps.get_tag.outputs.tag }}"
+          echo "Using Docker tag: $tag"
+      
+          docker run --rm \
+            -v ${{ github.workspace }}/OpenROAD-flow-scripts/flow:/OpenROAD-flow-scripts/flow \
+            -v ${{ github.workspace }}:/OpenROAD-flow-scripts/UCSC_ML_suite \
+            -w /OpenROAD-flow-scripts \
+            openroad/orfs:$tag \
+            bash -c "cd /OpenROAD-flow-scripts/UCSC_ML_suite && make DESIGN_CONFIG=./designs/nangate45/gcd/config.mk"
