@@ -24,14 +24,20 @@ jobs:
         run: |
             tag="${{ steps.get_tag.outputs.tag }}"
             docker run --rm \
-                -v ${{ github.workspace }}/OpenROAD-flow-scripts/flow:/OpenROAD-flow-scripts/flow \
-                -v ${{ github.workspace }}:/OpenROAD-flow-scripts/UCSC_ML_suite \
-                -w /OpenROAD-flow-scripts \
-                openroad/orfs:$tag \
-                bash -c '
+            -v ${{ github.workspace }}/OpenROAD-flow-scripts/flow:/OpenROAD-flow-scripts/flow \
+            -v ${{ github.workspace }}:/OpenROAD-flow-scripts/UCSC_ML_suite \
+            -w /OpenROAD-flow-scripts \
+            openroad/orfs:$tag \
+            bash -c '
                 cd UCSC_ML_suite
-                for config in ./designs/nangate45/*/config.mk ./designs/asap7/*/config.mk ./designs/sky130hd/*/config.mk; do
-                    echo "Running design: $config"
-                    make DESIGN_CONFIG="$config"
+
+                configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
+                echo "Found the following design config files:"
+                echo "$configs"
+                echo ""
+
+                for config in $configs; do
+                echo "Running design: $config"
+                make DESIGN_CONFIG="$config"
                 done
-                '
+            '
