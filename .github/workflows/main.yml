@@ -12,12 +12,18 @@ jobs:
         with:
             submodules: recursive
 
-      - name: link ORFS files
-        run: |
-            ln -s OpenROAD-flow-scripts/flow/util .
-            ln -s OpenROAD-flow-scripts/flow/scripts .
-            ln -s OpenROAD-flow-scripts/flow/platforms .
-            ln -s OpenROAD-flow-scripts/flow/Makefile .        
+    #   - name: link ORFS files
+    #     run: |
+    #         ln -s OpenROAD-flow-scripts/flow/util .
+    #         ln -s OpenROAD-flow-scripts/flow/scripts .
+    #         ln -s OpenROAD-flow-scripts/flow/platforms .
+    #         ln -s OpenROAD-flow-scripts/flow/Makefile .        
+
+      - name: Setup
+        run: ./setup.sh              
 
       - name: Run ls
         run: ls -la
+       
+      - name: Run orfs
+        run: ./runorfs.sh   
