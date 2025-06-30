@@ -37,6 +37,4 @@ jobs:
                 echo "Running design: $config"
                 make DESIGN_CONFIG="$config"
                 done
-
-                echo "$configs"
             '
