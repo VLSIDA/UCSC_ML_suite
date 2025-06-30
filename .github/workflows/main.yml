@@ -10,7 +10,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-            submodules: recursive        
+            submodules: recursive
+
+      - name: link ORFS files
+        run: |
+            ln -s OpenROAD-flow-scripts/flow/util .
+            ln -s OpenROAD-flow-scripts/flow/scripts .
+            ln -s OpenROAD-flow-scripts/flow/platforms .
+            ln -s OpenROAD-flow-scripts/flow/Makefile .        
 
       - name: Run ls
         run: ls -la
