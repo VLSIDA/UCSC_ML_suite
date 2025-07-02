@@ -24,8 +24,9 @@ cd UCSC_ML_suite
 
 ```bash
 cd UCSC_ML_suite
-make DESIGN_CONFIG=./designs/nangate45/gcd/config.mk
+make DESIGN_CONFIG=./designs/nangate45/lfsr_top/config.mk
 ```
+
 ## Goal/Objectives
 
 GOAL: Port open source designs to asap7/sky130/nangate45 technologies using ORFS, as a benchmark suite for ML projects.
