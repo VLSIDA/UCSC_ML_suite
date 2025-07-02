@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "SETUP"
+# Add any customization of the design submodule here.
