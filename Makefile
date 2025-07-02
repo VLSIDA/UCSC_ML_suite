@@ -1,4 +1,6 @@
 
+DESIGN_CONFIG ?= ./designs/nangate45/lfsr_top/config.mk
+
 -include OpenROAD-flow-scripts/flow/Makefile
 
 .PHONY: do-setup
