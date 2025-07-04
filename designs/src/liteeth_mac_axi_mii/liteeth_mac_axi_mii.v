@@ -8,9 +8,8 @@
 //
 // Filename   : liteeth_core.v
 // Device     : 
-// LiteX sha1 : b7066532a
-// Date       : 2025-06-18 21:26:29
-// Yaml File  : axi-lite-mii.yml
+// LiteX sha1 : ed2d616
+// Date       : 2025-07-03 03:22:13
 //------------------------------------------------------------------------------
 
 `timescale 1ns / 1ps
@@ -3930,40 +3929,23 @@ end
 assign mii_mdio = maccore_data_oe ? maccore_data_w : 1'bz;
 assign maccore_data_r = mii_mdio;
 
-// //------------------------------------------------------------------------------
-// // Memory storage: 32-words x 42-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 42 
-// // Port 1 | Read: Sync  | Write: ---- | 
-// reg [41:0] storage[0:31];
-// reg [41:0] storage_dat0;
-// reg [41:0] storage_dat1;
-// always @(posedge sys_clk) begin
-// 	if (core_tx_cdc_cdc_wrport_we)
-// 		storage[core_tx_cdc_cdc_wrport_adr] <= core_tx_cdc_cdc_wrport_dat_w;
-// 	storage_dat0 <= storage[core_tx_cdc_cdc_wrport_adr];
-// end
-// always @(posedge eth_tx_clk) begin
-// 	storage_dat1 <= storage[core_tx_cdc_cdc_rdport_adr];
-// end
-// assign core_tx_cdc_cdc_wrport_dat_r = storage_dat0;
-// assign core_tx_cdc_cdc_rdport_dat_r = storage_dat1;
-
-liteeth_42x32_sram u_storage_0 (
+//------------------------------------------------------------------------------
+liteeth_42x32_sram u_tx_cdc_storage (
 `ifdef USE_POWER_PINS
     .vdd(vdd),
     .gnd(gnd),
 `endif
-    // Port 0: RW (Write/Read Port)
+    // Port 0: RW (Write/Read Port - sys_clk domain)
     .clk0(sys_clk),
-    .csb0(~core_tx_cdc_cdc_wrport_en), // active low chip select
-    .web0(~core_tx_cdc_cdc_wrport_we), // active low write enable
+    .csb0(1'b0),                                    // Always enabled
+    .web0(~core_tx_cdc_cdc_wrport_we),                // Active low write enable
     .addr0(core_tx_cdc_cdc_wrport_adr),
     .din0(core_tx_cdc_cdc_wrport_dat_w),
     .dout0(core_tx_cdc_cdc_wrport_dat_r),
-    // Port 1: R (Read-Only Port)
+    
+    // Port 1: R (Read-Only Port - eth_tx_clk domain)
     .clk1(eth_tx_clk),
-    .csb1(~core_tx_cdc_cdc_rdport_en), // active low chip select
+    .csb1(1'b0),                                    // Always enabled
     .addr1(core_tx_cdc_cdc_rdport_adr),
     .dout1(core_tx_cdc_cdc_rdport_dat_r)
 );
@@ -3987,44 +3969,27 @@ assign core_liteethmaccrc32checker_syncfifo_wrport_dat_r = storage_1_dat0;
 assign core_liteethmaccrc32checker_syncfifo_rdport_dat_r = storage_1[core_liteethmaccrc32checker_syncfifo_rdport_adr];
 
 
-// //------------------------------------------------------------------------------
-// // Memory storage_2: 32-words x 42-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 42 
-// // Port 1 | Read: Sync  | Write: ---- | 
-// reg [41:0] storage_2[0:31];
-// reg [41:0] storage_2_dat0;
-// reg [41:0] storage_2_dat1;
-// always @(posedge eth_rx_clk) begin
-// 	if (core_rx_cdc_cdc_wrport_we)
-// 		storage_2[core_rx_cdc_cdc_wrport_adr] <= core_rx_cdc_cdc_wrport_dat_w;
-// 	storage_2_dat0 <= storage_2[core_rx_cdc_cdc_wrport_adr];
-// end
-// always @(posedge sys_clk) begin
-// 	storage_2_dat1 <= storage_2[core_rx_cdc_cdc_rdport_adr];
-// end
-// assign core_rx_cdc_cdc_wrport_dat_r = storage_2_dat0;
-// assign core_rx_cdc_cdc_rdport_dat_r = storage_2_dat1;
-// Instantiate the 32x42 SRAM for LiteEth AXI RX
-
-liteeth_42x32_sram u_storage_1 (
+//------------------------------------------------------------------------------
+liteeth_42x32_sram u_rx_cdc_storage (
 `ifdef USE_POWER_PINS
     .vdd(vdd),
     .gnd(gnd),
 `endif
-    // Port 0: RW (Write/Read Port)
+    // Port 0: RW (Write/Read Port - eth_rx_clk domain)
     .clk0(eth_rx_clk),
-    .csb0(~core_rx_cdc_cdc_wrport_en), // active low chip select
-    .web0(~core_rx_cdc_cdc_wrport_we), // active low write enable
+    .csb0(1'b0),                                    // Always enabled
+    .web0(~core_rx_cdc_cdc_wrport_we),                // Active low write enable
     .addr0(core_rx_cdc_cdc_wrport_adr),
     .din0(core_rx_cdc_cdc_wrport_dat_w),
     .dout0(core_rx_cdc_cdc_wrport_dat_r),
-    // Port 1: R (Read-Only Port)
+    
+    // Port 1: R (Read-Only Port - sys_clk domain)
     .clk1(sys_clk),
-    .csb1(~core_rx_cdc_cdc_rdport_en), // active low chip select
+    .csb1(1'b0),                                    // Always enabled
     .addr1(core_rx_cdc_cdc_rdport_adr),
     .dout1(core_rx_cdc_cdc_rdport_dat_r)
 );
+
 
 //------------------------------------------------------------------------------
 // Memory storage_3: 2-words x 14-bit
@@ -4043,26 +4008,8 @@ end
 assign wishbone_interface_writer_stat_fifo_wrport_dat_r = storage_3_dat0;
 assign wishbone_interface_writer_stat_fifo_rdport_dat_r = storage_3[wishbone_interface_writer_stat_fifo_rdport_adr];
 
-// ////////////////////////////////// MACRO SRAM INST 0 ///////////////////////////
-// //------------------------------------------------------------------------------
-// // Memory mem: 383-words x 32-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 32 
-// // Port 1 | Read: Sync  | Write: ---- | 
-// reg [31:0] mem[0:382];
-// reg [8:0] mem_adr0;
-// reg [31:0] mem_dat1;
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_writer_memory0_we)
-// 		mem[wishbone_interface_writer_memory0_adr] <= wishbone_interface_writer_memory0_dat_w;
-// 	mem_adr0 <= wishbone_interface_writer_memory0_adr;
-// end
-// always @(posedge sys_clk) begin
-// 	mem_dat1 <= mem[wishbone_interface_sram0_adr];
-// end
-// assign wishbone_interface_writer_memory0_dat_r = mem[mem_adr0];
-// assign wishbone_interface_sram0_dat_r = mem_dat1;
 
+//------------------------------------------------------------------------------
 liteeth_32x384_32_sram u_tx_buffer_0 (
 `ifdef USE_POWER_PINS
     .vdd(vdd),
@@ -4083,26 +4030,8 @@ liteeth_32x384_32_sram u_tx_buffer_0 (
     .dout1(wishbone_interface_sram0_dat_r)
 );
 
-// ////////////////////////////////// MACRO SRAM INST 1 ///////////////////////////
-// //------------------------------------------------------------------------------
-// // Memory mem_1: 383-words x 32-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 32 
-// // Port 1 | Read: Sync  | Write: ---- | 
-// reg [31:0] mem_1[0:382];
-// reg [8:0] mem_1_adr0;
-// reg [31:0] mem_1_dat1;
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_writer_memory1_we)
-// 		mem_1[wishbone_interface_writer_memory1_adr] <= wishbone_interface_writer_memory1_dat_w;
-// 	mem_1_adr0 <= wishbone_interface_writer_memory1_adr;
-// end
-// always @(posedge sys_clk) begin
-// 	mem_1_dat1 <= mem_1[wishbone_interface_sram1_adr];
-// end
-// assign wishbone_interface_writer_memory1_dat_r = mem_1[mem_1_adr0];
-// assign wishbone_interface_sram1_dat_r = mem_1_dat1;
 
+//------------------------------------------------------------------------------
 liteeth_32x384_32_sram u_tx_buffer_1 (
 `ifdef USE_POWER_PINS
     .vdd(vdd),
@@ -4116,12 +4045,14 @@ liteeth_32x384_32_sram u_tx_buffer_1 (
     .din0(wishbone_interface_writer_memory1_dat_w),
     .dout0(wishbone_interface_writer_memory1_dat_r),
     
-    // Port 1: R (Read-only) - FIXED: Connect to sram1 signals, not sram0
+    // Port 1: R (Read-only)
     .clk1(sys_clk),
     .csb1(1'b0),                                        // Always enabled
     .addr1(wishbone_interface_sram1_adr),
     .dout1(wishbone_interface_sram1_dat_r)
 );
+
+
 //------------------------------------------------------------------------------
 // Memory storage_4: 2-words x 14-bit
 //------------------------------------------------------------------------------
@@ -4139,99 +4070,42 @@ end
 assign wishbone_interface_reader_cmd_fifo_wrport_dat_r = storage_4_dat0;
 assign wishbone_interface_reader_cmd_fifo_rdport_dat_r = storage_4[wishbone_interface_reader_cmd_fifo_rdport_adr];
 
-// ////////////////////////////////// MACRO SRAM INST 2 ///////////////////////////
-// //------------------------------------------------------------------------------
-// // Memory mem_2: 383-words x 32-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: ---- | 
-// // Port 1 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 8 
-// reg [31:0] mem_2[0:382];
-// reg [31:0] mem_2_dat0;
-// reg [8:0] mem_2_adr1;
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_reader_memory0_re)
-// 		mem_2_dat0 <= mem_2[wishbone_interface_reader_memory0_adr];
-// end
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_sram2_we[0])
-// 		mem_2[wishbone_interface_sram2_adr][7:0] <= wishbone_interface_sram2_dat_w[7:0];
-// 	if (wishbone_interface_sram2_we[1])
-// 		mem_2[wishbone_interface_sram2_adr][15:8] <= wishbone_interface_sram2_dat_w[15:8];
-// 	if (wishbone_interface_sram2_we[2])
-// 		mem_2[wishbone_interface_sram2_adr][23:16] <= wishbone_interface_sram2_dat_w[23:16];
-// 	if (wishbone_interface_sram2_we[3])
-// 		mem_2[wishbone_interface_sram2_adr][31:24] <= wishbone_interface_sram2_dat_w[31:24];
-// 	mem_2_adr1 <= wishbone_interface_sram2_adr;
-// end
-// assign wishbone_interface_reader_memory0_dat_r = mem_2_dat0;
-// assign wishbone_interface_sram2_dat_r = mem_2[mem_2_adr1];
 
-
+//------------------------------------------------------------------------------
 liteeth_32x384_8_sram u_rx_buffer_0 (
 `ifdef USE_POWER_PINS
     .vdd(vdd),
     .gnd(gnd),
 `endif
-    // Port 0: Write/Read functionality
     .clk0(sys_clk),
-    .csb0(1'b0),                                 // Always enabled
-    .web0(~wishbone_interface_sram2_we),      // 0 = write, 1 = read
-    .wmask0(wishbone_interface_sram2_we),        // Byte write enables
+    .csb0(1'b0),
+    .web0(~|wishbone_interface_sram2_we),
+    .wmask0(wishbone_interface_sram2_we),
     .addr0(wishbone_interface_sram2_adr),
     .din0(wishbone_interface_sram2_dat_w),
     .dout0(wishbone_interface_sram2_dat_r),
-
-    // Port 1: Read-only functionality  
     .clk1(sys_clk),
-    .csb1(~wishbone_interface_reader_memory0_re), // Active low: 0=enable
+    .csb1(~wishbone_interface_reader_memory0_re),
     .addr1(wishbone_interface_reader_memory0_adr),
     .dout1(wishbone_interface_reader_memory0_dat_r)
 );
 
-// ////////////////////////////////// MACRO SRAM INST 3 ///////////////////////////
-// // ------------------------------------------------------------------------------
-// // Memory mem_3: 383-words x 32-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: ---- | 
-// // Port 1 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 8 
-// reg [31:0] mem_3[0:382];
-// reg [31:0] mem_3_dat0;
-// reg [8:0] mem_3_adr1;
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_reader_memory1_re)
-// 		mem_3_dat0 <= mem_3[wishbone_interface_reader_memory1_adr];
-// end
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_sram3_we[0])
-// 		mem_3[wishbone_interface_sram3_adr][7:0] <= wishbone_interface_sram3_dat_w[7:0];
-// 	if (wishbone_interface_sram3_we[1])
-// 		mem_3[wishbone_interface_sram3_adr][15:8] <= wishbone_interface_sram3_dat_w[15:8];
-// 	if (wishbone_interface_sram3_we[2])
-// 		mem_3[wishbone_interface_sram3_adr][23:16] <= wishbone_interface_sram3_dat_w[23:16];
-// 	if (wishbone_interface_sram3_we[3])
-// 		mem_3[wishbone_interface_sram3_adr][31:24] <= wishbone_interface_sram3_dat_w[31:24];
-// 	mem_3_adr1 <= wishbone_interface_sram3_adr;
-// end
-// assign wishbone_interface_reader_memory1_dat_r = mem_3_dat0;
-// assign wishbone_interface_sram3_dat_r = mem_3[mem_3_adr1];
 
+//------------------------------------------------------------------------------
 liteeth_32x384_8_sram u_rx_buffer_1 (
 `ifdef USE_POWER_PINS
     .vdd(vdd),
     .gnd(gnd),
 `endif
-    // Port 0: Write/Read functionality
     .clk0(sys_clk),
-    .csb0(1'b0),                                 // Always enabled
-    .web0(~wishbone_interface_sram3_we),      // 0 = write, 1 = read
-    .wmask0(wishbone_interface_sram3_we),        // Byte write enables
+    .csb0(1'b0),
+    .web0(~|wishbone_interface_sram3_we),
+    .wmask0(wishbone_interface_sram3_we),
     .addr0(wishbone_interface_sram3_adr),
     .din0(wishbone_interface_sram3_dat_w),
     .dout0(wishbone_interface_sram3_dat_r),
-
-    // Port 1: Read-only functionality
     .clk1(sys_clk),
-    .csb1(~wishbone_interface_reader_memory1_re), // Active low: 0=enable
+    .csb1(~wishbone_interface_reader_memory1_re),
     .addr1(wishbone_interface_reader_memory1_adr),
     .dout1(wishbone_interface_reader_memory1_dat_r)
 );
@@ -4239,84 +4113,78 @@ liteeth_32x384_8_sram u_rx_buffer_1 (
 
 (* ars_ff1 = "true", async_reg = "true" *)
 //------------------------------------------------------------------------------
-// Behavioral replacement for FDPE primitive
+// Instance FDPE of FDPE Module.
 //------------------------------------------------------------------------------
-// reg rst_meta0;
-always @(posedge eth_tx_clk or posedge maccore_crg_reset0) begin
-    if (maccore_crg_reset0)
-        rst_meta0 <= 1'b1;  // INIT=1, PRE sets to 1
-    else
-        rst_meta0 <= 1'b0;  // D input
-end
+FDPE #(
+	// Parameters.
+	.INIT (1'd1)
+) FDPE (
+	// Inputs.
+	.C   (eth_tx_clk),
+	.CE  (1'd1),
+	.D   (1'd0),
+	.PRE (maccore_crg_reset0),
+
+	// Outputs.
+	.Q   (rst_meta0)
+);
 
 (* ars_ff2 = "true", async_reg = "true" *)
 //------------------------------------------------------------------------------
-// Behavioral replacement for FDPE_1 primitive
+// Instance FDPE_1 of FDPE Module.
 //------------------------------------------------------------------------------
-// reg eth_tx_rst;
-always @(posedge eth_tx_clk or posedge maccore_crg_reset0) begin
-    if (maccore_crg_reset0)
-        eth_tx_rst <= 1'b1;  // INIT=1, PRE sets to 1
-    else
-        eth_tx_rst <= rst_meta0;  // D input
-end
+FDPE #(
+	// Parameters.
+	.INIT (1'd1)
+) FDPE_1 (
+	// Inputs.
+	.C   (eth_tx_clk),
+	.CE  (1'd1),
+	.D   (rst_meta0),
+	.PRE (maccore_crg_reset0),
+
+	// Outputs.
+	.Q   (eth_tx_rst)
+);
 
 (* ars_ff1 = "true", async_reg = "true" *)
 //------------------------------------------------------------------------------
-// Behavioral replacement for FDPE_2 primitive
+// Instance FDPE_2 of FDPE Module.
 //------------------------------------------------------------------------------
-// reg rst_meta1;
-always @(posedge eth_rx_clk or posedge maccore_crg_reset0) begin
-    if (maccore_crg_reset0)
-        rst_meta1 <= 1'b1;  // INIT=1, PRE sets to 1
-    else
-        rst_meta1 <= 1'b0;  // D input
-end
+FDPE #(
+	// Parameters.
+	.INIT (1'd1)
+) FDPE_2 (
+	// Inputs.
+	.C   (eth_rx_clk),
+	.CE  (1'd1),
+	.D   (1'd0),
+	.PRE (maccore_crg_reset0),
+
+	// Outputs.
+	.Q   (rst_meta1)
+);
 
 (* ars_ff2 = "true", async_reg = "true" *)
 //------------------------------------------------------------------------------
-// Behavioral replacement for FDPE_3 primitive
+// Instance FDPE_3 of FDPE Module.
 //------------------------------------------------------------------------------
-// reg eth_rx_rst;
-always @(posedge eth_rx_clk or posedge maccore_crg_reset0) begin
-    if (maccore_crg_reset0)
-        eth_rx_rst <= 1'b1;  // INIT=1, PRE sets to 1
-    else
-        eth_rx_rst <= rst_meta1;  // D input
-end
+FDPE #(
+	// Parameters.
+	.INIT (1'd1)
+) FDPE_3 (
+	// Inputs.
+	.C   (eth_rx_clk),
+	.CE  (1'd1),
+	.D   (rst_meta1),
+	.PRE (maccore_crg_reset0),
+
+	// Outputs.
+	.Q   (eth_rx_rst)
+);
 
 endmodule
 
 // -----------------------------------------------------------------------------
-//  Auto-Generated by LiteX on 2025-06-18 21:26:29.
+//  Auto-Generated by LiteX on 2025-07-03 03:22:13.
 //------------------------------------------------------------------------------
-
-//==============================================================================
-// FDPE PRIMITIVE BEHAVIORAL REPLACEMENTS FOR ASIC SYNTHESIS
-//==============================================================================
-// 
-// MODIFICATION SUMMARY:
-// Replaced 4 Xilinx FDPE (D flip-flop with Preset and Enable) primitives
-// with functionally equivalent behavioral Verilog code for ASIC synthesis.
-//
-// PURPOSE: 
-// - FDPE primitives are Xilinx FPGA-specific and not available in ASIC flows
-// - These instances implement reset synchronizers for clock domain crossing
-// - Ensures safe reset deassertion across different clock domains
-//
-// REPLACED INSTANCES:
-// 1. FDPE_0 -> rst_meta0  : TX clock domain reset synchronizer (stage 1)
-// 2. FDPE_1 -> eth_tx_rst : TX clock domain reset synchronizer (stage 2) 
-// 3. FDPE_2 -> rst_meta1  : RX clock domain reset synchronizer (stage 1)
-// 4. FDPE_3 -> eth_rx_rst : RX clock domain reset synchronizer (stage 2)
-//
-// BEHAVIOR:
-// - Asynchronous preset: Immediately sets output to '1' when reset asserted
-// - Synchronous release: Output follows input on clock edge when reset released
-// - Two-stage synchronizers prevent metastability during reset deassertion
-// - Maintains timing attributes for synthesis optimization
-//
-// VERIFICATION:
-// Behavioral model validated against official Xilinx FDPE specification
-// and Yosys technology library implementation.
-//==============================================================================
