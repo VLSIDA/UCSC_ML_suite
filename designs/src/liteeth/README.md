@@ -2,11 +2,6 @@
 
 ## Quick Start
 
-run setup.sh in liteeth directory
-Temporarily comment out do-setup in Makefile
-then run
-`make DESIGN_CONFIG=designs/nangate45/liteeth/<DESIGN>/config.mk`
-
 
 ### Prerequisites
 - WSL Ubuntu on Windows 11 (tested)
@@ -15,12 +10,10 @@ then run
 
 ### Setup & Generate Cores
 
-Ensure liteeth repository submodule is added
-
 Then run:
 ```bash
-# Run setup (installs dependencies + generates all cores + setup SRAM instances)
-source setup.sh
+make DESIGN_CONFIG=designs/nangate45/liteeth/<DESIGN_NAME>/config.mk
+
 ```
 
 This automatically:

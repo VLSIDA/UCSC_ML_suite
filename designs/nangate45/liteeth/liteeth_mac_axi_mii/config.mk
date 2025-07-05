@@ -1,4 +1,5 @@
 export DESIGN_NAME = liteeth_mac_axi_mii
+export DESIGN_DIRECTORY = liteeth
 export PLATFORM    = nangate45
 export VERILOG_FILES = $(DESIGN_HOME)/src/liteeth/liteeth_mac_axi_mii.v \
                        $(DESIGN_HOME)/src/liteeth/FDPE.v \
