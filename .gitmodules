@@ -4,3 +4,6 @@
 [submodule "designs/src/lfsr_top/repo"]
 	path = designs/src/lfsr_top/repo
 	url = git@github.com:alexforencich/verilog-lfsr.git
+[submodule "designs/src/minimax/repo"]
+	path = designs/src/minimax/repo
+	url = git@github.com:gsmecher/minimax.git
