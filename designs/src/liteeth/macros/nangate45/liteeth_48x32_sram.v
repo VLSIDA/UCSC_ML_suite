@@ -1,4 +1,4 @@
-module liteeth_42x32_sram (
+module liteeth_48x32_sram (
 `ifdef USE_POWER_PINS
     vdd,
     gnd,
@@ -17,7 +17,7 @@ module liteeth_42x32_sram (
     dout1
 );
 
-   parameter BITS = 42;
+   parameter BITS = 48;
    parameter WORD_DEPTH = 32;
    parameter ADDR_WIDTH = 5;
 

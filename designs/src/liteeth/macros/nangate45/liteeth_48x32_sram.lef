@@ -1,7 +1,7 @@
 VERSION 5.7 ;
 BUSBITCHARS "[]" ;
-MACRO liteeth_42x32_sram
-  FOREIGN liteeth_42x32_sram 0 0 ;
+MACRO liteeth_48x32_sram
+  FOREIGN liteeth_48x32_sram 0 0 ;
   SYMMETRY X Y R90 ;
   SIZE 75.050 BY 64.400 ;
   CLASS BLOCK ;
@@ -20,7 +20,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 1.785 0.070 1.855 ;
+      RECT 0.000 1.645 0.070 1.715 ;
     END
   END csb0
   PIN web0
@@ -29,7 +29,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 2.205 0.070 2.275 ;
+      RECT 0.000 1.925 0.070 1.995 ;
     END
   END web0
   PIN addr0[0]
@@ -38,7 +38,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 2.485 0.070 2.555 ;
+      RECT 0.000 4.725 0.070 4.795 ;
     END
   END addr0[0]
   PIN addr0[1]
@@ -47,7 +47,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 2.905 0.070 2.975 ;
+      RECT 0.000 5.005 0.070 5.075 ;
     END
   END addr0[1]
   PIN addr0[2]
@@ -56,7 +56,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 3.325 0.070 3.395 ;
+      RECT 0.000 5.285 0.070 5.355 ;
     END
   END addr0[2]
   PIN addr0[3]
@@ -65,7 +65,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 3.745 0.070 3.815 ;
+      RECT 0.000 5.565 0.070 5.635 ;
     END
   END addr0[3]
   PIN addr0[4]
@@ -74,7 +74,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 4.165 0.070 4.235 ;
+      RECT 0.000 5.845 0.070 5.915 ;
     END
   END addr0[4]
   PIN din0[0]
@@ -83,7 +83,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 4.445 0.070 4.515 ;
+      RECT 0.000 8.645 0.070 8.715 ;
     END
   END din0[0]
   PIN din0[1]
@@ -92,7 +92,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 4.865 0.070 4.935 ;
+      RECT 0.000 8.925 0.070 8.995 ;
     END
   END din0[1]
   PIN din0[2]
@@ -101,7 +101,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 5.285 0.070 5.355 ;
+      RECT 0.000 9.205 0.070 9.275 ;
     END
   END din0[2]
   PIN din0[3]
@@ -110,7 +110,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 5.705 0.070 5.775 ;
+      RECT 0.000 9.485 0.070 9.555 ;
     END
   END din0[3]
   PIN din0[4]
@@ -119,7 +119,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 6.125 0.070 6.195 ;
+      RECT 0.000 9.765 0.070 9.835 ;
     END
   END din0[4]
   PIN din0[5]
@@ -128,7 +128,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 6.545 0.070 6.615 ;
+      RECT 0.000 10.045 0.070 10.115 ;
     END
   END din0[5]
   PIN din0[6]
@@ -137,7 +137,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 6.965 0.070 7.035 ;
+      RECT 0.000 10.325 0.070 10.395 ;
     END
   END din0[6]
   PIN din0[7]
@@ -146,7 +146,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 7.385 0.070 7.455 ;
+      RECT 0.000 10.605 0.070 10.675 ;
     END
   END din0[7]
   PIN din0[8]
@@ -155,7 +155,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 7.805 0.070 7.875 ;
+      RECT 0.000 10.885 0.070 10.955 ;
     END
   END din0[8]
   PIN din0[9]
@@ -164,7 +164,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 8.225 0.070 8.295 ;
+      RECT 0.000 11.165 0.070 11.235 ;
     END
   END din0[9]
   PIN din0[10]
@@ -173,7 +173,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 8.645 0.070 8.715 ;
+      RECT 0.000 11.445 0.070 11.515 ;
     END
   END din0[10]
   PIN din0[11]
@@ -182,7 +182,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 9.065 0.070 9.135 ;
+      RECT 0.000 11.725 0.070 11.795 ;
     END
   END din0[11]
   PIN din0[12]
@@ -191,7 +191,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 9.485 0.070 9.555 ;
+      RECT 0.000 12.005 0.070 12.075 ;
     END
   END din0[12]
   PIN din0[13]
@@ -200,7 +200,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 9.905 0.070 9.975 ;
+      RECT 0.000 12.285 0.070 12.355 ;
     END
   END din0[13]
   PIN din0[14]
@@ -209,7 +209,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 10.325 0.070 10.395 ;
+      RECT 0.000 12.565 0.070 12.635 ;
     END
   END din0[14]
   PIN din0[15]
@@ -218,7 +218,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 10.745 0.070 10.815 ;
+      RECT 0.000 12.845 0.070 12.915 ;
     END
   END din0[15]
   PIN din0[16]
@@ -227,7 +227,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 11.165 0.070 11.235 ;
+      RECT 0.000 13.125 0.070 13.195 ;
     END
   END din0[16]
   PIN din0[17]
@@ -236,7 +236,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 11.585 0.070 11.655 ;
+      RECT 0.000 13.405 0.070 13.475 ;
     END
   END din0[17]
   PIN din0[18]
@@ -245,7 +245,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 12.005 0.070 12.075 ;
+      RECT 0.000 13.685 0.070 13.755 ;
     END
   END din0[18]
   PIN din0[19]
@@ -254,7 +254,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 12.425 0.070 12.495 ;
+      RECT 0.000 13.965 0.070 14.035 ;
     END
   END din0[19]
   PIN din0[20]
@@ -263,7 +263,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 12.845 0.070 12.915 ;
+      RECT 0.000 14.245 0.070 14.315 ;
     END
   END din0[20]
   PIN din0[21]
@@ -272,7 +272,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 13.265 0.070 13.335 ;
+      RECT 0.000 14.525 0.070 14.595 ;
     END
   END din0[21]
   PIN din0[22]
@@ -281,7 +281,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 13.685 0.070 13.755 ;
+      RECT 0.000 14.805 0.070 14.875 ;
     END
   END din0[22]
   PIN din0[23]
@@ -290,7 +290,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 14.105 0.070 14.175 ;
+      RECT 0.000 15.085 0.070 15.155 ;
     END
   END din0[23]
   PIN din0[24]
@@ -299,7 +299,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 14.525 0.070 14.595 ;
+      RECT 0.000 15.365 0.070 15.435 ;
     END
   END din0[24]
   PIN din0[25]
@@ -308,7 +308,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 14.945 0.070 15.015 ;
+      RECT 0.000 15.645 0.070 15.715 ;
     END
   END din0[25]
   PIN din0[26]
@@ -317,7 +317,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 15.365 0.070 15.435 ;
+      RECT 0.000 15.925 0.070 15.995 ;
     END
   END din0[26]
   PIN din0[27]
@@ -326,7 +326,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 15.785 0.070 15.855 ;
+      RECT 0.000 16.205 0.070 16.275 ;
     END
   END din0[27]
   PIN din0[28]
@@ -335,7 +335,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 16.205 0.070 16.275 ;
+      RECT 0.000 16.485 0.070 16.555 ;
     END
   END din0[28]
   PIN din0[29]
@@ -344,7 +344,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 16.625 0.070 16.695 ;
+      RECT 0.000 16.765 0.070 16.835 ;
     END
   END din0[29]
   PIN din0[30]
@@ -362,7 +362,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 17.465 0.070 17.535 ;
+      RECT 0.000 17.325 0.070 17.395 ;
     END
   END din0[31]
   PIN din0[32]
@@ -371,7 +371,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 17.885 0.070 17.955 ;
+      RECT 0.000 17.605 0.070 17.675 ;
     END
   END din0[32]
   PIN din0[33]
@@ -380,7 +380,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 18.305 0.070 18.375 ;
+      RECT 0.000 17.885 0.070 17.955 ;
     END
   END din0[33]
   PIN din0[34]
@@ -389,7 +389,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 18.725 0.070 18.795 ;
+      RECT 0.000 18.165 0.070 18.235 ;
     END
   END din0[34]
   PIN din0[35]
@@ -398,7 +398,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 19.145 0.070 19.215 ;
+      RECT 0.000 18.445 0.070 18.515 ;
     END
   END din0[35]
   PIN din0[36]
@@ -407,7 +407,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 19.565 0.070 19.635 ;
+      RECT 0.000 18.725 0.070 18.795 ;
     END
   END din0[36]
   PIN din0[37]
@@ -416,7 +416,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 19.985 0.070 20.055 ;
+      RECT 0.000 19.005 0.070 19.075 ;
     END
   END din0[37]
   PIN din0[38]
@@ -425,7 +425,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 20.405 0.070 20.475 ;
+      RECT 0.000 19.285 0.070 19.355 ;
     END
   END din0[38]
   PIN din0[39]
@@ -434,7 +434,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 20.825 0.070 20.895 ;
+      RECT 0.000 19.565 0.070 19.635 ;
     END
   END din0[39]
   PIN din0[40]
@@ -443,7 +443,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 21.245 0.070 21.315 ;
+      RECT 0.000 19.845 0.070 19.915 ;
     END
   END din0[40]
   PIN din0[41]
@@ -452,16 +452,70 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 21.665 0.070 21.735 ;
+      RECT 0.000 20.125 0.070 20.195 ;
     END
   END din0[41]
+  PIN din0[42]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 20.405 0.070 20.475 ;
+    END
+  END din0[42]
+  PIN din0[43]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 20.685 0.070 20.755 ;
+    END
+  END din0[43]
+  PIN din0[44]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 20.965 0.070 21.035 ;
+    END
+  END din0[44]
+  PIN din0[45]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 21.245 0.070 21.315 ;
+    END
+  END din0[45]
+  PIN din0[46]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 21.525 0.070 21.595 ;
+    END
+  END din0[46]
+  PIN din0[47]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 21.805 0.070 21.875 ;
+    END
+  END din0[47]
   PIN dout0[0]
     DIRECTION OUTPUT ;
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 21.945 0.070 22.015 ;
+      RECT 0.000 24.605 0.070 24.675 ;
     END
   END dout0[0]
   PIN dout0[1]
@@ -470,7 +524,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 22.365 0.070 22.435 ;
+      RECT 0.000 24.885 0.070 24.955 ;
     END
   END dout0[1]
   PIN dout0[2]
@@ -479,7 +533,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 22.785 0.070 22.855 ;
+      RECT 0.000 25.165 0.070 25.235 ;
     END
   END dout0[2]
   PIN dout0[3]
@@ -488,7 +542,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 23.205 0.070 23.275 ;
+      RECT 0.000 25.445 0.070 25.515 ;
     END
   END dout0[3]
   PIN dout0[4]
@@ -497,7 +551,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 23.625 0.070 23.695 ;
+      RECT 0.000 25.725 0.070 25.795 ;
     END
   END dout0[4]
   PIN dout0[5]
@@ -506,7 +560,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 24.045 0.070 24.115 ;
+      RECT 0.000 26.005 0.070 26.075 ;
     END
   END dout0[5]
   PIN dout0[6]
@@ -515,7 +569,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 24.465 0.070 24.535 ;
+      RECT 0.000 26.285 0.070 26.355 ;
     END
   END dout0[6]
   PIN dout0[7]
@@ -524,7 +578,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 24.885 0.070 24.955 ;
+      RECT 0.000 26.565 0.070 26.635 ;
     END
   END dout0[7]
   PIN dout0[8]
@@ -533,7 +587,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 25.305 0.070 25.375 ;
+      RECT 0.000 26.845 0.070 26.915 ;
     END
   END dout0[8]
   PIN dout0[9]
@@ -542,7 +596,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 25.725 0.070 25.795 ;
+      RECT 0.000 27.125 0.070 27.195 ;
     END
   END dout0[9]
   PIN dout0[10]
@@ -551,7 +605,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 26.145 0.070 26.215 ;
+      RECT 0.000 27.405 0.070 27.475 ;
     END
   END dout0[10]
   PIN dout0[11]
@@ -560,7 +614,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 26.565 0.070 26.635 ;
+      RECT 0.000 27.685 0.070 27.755 ;
     END
   END dout0[11]
   PIN dout0[12]
@@ -569,7 +623,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 26.985 0.070 27.055 ;
+      RECT 0.000 27.965 0.070 28.035 ;
     END
   END dout0[12]
   PIN dout0[13]
@@ -578,7 +632,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 27.405 0.070 27.475 ;
+      RECT 0.000 28.245 0.070 28.315 ;
     END
   END dout0[13]
   PIN dout0[14]
@@ -587,7 +641,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 27.825 0.070 27.895 ;
+      RECT 0.000 28.525 0.070 28.595 ;
     END
   END dout0[14]
   PIN dout0[15]
@@ -596,7 +650,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 28.245 0.070 28.315 ;
+      RECT 0.000 28.805 0.070 28.875 ;
     END
   END dout0[15]
   PIN dout0[16]
@@ -605,7 +659,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 28.665 0.070 28.735 ;
+      RECT 0.000 29.085 0.070 29.155 ;
     END
   END dout0[16]
   PIN dout0[17]
@@ -614,7 +668,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 29.085 0.070 29.155 ;
+      RECT 0.000 29.365 0.070 29.435 ;
     END
   END dout0[17]
   PIN dout0[18]
@@ -623,7 +677,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 29.505 0.070 29.575 ;
+      RECT 0.000 29.645 0.070 29.715 ;
     END
   END dout0[18]
   PIN dout0[19]
@@ -641,7 +695,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 30.345 0.070 30.415 ;
+      RECT 0.000 30.205 0.070 30.275 ;
     END
   END dout0[20]
   PIN dout0[21]
@@ -650,7 +704,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 30.765 0.070 30.835 ;
+      RECT 0.000 30.485 0.070 30.555 ;
     END
   END dout0[21]
   PIN dout0[22]
@@ -659,7 +713,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 31.185 0.070 31.255 ;
+      RECT 0.000 30.765 0.070 30.835 ;
     END
   END dout0[22]
   PIN dout0[23]
@@ -668,7 +722,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 31.605 0.070 31.675 ;
+      RECT 0.000 31.045 0.070 31.115 ;
     END
   END dout0[23]
   PIN dout0[24]
@@ -677,7 +731,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 32.025 0.070 32.095 ;
+      RECT 0.000 31.325 0.070 31.395 ;
     END
   END dout0[24]
   PIN dout0[25]
@@ -686,7 +740,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 32.445 0.070 32.515 ;
+      RECT 0.000 31.605 0.070 31.675 ;
     END
   END dout0[25]
   PIN dout0[26]
@@ -695,7 +749,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 32.865 0.070 32.935 ;
+      RECT 0.000 31.885 0.070 31.955 ;
     END
   END dout0[26]
   PIN dout0[27]
@@ -704,7 +758,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 33.285 0.070 33.355 ;
+      RECT 0.000 32.165 0.070 32.235 ;
     END
   END dout0[27]
   PIN dout0[28]
@@ -713,7 +767,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 33.705 0.070 33.775 ;
+      RECT 0.000 32.445 0.070 32.515 ;
     END
   END dout0[28]
   PIN dout0[29]
@@ -722,7 +776,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 34.125 0.070 34.195 ;
+      RECT 0.000 32.725 0.070 32.795 ;
     END
   END dout0[29]
   PIN dout0[30]
@@ -731,7 +785,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 34.545 0.070 34.615 ;
+      RECT 0.000 33.005 0.070 33.075 ;
     END
   END dout0[30]
   PIN dout0[31]
@@ -740,7 +794,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 34.965 0.070 35.035 ;
+      RECT 0.000 33.285 0.070 33.355 ;
     END
   END dout0[31]
   PIN dout0[32]
@@ -749,7 +803,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 35.385 0.070 35.455 ;
+      RECT 0.000 33.565 0.070 33.635 ;
     END
   END dout0[32]
   PIN dout0[33]
@@ -758,7 +812,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 35.805 0.070 35.875 ;
+      RECT 0.000 33.845 0.070 33.915 ;
     END
   END dout0[33]
   PIN dout0[34]
@@ -767,7 +821,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 36.225 0.070 36.295 ;
+      RECT 0.000 34.125 0.070 34.195 ;
     END
   END dout0[34]
   PIN dout0[35]
@@ -776,7 +830,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 36.645 0.070 36.715 ;
+      RECT 0.000 34.405 0.070 34.475 ;
     END
   END dout0[35]
   PIN dout0[36]
@@ -785,7 +839,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 37.065 0.070 37.135 ;
+      RECT 0.000 34.685 0.070 34.755 ;
     END
   END dout0[36]
   PIN dout0[37]
@@ -794,7 +848,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 37.485 0.070 37.555 ;
+      RECT 0.000 34.965 0.070 35.035 ;
     END
   END dout0[37]
   PIN dout0[38]
@@ -803,7 +857,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 37.905 0.070 37.975 ;
+      RECT 0.000 35.245 0.070 35.315 ;
     END
   END dout0[38]
   PIN dout0[39]
@@ -812,7 +866,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 38.325 0.070 38.395 ;
+      RECT 0.000 35.525 0.070 35.595 ;
     END
   END dout0[39]
   PIN dout0[40]
@@ -821,7 +875,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 38.745 0.070 38.815 ;
+      RECT 0.000 35.805 0.070 35.875 ;
     END
   END dout0[40]
   PIN dout0[41]
@@ -830,16 +884,70 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 39.165 0.070 39.235 ;
+      RECT 0.000 36.085 0.070 36.155 ;
     END
   END dout0[41]
+  PIN dout0[42]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 36.365 0.070 36.435 ;
+    END
+  END dout0[42]
+  PIN dout0[43]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 36.645 0.070 36.715 ;
+    END
+  END dout0[43]
+  PIN dout0[44]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 36.925 0.070 36.995 ;
+    END
+  END dout0[44]
+  PIN dout0[45]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 37.205 0.070 37.275 ;
+    END
+  END dout0[45]
+  PIN dout0[46]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 37.485 0.070 37.555 ;
+    END
+  END dout0[46]
+  PIN dout0[47]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 37.765 0.070 37.835 ;
+    END
+  END dout0[47]
   PIN clk1
     DIRECTION INPUT ;
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 39.445 0.070 39.515 ;
+      RECT 0.000 40.565 0.070 40.635 ;
     END
   END clk1
   PIN csb1
@@ -848,7 +956,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 39.865 0.070 39.935 ;
+      RECT 0.000 40.845 0.070 40.915 ;
     END
   END csb1
   PIN addr1[0]
@@ -857,7 +965,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 40.285 0.070 40.355 ;
+      RECT 0.000 41.125 0.070 41.195 ;
     END
   END addr1[0]
   PIN addr1[1]
@@ -866,7 +974,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 40.705 0.070 40.775 ;
+      RECT 0.000 41.405 0.070 41.475 ;
     END
   END addr1[1]
   PIN addr1[2]
@@ -875,7 +983,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 41.125 0.070 41.195 ;
+      RECT 0.000 41.685 0.070 41.755 ;
     END
   END addr1[2]
   PIN addr1[3]
@@ -884,7 +992,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 41.545 0.070 41.615 ;
+      RECT 0.000 41.965 0.070 42.035 ;
     END
   END addr1[3]
   PIN addr1[4]
@@ -893,7 +1001,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 41.965 0.070 42.035 ;
+      RECT 0.000 42.245 0.070 42.315 ;
     END
   END addr1[4]
   PIN dout1[0]
@@ -902,7 +1010,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 42.245 0.070 42.315 ;
+      RECT 0.000 45.045 0.070 45.115 ;
     END
   END dout1[0]
   PIN dout1[1]
@@ -911,7 +1019,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 42.665 0.070 42.735 ;
+      RECT 0.000 45.325 0.070 45.395 ;
     END
   END dout1[1]
   PIN dout1[2]
@@ -920,7 +1028,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 43.085 0.070 43.155 ;
+      RECT 0.000 45.605 0.070 45.675 ;
     END
   END dout1[2]
   PIN dout1[3]
@@ -929,7 +1037,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 43.505 0.070 43.575 ;
+      RECT 0.000 45.885 0.070 45.955 ;
     END
   END dout1[3]
   PIN dout1[4]
@@ -938,7 +1046,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 43.925 0.070 43.995 ;
+      RECT 0.000 46.165 0.070 46.235 ;
     END
   END dout1[4]
   PIN dout1[5]
@@ -947,7 +1055,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 44.345 0.070 44.415 ;
+      RECT 0.000 46.445 0.070 46.515 ;
     END
   END dout1[5]
   PIN dout1[6]
@@ -956,7 +1064,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 44.765 0.070 44.835 ;
+      RECT 0.000 46.725 0.070 46.795 ;
     END
   END dout1[6]
   PIN dout1[7]
@@ -965,7 +1073,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 45.185 0.070 45.255 ;
+      RECT 0.000 47.005 0.070 47.075 ;
     END
   END dout1[7]
   PIN dout1[8]
@@ -974,7 +1082,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 45.605 0.070 45.675 ;
+      RECT 0.000 47.285 0.070 47.355 ;
     END
   END dout1[8]
   PIN dout1[9]
@@ -983,7 +1091,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 46.025 0.070 46.095 ;
+      RECT 0.000 47.565 0.070 47.635 ;
     END
   END dout1[9]
   PIN dout1[10]
@@ -992,7 +1100,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 46.445 0.070 46.515 ;
+      RECT 0.000 47.845 0.070 47.915 ;
     END
   END dout1[10]
   PIN dout1[11]
@@ -1001,7 +1109,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 46.865 0.070 46.935 ;
+      RECT 0.000 48.125 0.070 48.195 ;
     END
   END dout1[11]
   PIN dout1[12]
@@ -1010,7 +1118,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 47.285 0.070 47.355 ;
+      RECT 0.000 48.405 0.070 48.475 ;
     END
   END dout1[12]
   PIN dout1[13]
@@ -1019,7 +1127,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 47.705 0.070 47.775 ;
+      RECT 0.000 48.685 0.070 48.755 ;
     END
   END dout1[13]
   PIN dout1[14]
@@ -1028,7 +1136,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 48.125 0.070 48.195 ;
+      RECT 0.000 48.965 0.070 49.035 ;
     END
   END dout1[14]
   PIN dout1[15]
@@ -1037,7 +1145,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 48.545 0.070 48.615 ;
+      RECT 0.000 49.245 0.070 49.315 ;
     END
   END dout1[15]
   PIN dout1[16]
@@ -1046,7 +1154,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 48.965 0.070 49.035 ;
+      RECT 0.000 49.525 0.070 49.595 ;
     END
   END dout1[16]
   PIN dout1[17]
@@ -1055,7 +1163,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 49.385 0.070 49.455 ;
+      RECT 0.000 49.805 0.070 49.875 ;
     END
   END dout1[17]
   PIN dout1[18]
@@ -1064,7 +1172,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 49.805 0.070 49.875 ;
+      RECT 0.000 50.085 0.070 50.155 ;
     END
   END dout1[18]
   PIN dout1[19]
@@ -1073,7 +1181,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 50.225 0.070 50.295 ;
+      RECT 0.000 50.365 0.070 50.435 ;
     END
   END dout1[19]
   PIN dout1[20]
@@ -1091,7 +1199,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 51.065 0.070 51.135 ;
+      RECT 0.000 50.925 0.070 50.995 ;
     END
   END dout1[21]
   PIN dout1[22]
@@ -1100,7 +1208,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 51.485 0.070 51.555 ;
+      RECT 0.000 51.205 0.070 51.275 ;
     END
   END dout1[22]
   PIN dout1[23]
@@ -1109,7 +1217,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 51.905 0.070 51.975 ;
+      RECT 0.000 51.485 0.070 51.555 ;
     END
   END dout1[23]
   PIN dout1[24]
@@ -1118,7 +1226,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 52.325 0.070 52.395 ;
+      RECT 0.000 51.765 0.070 51.835 ;
     END
   END dout1[24]
   PIN dout1[25]
@@ -1127,7 +1235,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 52.745 0.070 52.815 ;
+      RECT 0.000 52.045 0.070 52.115 ;
     END
   END dout1[25]
   PIN dout1[26]
@@ -1136,7 +1244,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 53.165 0.070 53.235 ;
+      RECT 0.000 52.325 0.070 52.395 ;
     END
   END dout1[26]
   PIN dout1[27]
@@ -1145,7 +1253,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 53.585 0.070 53.655 ;
+      RECT 0.000 52.605 0.070 52.675 ;
     END
   END dout1[27]
   PIN dout1[28]
@@ -1154,7 +1262,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 54.005 0.070 54.075 ;
+      RECT 0.000 52.885 0.070 52.955 ;
     END
   END dout1[28]
   PIN dout1[29]
@@ -1163,7 +1271,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 54.425 0.070 54.495 ;
+      RECT 0.000 53.165 0.070 53.235 ;
     END
   END dout1[29]
   PIN dout1[30]
@@ -1172,7 +1280,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 54.845 0.070 54.915 ;
+      RECT 0.000 53.445 0.070 53.515 ;
     END
   END dout1[30]
   PIN dout1[31]
@@ -1181,7 +1289,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 55.265 0.070 55.335 ;
+      RECT 0.000 53.725 0.070 53.795 ;
     END
   END dout1[31]
   PIN dout1[32]
@@ -1190,7 +1298,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 55.685 0.070 55.755 ;
+      RECT 0.000 54.005 0.070 54.075 ;
     END
   END dout1[32]
   PIN dout1[33]
@@ -1199,7 +1307,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 56.105 0.070 56.175 ;
+      RECT 0.000 54.285 0.070 54.355 ;
     END
   END dout1[33]
   PIN dout1[34]
@@ -1208,7 +1316,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 56.525 0.070 56.595 ;
+      RECT 0.000 54.565 0.070 54.635 ;
     END
   END dout1[34]
   PIN dout1[35]
@@ -1217,7 +1325,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 56.945 0.070 57.015 ;
+      RECT 0.000 54.845 0.070 54.915 ;
     END
   END dout1[35]
   PIN dout1[36]
@@ -1226,7 +1334,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 57.365 0.070 57.435 ;
+      RECT 0.000 55.125 0.070 55.195 ;
     END
   END dout1[36]
   PIN dout1[37]
@@ -1235,7 +1343,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 57.785 0.070 57.855 ;
+      RECT 0.000 55.405 0.070 55.475 ;
     END
   END dout1[37]
   PIN dout1[38]
@@ -1244,7 +1352,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 58.205 0.070 58.275 ;
+      RECT 0.000 55.685 0.070 55.755 ;
     END
   END dout1[38]
   PIN dout1[39]
@@ -1253,7 +1361,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 58.625 0.070 58.695 ;
+      RECT 0.000 55.965 0.070 56.035 ;
     END
   END dout1[39]
   PIN dout1[40]
@@ -1262,7 +1370,7 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 59.045 0.070 59.115 ;
+      RECT 0.000 56.245 0.070 56.315 ;
     END
   END dout1[40]
   PIN dout1[41]
@@ -1271,9 +1379,63 @@ MACRO liteeth_42x32_sram
     SHAPE ABUTMENT ;
     PORT
       LAYER metal3 ;
-      RECT 0.000 59.465 0.070 59.535 ;
+      RECT 0.000 56.525 0.070 56.595 ;
     END
   END dout1[41]
+  PIN dout1[42]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 56.805 0.070 56.875 ;
+    END
+  END dout1[42]
+  PIN dout1[43]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 57.085 0.070 57.155 ;
+    END
+  END dout1[43]
+  PIN dout1[44]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 57.365 0.070 57.435 ;
+    END
+  END dout1[44]
+  PIN dout1[45]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 57.645 0.070 57.715 ;
+    END
+  END dout1[45]
+  PIN dout1[46]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 57.925 0.070 57.995 ;
+    END
+  END dout1[46]
+  PIN dout1[47]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 58.205 0.070 58.275 ;
+    END
+  END dout1[47]
   PIN VSS
     DIRECTION INOUT ;
     USE GROUND ;
@@ -1365,6 +1527,6 @@ MACRO liteeth_42x32_sram
     LAYER OVERLAP ;
     RECT 0 0 75.050 64.400 ;
   END
-END liteeth_42x32_sram
+END liteeth_48x32_sram
 
 END LIBRARY
