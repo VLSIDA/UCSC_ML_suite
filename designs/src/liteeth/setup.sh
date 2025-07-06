@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Tested and working on WSL Ubuntu on Windows 11
+# Tested and working on WSL Ubuntu on Windows 11 in ./runorfs.sh
 
 echo "Starting Setup..."
 

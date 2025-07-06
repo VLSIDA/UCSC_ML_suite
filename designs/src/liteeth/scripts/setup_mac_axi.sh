@@ -88,7 +88,7 @@ liteeth_32x384_8_sram u_rx_buffer_1 (\
 );' ../liteeth_mac_axi_mii.v
 
 sed -i '/^\/\/ Memory storage_2: 32-words x 42-bit/,/^assign core_rx_cdc_cdc_rdport_dat_r = storage_2_dat1;$/c\
-liteeth_42x32_sram u_rx_cdc_storage (\
+liteeth_48x32_sram u_rx_cdc_storage (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
     .gnd(gnd),\
@@ -109,7 +109,7 @@ liteeth_42x32_sram u_rx_cdc_storage (\
 );' ../liteeth_mac_axi_mii.v
 
 sed -i '/^\/\/ Memory storage: 32-words x 42-bit/,/^assign core_tx_cdc_cdc_rdport_dat_r = storage_dat1;$/c\
-liteeth_42x32_sram u_tx_cdc_storage (\
+liteeth_48x32_sram u_tx_cdc_storage (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
     .gnd(gnd),\
