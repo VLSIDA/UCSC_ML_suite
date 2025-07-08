@@ -1,0 +1,40 @@
+name: Push Workflow
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run setup script
+        run: ./setup.sh            
+
+      - name: Determine ORFS tag
+        id: get_tag
+        run: |
+          cd OpenROAD-flow-scripts
+          tag=$(git describe --tags --abbrev=8 2>/dev/null || echo "latest")
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Run ORFS for all designs
+        run: |
+            tag="${{ steps.get_tag.outputs.tag }}"
+            docker run --rm \
+            -v ${{ github.workspace }}/OpenROAD-flow-scripts/flow:/OpenROAD-flow-scripts/flow \
+            -v ${{ github.workspace }}:/OpenROAD-flow-scripts/UCSC_ML_suite \
+            -w /OpenROAD-flow-scripts \
+            openroad/orfs:$tag \
+            bash -c '
+                cd UCSC_ML_suite
+
+                configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
+
+                for config in $configs; do
+                echo "Running design: $config"
+                make DESIGN_CONFIG="$config"
+                done
+            '
