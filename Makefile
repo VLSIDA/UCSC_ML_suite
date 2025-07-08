@@ -6,7 +6,7 @@ DESIGN_CONFIG ?= ./designs/nangate45/lfsr_top/config.mk
 .PHONY: do-setup
 do-setup: 
 	git submodule init $(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/repo
-	bash -c '[ -f "$(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/setup.sh" ] && source "$(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/setup.sh"'
-
+	git submodule update $(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/repo
+	
 # Add additional synth target dependency
 yosys-dependencies: do-setup
