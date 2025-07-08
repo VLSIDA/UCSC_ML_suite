@@ -1,7 +1,7 @@
 export DESIGN_NAME = lfsr_top
 export PLATFORM    = asap7
 
-VERILOG_FILES := \
+VERILOG_FILES = \
   $(wildcard $(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/*.v) \
   $(wildcard $(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/repo/rtl/*.v)
 
