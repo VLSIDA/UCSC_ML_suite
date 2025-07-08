@@ -2,7 +2,7 @@ library(liteeth_32x384_8_sram) {
     technology (cmos);
     delay_model : table_lookup;
     revision : 1.0;
-    date : "2025-07-04 01:24:28Z";
+    date : "2025-07-07 01:31:55Z";
     comment : "SRAM";
     time_unit : "1ns";
     voltage_unit : "1V";
