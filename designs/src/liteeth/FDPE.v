@@ -13,7 +13,7 @@ module FDPE #(
 
     always @(posedge C or posedge PRE) begin
         if (PRE)
-            Q <= INIT;          // Asynchronous preset sets to INIT
+            Q <= 1'b1;
         else if (CE)
             Q <= D;             // Clocked assignment when CE is high
     end
