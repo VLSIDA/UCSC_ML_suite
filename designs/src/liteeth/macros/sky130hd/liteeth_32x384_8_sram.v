@@ -1,4 +1,4 @@
-module liteeth_42x32_sram (
+module liteeth_32x384_8_sram (
 `ifdef USE_POWER_PINS
     vdd,
     gnd,
@@ -7,6 +7,7 @@ module liteeth_42x32_sram (
     clk0,
     csb0,
     web0,
+    wmask0,
     addr0,
     din0,
     dout0,
@@ -17,9 +18,10 @@ module liteeth_42x32_sram (
     dout1
 );
 
-   parameter BITS = 42;
-   parameter WORD_DEPTH = 32;
-   parameter ADDR_WIDTH = 5;
+   parameter BITS = 32;
+   parameter WORD_DEPTH = 384;
+   parameter ADDR_WIDTH = 9;
+   parameter NUM_BYTES = 4;
 
 `ifdef USE_POWER_PINS
    inout vdd;
@@ -30,6 +32,7 @@ module liteeth_42x32_sram (
    input                    clk0;
    input                    csb0;  // Active low chip select
    input                    web0;  // Active low write enable
+   input  [3:0]    wmask0;
    input  [ADDR_WIDTH-1:0]  addr0;
    input  [BITS-1:0]        din0;
    output [BITS-1:0]        dout0;
@@ -45,23 +48,29 @@ module liteeth_42x32_sram (
 
    integer i;
 
-// Write mode: read_first
-   // Port 0: Read-Write Port with Read-First behavior
-   reg [BITS-1:0] dout0_reg;
+// Write mode: write_first
+   // Port 0: Read-Write Port with Write-First behavior
+   reg [ADDR_WIDTH-1:0] addr0_reg;
    
    always @(posedge clk0) begin
-      if (!csb0) begin  // Active low chip select
-         // Read-first: capture data before potential write
-         dout0_reg <= mem[addr0];
-         
-         if (!web0) begin  // Active low write enable - writing when web0=0
-            mem[addr0] <= din0;
+      if (!csb0 && !web0) begin  // Active low chip select
+         if (BITS == 32) begin  // Active low write enable - writing when web0=0
+            if (wmask0[0])
+               mem[addr0][7:0] <= din0[7:0];
+            if (wmask0[1])
+              mem[addr0][15:8] <= din0[15:8];
+            if (wmask0[2])
+              mem[addr0][23:16] <= din0[23:16];
+            if (wmask0[3])
+              mem[addr0][31:24] <= din0[31:24];
          end
+         // Always register the address (for write-first behavior)
+         addr0_reg <= addr0;
       end
    end
    
-   // Read-first: output registered old data
-   assign dout0 = dout0_reg;
+   // Write-first read: output data from registered address
+   assign dout0 = mem[addr0_reg];
 
    // Port 1: Read-Only Port
    reg [BITS-1:0] dout1_reg;
@@ -102,6 +111,7 @@ module liteeth_42x32_sram (
       $setuphold (posedge clk0, web0, 0, 0, notifier);
       $setuphold (posedge clk0, addr0, 0, 0, notifier);
       $setuphold (posedge clk0, din0, 0, 0, notifier);
+      $setuphold (posedge clk0, wmask0, 0, 0, notifier);
       $setuphold (posedge clk1, csb1, 0, 0, notifier);
       $setuphold (posedge clk1, addr1, 0, 0, notifier);
 

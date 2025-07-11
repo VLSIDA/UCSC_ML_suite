@@ -8,9 +8,8 @@
 //
 // Filename   : liteeth_core.v
 // Device     : 
-// LiteX sha1 : b7066532a
-// Date       : 2025-06-18 21:26:29
-// Yaml File  : axi-lite-mii.yml
+// LiteX sha1 : 65f5463
+// Date       : 2025-07-10 06:24:17
 //------------------------------------------------------------------------------
 
 `timescale 1ns / 1ps
@@ -19,26 +18,7 @@
 // Module
 //------------------------------------------------------------------------------
 
-module liteeth_mac_axi_mii (
-    input  wire   [31:0] bus_araddr,
-    input  wire    [2:0] bus_arprot,
-    output wire          bus_arready,
-    input  wire          bus_arvalid,
-    input  wire   [31:0] bus_awaddr,
-    input  wire    [2:0] bus_awprot,
-    output wire          bus_awready,
-    input  wire          bus_awvalid,
-    input  wire          bus_bready,
-    output wire    [1:0] bus_bresp,
-    output wire          bus_bvalid,
-    output wire   [31:0] bus_rdata,
-    input  wire          bus_rready,
-    output wire    [1:0] bus_rresp,
-    output wire          bus_rvalid,
-    input  wire   [31:0] bus_wdata,
-    output wire          bus_wready,
-    input  wire    [3:0] bus_wstrb,
-    input  wire          bus_wvalid,
+module liteeth_core (
     output wire          interrupt,
     input  wire          mii_clocks_rx,
     input  wire          mii_clocks_tx,
@@ -53,7 +33,18 @@ module liteeth_mac_axi_mii (
     output reg     [3:0] mii_tx_data,
     output reg           mii_tx_en,
     input  wire          sys_clock,
-    input  wire          sys_reset
+    input  wire          sys_reset,
+    output wire          wishbone_ack,
+    input  wire   [29:0] wishbone_adr,
+    input  wire    [1:0] wishbone_bte,
+    input  wire    [2:0] wishbone_cti,
+    input  wire          wishbone_cyc,
+    output wire   [31:0] wishbone_dat_r,
+    input  wire   [31:0] wishbone_dat_w,
+    output wire          wishbone_err,
+    input  wire    [3:0] wishbone_sel,
+    input  wire          wishbone_stb,
+    input  wire          wishbone_we
 );
 
 
@@ -64,8 +55,6 @@ module liteeth_mac_axi_mii (
 /*
 MACCore
 └─── bus (SoCBusHandler)
-│    └─── axilite2wishbone_0* (AXILite2Wishbone)
-│    │    └─── fsm (FSM)
 │    └─── _interconnect (InterconnectShared)
 │    │    └─── arbiter (Arbiter)
 │    │    │    └─── rr (RoundRobin)
@@ -203,29 +192,7 @@ MACCore
 // Signals
 //------------------------------------------------------------------------------
 
-wire          adapted_interface_ack;
-reg    [29:0] adapted_interface_adr = 30'd0;
-reg     [1:0] adapted_interface_bte = 2'd0;
-reg     [2:0] adapted_interface_cti = 3'd0;
-reg           adapted_interface_cyc = 1'd0;
-wire   [31:0] adapted_interface_dat_r;
-reg    [31:0] adapted_interface_dat_w = 32'd0;
-wire          adapted_interface_err;
-reg     [3:0] adapted_interface_sel = 4'd0;
-reg           adapted_interface_stb = 1'd0;
-reg           adapted_interface_we = 1'd0;
 wire   [13:0] adr;
-wire   [31:0] ar_payload_addr;
-wire    [2:0] ar_payload_prot;
-reg           ar_ready = 1'd0;
-wire          ar_valid;
-wire   [31:0] aw_payload_addr;
-wire    [2:0] aw_payload_prot;
-reg           aw_ready = 1'd0;
-wire          aw_valid;
-reg     [1:0] b_payload_resp = 2'd0;
-wire          b_ready;
-reg           b_valid = 1'd0;
 wire          core_bufferizeendpoints_pipe_valid_sink_first;
 wire          core_bufferizeendpoints_pipe_valid_sink_last;
 wire    [7:0] core_bufferizeendpoints_pipe_valid_sink_payload_data;
@@ -265,8 +232,8 @@ wire    [7:0] core_liteethmaccrc32checker_crc_data0;
 wire    [7:0] core_liteethmaccrc32checker_crc_data1;
 reg           core_liteethmaccrc32checker_crc_error0 = 1'd0;
 reg           core_liteethmaccrc32checker_crc_error1 = 1'd0;
-reg           core_liteethmaccrc32checker_crc_error1_maccore_next_value1 = 1'd0;
-reg           core_liteethmaccrc32checker_crc_error1_maccore_next_value_ce1 = 1'd0;
+reg           core_liteethmaccrc32checker_crc_error1_next_value1 = 1'd0;
+reg           core_liteethmaccrc32checker_crc_error1_next_value_ce1 = 1'd0;
 reg    [31:0] core_liteethmaccrc32checker_crc_reg = 32'd4294967295;
 reg           core_liteethmaccrc32checker_crc_reset = 1'd0;
 reg    [31:0] core_liteethmaccrc32checker_crc_value = 32'd0;
@@ -276,8 +243,8 @@ wire          core_liteethmaccrc32checker_fifo_in;
 wire          core_liteethmaccrc32checker_fifo_out;
 reg           core_liteethmaccrc32checker_fifo_reset = 1'd0;
 reg           core_liteethmaccrc32checker_last_be = 1'd0;
-reg           core_liteethmaccrc32checker_last_be_maccore_next_value0 = 1'd0;
-reg           core_liteethmaccrc32checker_last_be_maccore_next_value_ce0 = 1'd0;
+reg           core_liteethmaccrc32checker_last_be_next_value0 = 1'd0;
+reg           core_liteethmaccrc32checker_last_be_next_value_ce0 = 1'd0;
 wire          core_liteethmaccrc32checker_sink_sink_first;
 wire          core_liteethmaccrc32checker_sink_sink_last;
 wire    [7:0] core_liteethmaccrc32checker_sink_sink_payload_data;
@@ -607,18 +574,18 @@ reg           core_tx_crc_ce = 1'd0;
 reg     [1:0] core_tx_crc_cnt = 2'd3;
 wire          core_tx_crc_cnt_done;
 reg    [31:0] core_tx_crc_crc_next = 32'd0;
-reg    [31:0] core_tx_crc_crc_packet = 32'd0;
-reg    [31:0] core_tx_crc_crc_packet_maccore_clockdomainsrenamer1_next_value0 = 32'd0;
-reg           core_tx_crc_crc_packet_maccore_clockdomainsrenamer1_next_value_ce0 = 1'd0;
 wire   [31:0] core_tx_crc_crc_prev;
 wire    [7:0] core_tx_crc_data0;
 wire    [7:0] core_tx_crc_data1;
+reg    [31:0] core_tx_crc_description = 32'd0;
+reg    [31:0] core_tx_crc_description_clockdomainsrenamer1_next_value0 = 32'd0;
+reg           core_tx_crc_description_clockdomainsrenamer1_next_value_ce0 = 1'd0;
 reg           core_tx_crc_error = 1'd0;
-reg           core_tx_crc_is_ongoing0 = 1'd0;
-reg           core_tx_crc_is_ongoing1 = 1'd0;
-reg           core_tx_crc_last_be = 1'd0;
-reg           core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value1 = 1'd0;
-reg           core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value_ce1 = 1'd0;
+reg           core_tx_crc_fsm = 1'd0;
+reg           core_tx_crc_fsm_clockdomainsrenamer1_next_value1 = 1'd0;
+reg           core_tx_crc_fsm_clockdomainsrenamer1_next_value_ce1 = 1'd0;
+reg           core_tx_crc_fsm_is_ongoing0 = 1'd0;
+reg           core_tx_crc_fsm_is_ongoing1 = 1'd0;
 wire          core_tx_crc_pipe_valid_sink_first;
 wire          core_tx_crc_pipe_valid_sink_last;
 wire    [7:0] core_tx_crc_pipe_valid_sink_payload_data;
@@ -665,8 +632,8 @@ wire          core_tx_crc_source_source_valid;
 reg           core_tx_crc_source_valid = 1'd0;
 reg    [31:0] core_tx_crc_value = 32'd0;
 reg     [3:0] core_tx_gap_counter = 4'd0;
-reg     [3:0] core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value = 4'd0;
-reg           core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value_ce = 1'd0;
+reg     [3:0] core_tx_gap_counter_clockdomainsrenamer3_next_value = 4'd0;
+reg           core_tx_gap_counter_clockdomainsrenamer3_next_value_ce = 1'd0;
 wire          core_tx_gap_sink_first;
 wire          core_tx_gap_sink_last;
 wire    [7:0] core_tx_gap_sink_payload_data;
@@ -710,9 +677,9 @@ wire          core_tx_last_be_source_source_payload_last_be;
 wire          core_tx_last_be_source_source_ready;
 wire          core_tx_last_be_source_source_valid;
 reg    [15:0] core_tx_padding_counter = 16'd0;
+reg    [15:0] core_tx_padding_counter_clockdomainsrenamer0_next_value = 16'd0;
+reg           core_tx_padding_counter_clockdomainsrenamer0_next_value_ce = 1'd0;
 wire          core_tx_padding_counter_done;
-reg    [15:0] core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value = 16'd0;
-reg           core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value_ce = 1'd0;
 wire          core_tx_padding_sink_first;
 wire          core_tx_padding_sink_last;
 wire    [7:0] core_tx_padding_sink_payload_data;
@@ -728,8 +695,8 @@ reg           core_tx_padding_source_payload_last_be = 1'd0;
 wire          core_tx_padding_source_ready;
 reg           core_tx_padding_source_valid = 1'd0;
 reg     [2:0] core_tx_preamble_count = 3'd0;
-reg     [2:0] core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value = 3'd0;
-reg           core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value_ce = 1'd0;
+reg     [2:0] core_tx_preamble_count_clockdomainsrenamer2_next_value = 3'd0;
+reg           core_tx_preamble_count_clockdomainsrenamer2_next_value_ce = 1'd0;
 reg    [63:0] core_tx_preamble_preamble = 64'd15372286728091293013;
 wire          core_tx_preamble_sink_first;
 wire          core_tx_preamble_sink_last;
@@ -746,6 +713,7 @@ wire          core_tx_preamble_source_payload_last_be;
 wire          core_tx_preamble_source_ready;
 reg           core_tx_preamble_source_valid = 1'd0;
 wire          core_we;
+reg    [19:0] count = 20'd1000000;
 wire   [31:0] csrbank0_bus_errors_r;
 reg           csrbank0_bus_errors_re = 1'd0;
 wire   [31:0] csrbank0_bus_errors_w;
@@ -839,33 +807,50 @@ reg           csrbank2_mdio_w0_we = 1'd0;
 wire          csrbank2_sel;
 wire   [31:0] dat_r;
 wire   [31:0] dat_w;
-reg    [31:0] data = 32'd0;
-reg    [31:0] data_socbushandler_next_value1 = 32'd0;
-reg           data_socbushandler_next_value_ce1 = 1'd0;
+wire          done;
+reg           error = 1'd0;
 (* dont_touch = "true" *)
 wire          eth_rx_clk;
 wire          eth_rx_rst;
 (* dont_touch = "true" *)
 wire          eth_tx_clk;
 wire          eth_tx_rst;
+wire          grant;
+reg           interface0_ack = 1'd0;
+wire   [29:0] interface0_adr;
 wire   [13:0] interface0_bank_bus_adr;
 reg    [31:0] interface0_bank_bus_dat_r = 32'd0;
 wire   [31:0] interface0_bank_bus_dat_w;
 wire          interface0_bank_bus_re;
 wire          interface0_bank_bus_we;
+wire    [1:0] interface0_bte;
+wire    [2:0] interface0_cti;
+wire          interface0_cyc;
+reg    [31:0] interface0_dat_r = 32'd0;
+wire   [31:0] interface0_dat_w;
+reg           interface0_err = 1'd0;
+wire    [3:0] interface0_sel;
+wire          interface0_stb;
+wire          interface0_we;
+reg    [13:0] interface1_adr = 14'd0;
 wire   [13:0] interface1_bank_bus_adr;
 reg    [31:0] interface1_bank_bus_dat_r = 32'd0;
 wire   [31:0] interface1_bank_bus_dat_w;
 wire          interface1_bank_bus_re;
 wire          interface1_bank_bus_we;
+wire   [31:0] interface1_dat_r;
+reg    [31:0] interface1_dat_w = 32'd0;
+reg           interface1_re = 1'd0;
+reg           interface1_we = 1'd0;
 wire   [13:0] interface2_bank_bus_adr;
 reg    [31:0] interface2_bank_bus_dat_r = 32'd0;
 wire   [31:0] interface2_bank_bus_dat_w;
 wire          interface2_bank_bus_re;
 wire          interface2_bank_bus_we;
-reg           last_ar_aw_n = 1'd0;
-reg           last_ar_aw_n_socbushandler_next_value0 = 1'd0;
-reg           last_ar_aw_n_socbushandler_next_value_ce0 = 1'd0;
+reg     [1:0] liteethmacsramreader_next_state = 2'd0;
+reg     [1:0] liteethmacsramreader_state = 2'd0;
+reg     [2:0] liteethmacsramwriter_next_state = 3'd0;
+reg     [2:0] liteethmacsramwriter_state = 3'd0;
 reg           maccore__r_re = 1'd0;
 reg           maccore__r_status = 1'd0;
 wire          maccore__r_we;
@@ -888,26 +873,6 @@ wire          maccore_data_oe;
 wire          maccore_data_r;
 wire          maccore_data_w;
 reg           maccore_int_rst = 1'd1;
-reg           maccore_interface0_ack = 1'd0;
-wire   [29:0] maccore_interface0_adr;
-wire    [1:0] maccore_interface0_bte;
-wire    [2:0] maccore_interface0_cti;
-wire          maccore_interface0_cyc;
-reg    [31:0] maccore_interface0_dat_r = 32'd0;
-wire   [31:0] maccore_interface0_dat_w;
-reg           maccore_interface0_err = 1'd0;
-wire    [3:0] maccore_interface0_sel;
-wire          maccore_interface0_stb;
-wire          maccore_interface0_we;
-reg    [13:0] maccore_interface1_adr = 14'd0;
-wire   [31:0] maccore_interface1_dat_r;
-reg    [31:0] maccore_interface1_dat_w = 32'd0;
-reg           maccore_interface1_re = 1'd0;
-reg           maccore_interface1_we = 1'd0;
-reg     [1:0] maccore_liteethmacsramreader_next_state = 2'd0;
-reg     [1:0] maccore_liteethmacsramreader_state = 2'd0;
-reg     [2:0] maccore_liteethmacsramwriter_next_state = 3'd0;
-reg     [2:0] maccore_liteethmacsramwriter_state = 3'd0;
 reg           maccore_liteethphymiirx_converter_demux = 1'd0;
 wire          maccore_liteethphymiirx_converter_load_part;
 reg           maccore_liteethphymiirx_converter_sink_first = 1'd0;
@@ -962,39 +927,25 @@ wire    [3:0] maccore_liteethphymiitx_source_source_payload_data;
 wire          maccore_liteethphymiitx_source_source_ready;
 wire          maccore_liteethphymiitx_source_source_valid;
 wire          maccore_mdc;
-reg           maccore_next_state = 1'd0;
 wire          maccore_oe;
 reg           maccore_r = 1'd0;
 reg           maccore_reset_re = 1'd0;
 reg     [1:0] maccore_reset_storage = 2'd0;
-reg     [1:0] maccore_rxdatapath_bufferizeendpoints_next_state = 2'd0;
-reg     [1:0] maccore_rxdatapath_bufferizeendpoints_state = 2'd0;
-reg           maccore_rxdatapath_liteethmacpreamblechecker_next_state = 1'd0;
-reg           maccore_rxdatapath_liteethmacpreamblechecker_state = 1'd0;
 reg           maccore_scratch_re = 1'd0;
 reg    [31:0] maccore_scratch_storage = 32'd305419896;
 reg           maccore_soc_rst = 1'd0;
-reg           maccore_state = 1'd0;
-reg     [1:0] maccore_txdatapath_bufferizeendpoints_next_state = 2'd0;
-reg     [1:0] maccore_txdatapath_bufferizeendpoints_state = 2'd0;
-reg           maccore_txdatapath_liteethmacgap_next_state = 1'd0;
-reg           maccore_txdatapath_liteethmacgap_state = 1'd0;
-reg           maccore_txdatapath_liteethmacpaddinginserter_next_state = 1'd0;
-reg           maccore_txdatapath_liteethmacpaddinginserter_state = 1'd0;
-reg     [1:0] maccore_txdatapath_liteethmacpreambleinserter_next_state = 2'd0;
-reg     [1:0] maccore_txdatapath_liteethmacpreambleinserter_state = 2'd0;
-reg           maccore_txdatapath_liteethmactxlastbe_next_state = 1'd0;
-reg           maccore_txdatapath_liteethmactxlastbe_state = 1'd0;
 wire          maccore_w;
+reg     [2:0] master = 3'd0;
+reg           next_state = 1'd0;
 wire          por_clk;
-wire   [31:0] r_addr;
-reg    [31:0] r_payload_data = 32'd0;
-reg     [1:0] r_payload_resp = 2'd0;
-wire          r_ready;
-reg           r_valid = 1'd0;
 wire          re;
+wire          request;
 wire          rst_meta0;
 wire          rst_meta1;
+reg     [1:0] rxdatapath_bufferizeendpoints_next_state = 2'd0;
+reg     [1:0] rxdatapath_bufferizeendpoints_state = 2'd0;
+reg           rxdatapath_liteethmacpreamblechecker_next_state = 1'd0;
+reg           rxdatapath_liteethmacpreamblechecker_state = 1'd0;
 reg    [29:0] self0 = 30'd0;
 reg    [31:0] self1 = 32'd0;
 reg     [3:0] self2 = 4'd0;
@@ -1003,35 +954,44 @@ reg           self4 = 1'd0;
 reg           self5 = 1'd0;
 reg     [2:0] self6 = 3'd0;
 reg     [1:0] self7 = 2'd0;
-reg    [19:0] socbushandler_count = 20'd1000000;
-wire          socbushandler_done;
-reg           socbushandler_error = 1'd0;
-wire          socbushandler_grant;
-reg     [2:0] socbushandler_next_state = 3'd0;
-wire          socbushandler_request;
-reg           socbushandler_shared_ack = 1'd0;
-wire   [29:0] socbushandler_shared_adr;
-wire    [1:0] socbushandler_shared_bte;
-wire    [2:0] socbushandler_shared_cti;
-wire          socbushandler_shared_cyc;
-reg    [31:0] socbushandler_shared_dat_r = 32'd0;
-wire   [31:0] socbushandler_shared_dat_w;
-wire          socbushandler_shared_err;
-wire    [3:0] socbushandler_shared_sel;
-wire          socbushandler_shared_stb;
-wire          socbushandler_shared_we;
-reg     [2:0] socbushandler_slave_sel = 3'd0;
-reg     [2:0] socbushandler_slave_sel_r = 3'd0;
-reg     [2:0] socbushandler_state = 3'd0;
-wire          socbushandler_wait;
+reg           shared_ack = 1'd0;
+wire   [29:0] shared_adr;
+wire    [1:0] shared_bte;
+wire    [2:0] shared_cti;
+wire          shared_cyc;
+reg    [31:0] shared_dat_r = 32'd0;
+wire   [31:0] shared_dat_w;
+wire          shared_err;
+wire    [3:0] shared_sel;
+wire          shared_stb;
+wire          shared_we;
+reg     [2:0] slaves = 3'd0;
+reg           state = 1'd0;
 (* dont_touch = "true" *)
 wire          sys_clk;
 wire          sys_rst;
-wire   [31:0] w_addr;
-wire   [31:0] w_payload_data;
-wire    [3:0] w_payload_strb;
-reg           w_ready = 1'd0;
-wire          w_valid;
+reg     [1:0] txdatapath_bufferizeendpoints_next_state = 2'd0;
+reg     [1:0] txdatapath_bufferizeendpoints_state = 2'd0;
+reg           txdatapath_liteethmacgap_next_state = 1'd0;
+reg           txdatapath_liteethmacgap_state = 1'd0;
+reg           txdatapath_liteethmacpaddinginserter_next_state = 1'd0;
+reg           txdatapath_liteethmacpaddinginserter_state = 1'd0;
+reg     [1:0] txdatapath_liteethmacpreambleinserter_next_state = 2'd0;
+reg     [1:0] txdatapath_liteethmacpreambleinserter_state = 2'd0;
+reg           txdatapath_liteethmactxlastbe_next_state = 1'd0;
+reg           txdatapath_liteethmactxlastbe_state = 1'd0;
+wire          wait_1;
+wire          wb_bus_ack;
+wire   [29:0] wb_bus_adr;
+wire    [1:0] wb_bus_bte;
+wire    [2:0] wb_bus_cti;
+wire          wb_bus_cyc;
+wire   [31:0] wb_bus_dat_r;
+wire   [31:0] wb_bus_dat_w;
+wire          wb_bus_err;
+wire    [3:0] wb_bus_sel;
+wire          wb_bus_stb;
+wire          wb_bus_we;
 wire          we;
 wire          wishbone_interface_bus_rx_ack;
 wire   [29:0] wishbone_interface_bus_rx_adr;
@@ -1055,10 +1015,10 @@ wire          wishbone_interface_bus_tx_err;
 wire    [3:0] wishbone_interface_bus_tx_sel;
 wire          wishbone_interface_bus_tx_stb;
 wire          wishbone_interface_bus_tx_we;
-reg     [1:0] wishbone_interface_decoder0_slave_sel = 2'd0;
-reg     [1:0] wishbone_interface_decoder0_slave_sel_r = 2'd0;
-reg     [1:0] wishbone_interface_decoder1_slave_sel = 2'd0;
-reg     [1:0] wishbone_interface_decoder1_slave_sel_r = 2'd0;
+reg     [1:0] wishbone_interface_decoder0_master = 2'd0;
+reg     [1:0] wishbone_interface_decoder0_slaves = 2'd0;
+reg     [1:0] wishbone_interface_decoder1_master = 2'd0;
+reg     [1:0] wishbone_interface_decoder1_slaves = 2'd0;
 wire          wishbone_interface_ev_irq;
 reg           wishbone_interface_interface0_ack = 1'd0;
 wire   [29:0] wishbone_interface_interface0_adr;
@@ -1152,8 +1112,8 @@ wire          wishbone_interface_reader_eventsourcepulse_status;
 reg           wishbone_interface_reader_eventsourcepulse_trigger = 1'd0;
 wire          wishbone_interface_reader_irq;
 reg    [10:0] wishbone_interface_reader_length = 11'd0;
-reg    [10:0] wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value = 11'd0;
-reg           wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value_ce = 1'd0;
+reg    [10:0] wishbone_interface_reader_length_liteethmacsramreader_next_value = 11'd0;
+reg           wishbone_interface_reader_length_liteethmacsramreader_next_value_ce = 1'd0;
 reg           wishbone_interface_reader_length_re = 1'd0;
 reg    [10:0] wishbone_interface_reader_length_storage = 11'd0;
 reg           wishbone_interface_reader_level_re = 1'd0;
@@ -1231,14 +1191,14 @@ reg           wishbone_interface_writer_enable_re = 1'd0;
 reg           wishbone_interface_writer_enable_storage = 1'd0;
 reg           wishbone_interface_writer_errors_re = 1'd0;
 reg    [31:0] wishbone_interface_writer_errors_status = 32'd0;
-reg    [31:0] wishbone_interface_writer_errors_status_maccore_liteethmacsramwriter_f_next_value = 32'd0;
-reg           wishbone_interface_writer_errors_status_maccore_liteethmacsramwriter_f_next_value_ce = 1'd0;
+reg    [31:0] wishbone_interface_writer_errors_status_liteethmacsramwriter_f_next_value = 32'd0;
+reg           wishbone_interface_writer_errors_status_liteethmacsramwriter_f_next_value_ce = 1'd0;
 wire          wishbone_interface_writer_errors_we;
 wire          wishbone_interface_writer_irq;
 reg    [10:0] wishbone_interface_writer_length = 11'd0;
 reg     [3:0] wishbone_interface_writer_length_inc = 4'd0;
-reg    [10:0] wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value = 11'd0;
-reg           wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value_ce = 1'd0;
+reg    [10:0] wishbone_interface_writer_length_liteethmacsramwriter_t_next_value = 11'd0;
+reg           wishbone_interface_writer_length_liteethmacsramwriter_t_next_value_ce = 1'd0;
 reg           wishbone_interface_writer_length_re = 1'd0;
 wire   [10:0] wishbone_interface_writer_length_status;
 wire          wishbone_interface_writer_length_we;
@@ -1262,8 +1222,8 @@ wire    [3:0] wishbone_interface_writer_sink_sink_payload_last_be;
 reg           wishbone_interface_writer_sink_sink_ready = 1'd1;
 wire          wishbone_interface_writer_sink_sink_valid;
 reg           wishbone_interface_writer_slot = 1'd0;
-reg           wishbone_interface_writer_slot_maccore_liteethmacsramwriter_next_value = 1'd0;
-reg           wishbone_interface_writer_slot_maccore_liteethmacsramwriter_next_value_ce = 1'd0;
+reg           wishbone_interface_writer_slot_liteethmacsramwriter_next_value = 1'd0;
+reg           wishbone_interface_writer_slot_liteethmacsramwriter_next_value_ce = 1'd0;
 reg           wishbone_interface_writer_slot_re = 1'd0;
 wire          wishbone_interface_writer_slot_status;
 wire          wishbone_interface_writer_slot_we;
@@ -1310,208 +1270,109 @@ wire          wishbone_interface_writer_status_we;
 wire   [31:0] wishbone_interface_writer_wr_data;
 reg           wishbone_interface_writer_write = 1'd0;
 (* async_reg = "true", mr_ff = "true", dont_touch = "true" *)
-reg           xilinxmultiregimpl00 = 1'd0;
+reg           xilinxmultiregimpl0_regs0 = 1'd0;
 (* async_reg = "true", dont_touch = "true" *)
-reg           xilinxmultiregimpl01 = 1'd0;
+reg           xilinxmultiregimpl0_regs1 = 1'd0;
 (* async_reg = "true", mr_ff = "true", dont_touch = "true" *)
-reg     [5:0] xilinxmultiregimpl10 = 6'd0;
+reg     [5:0] xilinxmultiregimpl1_regs0 = 6'd0;
 (* async_reg = "true", dont_touch = "true" *)
-reg     [5:0] xilinxmultiregimpl11 = 6'd0;
+reg     [5:0] xilinxmultiregimpl1_regs1 = 6'd0;
 (* async_reg = "true", mr_ff = "true", dont_touch = "true" *)
-reg     [5:0] xilinxmultiregimpl20 = 6'd0;
+reg     [5:0] xilinxmultiregimpl2_regs0 = 6'd0;
 (* async_reg = "true", dont_touch = "true" *)
-reg     [5:0] xilinxmultiregimpl21 = 6'd0;
+reg     [5:0] xilinxmultiregimpl2_regs1 = 6'd0;
 (* async_reg = "true", mr_ff = "true", dont_touch = "true" *)
-reg           xilinxmultiregimpl30 = 1'd0;
+reg           xilinxmultiregimpl3_regs0 = 1'd0;
 (* async_reg = "true", dont_touch = "true" *)
-reg           xilinxmultiregimpl31 = 1'd0;
+reg           xilinxmultiregimpl3_regs1 = 1'd0;
 (* async_reg = "true", mr_ff = "true", dont_touch = "true" *)
-reg           xilinxmultiregimpl40 = 1'd0;
+reg           xilinxmultiregimpl4_regs0 = 1'd0;
 (* async_reg = "true", dont_touch = "true" *)
-reg           xilinxmultiregimpl41 = 1'd0;
+reg           xilinxmultiregimpl4_regs1 = 1'd0;
 (* async_reg = "true", mr_ff = "true", dont_touch = "true" *)
-reg     [5:0] xilinxmultiregimpl50 = 6'd0;
+reg     [5:0] xilinxmultiregimpl5_regs0 = 6'd0;
 (* async_reg = "true", dont_touch = "true" *)
-reg     [5:0] xilinxmultiregimpl51 = 6'd0;
+reg     [5:0] xilinxmultiregimpl5_regs1 = 6'd0;
 (* async_reg = "true", mr_ff = "true", dont_touch = "true" *)
-reg     [5:0] xilinxmultiregimpl60 = 6'd0;
+reg     [5:0] xilinxmultiregimpl6_regs0 = 6'd0;
 (* async_reg = "true", dont_touch = "true" *)
-reg     [5:0] xilinxmultiregimpl61 = 6'd0;
+reg     [5:0] xilinxmultiregimpl6_regs1 = 6'd0;
 
 //------------------------------------------------------------------------------
 // Combinatorial Logic
 //------------------------------------------------------------------------------
 
-assign aw_valid = bus_awvalid;
-assign aw_payload_addr = bus_awaddr;
-assign aw_payload_prot = bus_awprot;
-assign bus_awready = aw_ready;
-assign w_valid = bus_wvalid;
-assign w_payload_data = bus_wdata;
-assign w_payload_strb = bus_wstrb;
-assign bus_wready = w_ready;
-assign bus_bvalid = b_valid;
-assign bus_bresp = b_payload_resp;
-assign b_ready = bus_bready;
-assign ar_valid = bus_arvalid;
-assign ar_payload_addr = bus_araddr;
-assign ar_payload_prot = bus_arprot;
-assign bus_arready = ar_ready;
-assign bus_rvalid = r_valid;
-assign bus_rresp = r_payload_resp;
-assign bus_rdata = r_payload_data;
-assign r_ready = bus_rready;
+assign wb_bus_adr = wishbone_adr;
+assign wb_bus_dat_w = wishbone_dat_w;
+assign wishbone_dat_r = wb_bus_dat_r;
+assign wb_bus_sel = wishbone_sel;
+assign wb_bus_cyc = wishbone_cyc;
+assign wb_bus_stb = wishbone_stb;
+assign wishbone_ack = wb_bus_ack;
+assign wb_bus_we = wishbone_we;
+assign wb_bus_cti = wishbone_cti;
+assign wb_bus_bte = wishbone_bte;
+assign wishbone_err = wb_bus_err;
 assign interrupt = wishbone_interface_ev_irq;
-assign maccore_bus_error = socbushandler_error;
-assign r_addr = (ar_payload_addr - 1'd0);
-assign w_addr = (aw_payload_addr - 1'd0);
+assign maccore_bus_error = error;
+assign shared_adr = self0;
+assign shared_dat_w = self1;
+assign shared_sel = self2;
+assign shared_cyc = self3;
+assign shared_stb = self4;
+assign shared_we = self5;
+assign shared_cti = self6;
+assign shared_bte = self7;
+assign wb_bus_dat_r = shared_dat_r;
+assign wb_bus_ack = (shared_ack & (grant == 1'd0));
+assign wb_bus_err = (shared_err & (grant == 1'd0));
+assign request = {wb_bus_cyc};
+assign grant = 1'd0;
 always @(*) begin
-    adapted_interface_adr <= 30'd0;
-    adapted_interface_cyc <= 1'd0;
-    adapted_interface_dat_w <= 32'd0;
-    adapted_interface_sel <= 4'd0;
-    adapted_interface_stb <= 1'd0;
-    adapted_interface_we <= 1'd0;
-    ar_ready <= 1'd0;
-    aw_ready <= 1'd0;
-    b_payload_resp <= 2'd0;
-    b_valid <= 1'd0;
-    data_socbushandler_next_value1 <= 32'd0;
-    data_socbushandler_next_value_ce1 <= 1'd0;
-    last_ar_aw_n_socbushandler_next_value0 <= 1'd0;
-    last_ar_aw_n_socbushandler_next_value_ce0 <= 1'd0;
-    r_payload_data <= 32'd0;
-    r_payload_resp <= 2'd0;
-    r_valid <= 1'd0;
-    socbushandler_next_state <= 3'd0;
-    w_ready <= 1'd0;
-    socbushandler_next_state <= socbushandler_state;
-    case (socbushandler_state)
-        1'd1: begin
-            adapted_interface_stb <= 1'd1;
-            adapted_interface_cyc <= 1'd1;
-            adapted_interface_adr <= r_addr[31:2];
-            adapted_interface_sel <= 4'd15;
-            if (adapted_interface_ack) begin
-                ar_ready <= 1'd1;
-                data_socbushandler_next_value1 <= adapted_interface_dat_r;
-                data_socbushandler_next_value_ce1 <= 1'd1;
-                socbushandler_next_state <= 2'd2;
-            end
-        end
-        2'd2: begin
-            r_valid <= 1'd1;
-            r_payload_resp <= 1'd0;
-            r_payload_data <= data;
-            if (r_ready) begin
-                socbushandler_next_state <= 1'd0;
-            end
-        end
-        2'd3: begin
-            adapted_interface_stb <= w_valid;
-            adapted_interface_cyc <= w_valid;
-            adapted_interface_we <= 1'd1;
-            adapted_interface_adr <= w_addr[31:2];
-            adapted_interface_sel <= w_payload_strb;
-            adapted_interface_dat_w <= w_payload_data;
-            if (adapted_interface_ack) begin
-                aw_ready <= 1'd1;
-                w_ready <= 1'd1;
-                socbushandler_next_state <= 3'd4;
-            end
-        end
-        3'd4: begin
-            b_valid <= 1'd1;
-            b_payload_resp <= 1'd0;
-            if (b_ready) begin
-                socbushandler_next_state <= 1'd0;
-            end
-        end
-        default: begin
-            if ((ar_valid & aw_valid)) begin
-                if (last_ar_aw_n) begin
-                    last_ar_aw_n_socbushandler_next_value0 <= 1'd0;
-                    last_ar_aw_n_socbushandler_next_value_ce0 <= 1'd1;
-                    socbushandler_next_state <= 2'd3;
-                end else begin
-                    last_ar_aw_n_socbushandler_next_value0 <= 1'd1;
-                    last_ar_aw_n_socbushandler_next_value_ce0 <= 1'd1;
-                    socbushandler_next_state <= 1'd1;
-                end
-            end else begin
-                if (ar_valid) begin
-                    last_ar_aw_n_socbushandler_next_value0 <= 1'd1;
-                    last_ar_aw_n_socbushandler_next_value_ce0 <= 1'd1;
-                    socbushandler_next_state <= 1'd1;
-                end else begin
-                    if (aw_valid) begin
-                        last_ar_aw_n_socbushandler_next_value0 <= 1'd0;
-                        last_ar_aw_n_socbushandler_next_value_ce0 <= 1'd1;
-                        socbushandler_next_state <= 2'd3;
-                    end
-                end
-            end
-        end
-    endcase
+    master <= 3'd0;
+    master[0] <= (shared_adr[29:10] == 19'd327680);
+    master[1] <= (shared_adr[29:10] == 19'd327681);
+    master[2] <= (shared_adr[29:14] == 1'd0);
 end
-assign socbushandler_shared_adr = self0;
-assign socbushandler_shared_dat_w = self1;
-assign socbushandler_shared_sel = self2;
-assign socbushandler_shared_cyc = self3;
-assign socbushandler_shared_stb = self4;
-assign socbushandler_shared_we = self5;
-assign socbushandler_shared_cti = self6;
-assign socbushandler_shared_bte = self7;
-assign adapted_interface_dat_r = socbushandler_shared_dat_r;
-assign adapted_interface_ack = (socbushandler_shared_ack & (socbushandler_grant == 1'd0));
-assign adapted_interface_err = (socbushandler_shared_err & (socbushandler_grant == 1'd0));
-assign socbushandler_request = {adapted_interface_cyc};
-assign socbushandler_grant = 1'd0;
+assign wishbone_interface_bus_rx_adr = shared_adr;
+assign wishbone_interface_bus_rx_dat_w = shared_dat_w;
+assign wishbone_interface_bus_rx_sel = shared_sel;
+assign wishbone_interface_bus_rx_stb = shared_stb;
+assign wishbone_interface_bus_rx_we = shared_we;
+assign wishbone_interface_bus_rx_cti = shared_cti;
+assign wishbone_interface_bus_rx_bte = shared_bte;
+assign wishbone_interface_bus_tx_adr = shared_adr;
+assign wishbone_interface_bus_tx_dat_w = shared_dat_w;
+assign wishbone_interface_bus_tx_sel = shared_sel;
+assign wishbone_interface_bus_tx_stb = shared_stb;
+assign wishbone_interface_bus_tx_we = shared_we;
+assign wishbone_interface_bus_tx_cti = shared_cti;
+assign wishbone_interface_bus_tx_bte = shared_bte;
+assign interface0_adr = shared_adr;
+assign interface0_dat_w = shared_dat_w;
+assign interface0_sel = shared_sel;
+assign interface0_stb = shared_stb;
+assign interface0_we = shared_we;
+assign interface0_cti = shared_cti;
+assign interface0_bte = shared_bte;
+assign wishbone_interface_bus_rx_cyc = (shared_cyc & master[0]);
+assign wishbone_interface_bus_tx_cyc = (shared_cyc & master[1]);
+assign interface0_cyc = (shared_cyc & master[2]);
+assign shared_err = ((wishbone_interface_bus_rx_err | wishbone_interface_bus_tx_err) | interface0_err);
+assign wait_1 = ((shared_stb & shared_cyc) & (~shared_ack));
 always @(*) begin
-    socbushandler_slave_sel <= 3'd0;
-    socbushandler_slave_sel[0] <= (socbushandler_shared_adr[29:10] == 19'd327680);
-    socbushandler_slave_sel[1] <= (socbushandler_shared_adr[29:10] == 19'd327681);
-    socbushandler_slave_sel[2] <= (socbushandler_shared_adr[29:14] == 1'd0);
-end
-assign wishbone_interface_bus_rx_adr = socbushandler_shared_adr;
-assign wishbone_interface_bus_rx_dat_w = socbushandler_shared_dat_w;
-assign wishbone_interface_bus_rx_sel = socbushandler_shared_sel;
-assign wishbone_interface_bus_rx_stb = socbushandler_shared_stb;
-assign wishbone_interface_bus_rx_we = socbushandler_shared_we;
-assign wishbone_interface_bus_rx_cti = socbushandler_shared_cti;
-assign wishbone_interface_bus_rx_bte = socbushandler_shared_bte;
-assign wishbone_interface_bus_tx_adr = socbushandler_shared_adr;
-assign wishbone_interface_bus_tx_dat_w = socbushandler_shared_dat_w;
-assign wishbone_interface_bus_tx_sel = socbushandler_shared_sel;
-assign wishbone_interface_bus_tx_stb = socbushandler_shared_stb;
-assign wishbone_interface_bus_tx_we = socbushandler_shared_we;
-assign wishbone_interface_bus_tx_cti = socbushandler_shared_cti;
-assign wishbone_interface_bus_tx_bte = socbushandler_shared_bte;
-assign maccore_interface0_adr = socbushandler_shared_adr;
-assign maccore_interface0_dat_w = socbushandler_shared_dat_w;
-assign maccore_interface0_sel = socbushandler_shared_sel;
-assign maccore_interface0_stb = socbushandler_shared_stb;
-assign maccore_interface0_we = socbushandler_shared_we;
-assign maccore_interface0_cti = socbushandler_shared_cti;
-assign maccore_interface0_bte = socbushandler_shared_bte;
-assign wishbone_interface_bus_rx_cyc = (socbushandler_shared_cyc & socbushandler_slave_sel[0]);
-assign wishbone_interface_bus_tx_cyc = (socbushandler_shared_cyc & socbushandler_slave_sel[1]);
-assign maccore_interface0_cyc = (socbushandler_shared_cyc & socbushandler_slave_sel[2]);
-assign socbushandler_shared_err = ((wishbone_interface_bus_rx_err | wishbone_interface_bus_tx_err) | maccore_interface0_err);
-assign socbushandler_wait = ((socbushandler_shared_stb & socbushandler_shared_cyc) & (~socbushandler_shared_ack));
-always @(*) begin
-    socbushandler_error <= 1'd0;
-    socbushandler_shared_ack <= 1'd0;
-    socbushandler_shared_dat_r <= 32'd0;
-    socbushandler_shared_ack <= ((wishbone_interface_bus_rx_ack | wishbone_interface_bus_tx_ack) | maccore_interface0_ack);
-    socbushandler_shared_dat_r <= ((({32{socbushandler_slave_sel_r[0]}} & wishbone_interface_bus_rx_dat_r) | ({32{socbushandler_slave_sel_r[1]}} & wishbone_interface_bus_tx_dat_r)) | ({32{socbushandler_slave_sel_r[2]}} & maccore_interface0_dat_r));
-    if (socbushandler_done) begin
-        socbushandler_shared_dat_r <= 32'd4294967295;
-        socbushandler_shared_ack <= 1'd1;
-        socbushandler_error <= 1'd1;
+    error <= 1'd0;
+    shared_ack <= 1'd0;
+    shared_dat_r <= 32'd0;
+    shared_ack <= ((wishbone_interface_bus_rx_ack | wishbone_interface_bus_tx_ack) | interface0_ack);
+    shared_dat_r <= ((({32{slaves[0]}} & wishbone_interface_bus_rx_dat_r) | ({32{slaves[1]}} & wishbone_interface_bus_tx_dat_r)) | ({32{slaves[2]}} & interface0_dat_r));
+    if (done) begin
+        shared_dat_r <= 32'd4294967295;
+        shared_ack <= 1'd1;
+        error <= 1'd1;
     end
 end
-assign socbushandler_done = (socbushandler_count == 1'd0);
+assign done = (count == 1'd0);
 assign maccore_bus_errors_status = maccore_bus_errors;
 assign sys_clk = sys_clock;
 assign por_clk = sys_clock;
@@ -1713,13 +1574,13 @@ always @(*) begin
     core_tx_last_be_last_handler_source_payload_error <= 1'd0;
     core_tx_last_be_last_handler_source_payload_last_be <= 1'd0;
     core_tx_last_be_last_handler_source_valid <= 1'd0;
-    maccore_txdatapath_liteethmactxlastbe_next_state <= 1'd0;
-    maccore_txdatapath_liteethmactxlastbe_next_state <= maccore_txdatapath_liteethmactxlastbe_state;
-    case (maccore_txdatapath_liteethmactxlastbe_state)
+    txdatapath_liteethmactxlastbe_next_state <= 1'd0;
+    txdatapath_liteethmactxlastbe_next_state <= txdatapath_liteethmactxlastbe_state;
+    case (txdatapath_liteethmactxlastbe_state)
         1'd1: begin
             core_tx_last_be_last_handler_sink_ready <= 1'd1;
             if ((core_tx_last_be_last_handler_sink_valid & core_tx_last_be_last_handler_sink_last)) begin
-                maccore_txdatapath_liteethmactxlastbe_next_state <= 1'd0;
+                txdatapath_liteethmactxlastbe_next_state <= 1'd0;
             end
         end
         default: begin
@@ -1733,7 +1594,7 @@ always @(*) begin
             core_tx_last_be_last_handler_source_last <= (core_tx_last_be_last_handler_sink_payload_last_be != 1'd0);
             if ((core_tx_last_be_last_handler_sink_valid & core_tx_last_be_last_handler_sink_ready)) begin
                 if ((core_tx_last_be_last_handler_source_last & (~core_tx_last_be_last_handler_sink_last))) begin
-                    maccore_txdatapath_liteethmactxlastbe_next_state <= 1'd1;
+                    txdatapath_liteethmactxlastbe_next_state <= 1'd1;
                 end
             end
         end
@@ -1741,8 +1602,8 @@ always @(*) begin
 end
 assign core_tx_padding_counter_done = (core_tx_padding_counter >= 6'd59);
 always @(*) begin
-    core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value <= 16'd0;
-    core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value_ce <= 1'd0;
+    core_tx_padding_counter_clockdomainsrenamer0_next_value <= 16'd0;
+    core_tx_padding_counter_clockdomainsrenamer0_next_value_ce <= 1'd0;
     core_tx_padding_sink_ready <= 1'd0;
     core_tx_padding_source_first <= 1'd0;
     core_tx_padding_source_last <= 1'd0;
@@ -1750,9 +1611,9 @@ always @(*) begin
     core_tx_padding_source_payload_error <= 1'd0;
     core_tx_padding_source_payload_last_be <= 1'd0;
     core_tx_padding_source_valid <= 1'd0;
-    maccore_txdatapath_liteethmacpaddinginserter_next_state <= 1'd0;
-    maccore_txdatapath_liteethmacpaddinginserter_next_state <= maccore_txdatapath_liteethmacpaddinginserter_state;
-    case (maccore_txdatapath_liteethmacpaddinginserter_state)
+    txdatapath_liteethmacpaddinginserter_next_state <= 1'd0;
+    txdatapath_liteethmacpaddinginserter_next_state <= txdatapath_liteethmacpaddinginserter_state;
+    case (txdatapath_liteethmacpaddinginserter_state)
         1'd1: begin
             core_tx_padding_source_valid <= 1'd1;
             if (core_tx_padding_counter_done) begin
@@ -1761,12 +1622,12 @@ always @(*) begin
             end
             core_tx_padding_source_payload_data <= 1'd0;
             if ((core_tx_padding_source_valid & core_tx_padding_source_ready)) begin
-                core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value <= (core_tx_padding_counter + 1'd1);
-                core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value_ce <= 1'd1;
+                core_tx_padding_counter_clockdomainsrenamer0_next_value <= (core_tx_padding_counter + 1'd1);
+                core_tx_padding_counter_clockdomainsrenamer0_next_value_ce <= 1'd1;
                 if (core_tx_padding_counter_done) begin
-                    core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value <= 1'd0;
-                    core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value_ce <= 1'd1;
-                    maccore_txdatapath_liteethmacpaddinginserter_next_state <= 1'd0;
+                    core_tx_padding_counter_clockdomainsrenamer0_next_value <= 1'd0;
+                    core_tx_padding_counter_clockdomainsrenamer0_next_value_ce <= 1'd1;
+                    txdatapath_liteethmacpaddinginserter_next_state <= 1'd0;
                 end
             end
         end
@@ -1779,19 +1640,19 @@ always @(*) begin
             core_tx_padding_source_payload_last_be <= core_tx_padding_sink_payload_last_be;
             core_tx_padding_source_payload_error <= core_tx_padding_sink_payload_error;
             if ((core_tx_padding_source_valid & core_tx_padding_source_ready)) begin
-                core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value <= (core_tx_padding_counter + 1'd1);
-                core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value_ce <= 1'd1;
+                core_tx_padding_counter_clockdomainsrenamer0_next_value <= (core_tx_padding_counter + 1'd1);
+                core_tx_padding_counter_clockdomainsrenamer0_next_value_ce <= 1'd1;
                 if (core_tx_padding_sink_last) begin
                     if ((~core_tx_padding_counter_done)) begin
                         core_tx_padding_source_last <= 1'd0;
                         core_tx_padding_source_payload_last_be <= 1'd0;
-                        maccore_txdatapath_liteethmacpaddinginserter_next_state <= 1'd1;
+                        txdatapath_liteethmacpaddinginserter_next_state <= 1'd1;
                     end else begin
                         if (((core_tx_padding_counter == 6'd59) & (core_tx_padding_sink_payload_last_be < 1'd1))) begin
                             core_tx_padding_source_payload_last_be <= 1'd1;
                         end else begin
-                            core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value <= 1'd0;
-                            core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value_ce <= 1'd1;
+                            core_tx_padding_counter_clockdomainsrenamer0_next_value <= 1'd0;
+                            core_tx_padding_counter_clockdomainsrenamer0_next_value_ce <= 1'd1;
                         end
                     end
                 end
@@ -1856,12 +1717,12 @@ always @(*) begin
 end
 always @(*) begin
     core_tx_crc_ce <= 1'd0;
-    core_tx_crc_crc_packet_maccore_clockdomainsrenamer1_next_value0 <= 32'd0;
-    core_tx_crc_crc_packet_maccore_clockdomainsrenamer1_next_value_ce0 <= 1'd0;
-    core_tx_crc_is_ongoing0 <= 1'd0;
-    core_tx_crc_is_ongoing1 <= 1'd0;
-    core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value1 <= 1'd0;
-    core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value_ce1 <= 1'd0;
+    core_tx_crc_description_clockdomainsrenamer1_next_value0 <= 32'd0;
+    core_tx_crc_description_clockdomainsrenamer1_next_value_ce0 <= 1'd0;
+    core_tx_crc_fsm_clockdomainsrenamer1_next_value1 <= 1'd0;
+    core_tx_crc_fsm_clockdomainsrenamer1_next_value_ce1 <= 1'd0;
+    core_tx_crc_fsm_is_ongoing0 <= 1'd0;
+    core_tx_crc_fsm_is_ongoing1 <= 1'd0;
     core_tx_crc_reset <= 1'd0;
     core_tx_crc_sink_ready <= 1'd0;
     core_tx_crc_source_first <= 1'd0;
@@ -1870,9 +1731,9 @@ always @(*) begin
     core_tx_crc_source_payload_error <= 1'd0;
     core_tx_crc_source_payload_last_be <= 1'd0;
     core_tx_crc_source_valid <= 1'd0;
-    maccore_txdatapath_bufferizeendpoints_next_state <= 2'd0;
-    maccore_txdatapath_bufferizeendpoints_next_state <= maccore_txdatapath_bufferizeendpoints_state;
-    case (maccore_txdatapath_bufferizeendpoints_state)
+    txdatapath_bufferizeendpoints_next_state <= 2'd0;
+    txdatapath_bufferizeendpoints_next_state <= txdatapath_bufferizeendpoints_state;
+    case (txdatapath_bufferizeendpoints_state)
         1'd1: begin
             core_tx_crc_ce <= (core_tx_crc_sink_valid & core_tx_crc_source_ready);
             core_tx_crc_source_valid <= core_tx_crc_sink_valid;
@@ -1895,18 +1756,18 @@ always @(*) begin
             end
             if (((core_tx_crc_sink_valid & core_tx_crc_sink_last) & core_tx_crc_source_ready)) begin
                 if ((1'd0 & (core_tx_crc_sink_payload_last_be <= 4'd15))) begin
-                    maccore_txdatapath_bufferizeendpoints_next_state <= 1'd0;
+                    txdatapath_bufferizeendpoints_next_state <= 1'd0;
                 end else begin
-                    core_tx_crc_crc_packet_maccore_clockdomainsrenamer1_next_value0 <= core_tx_crc_value;
-                    core_tx_crc_crc_packet_maccore_clockdomainsrenamer1_next_value_ce0 <= 1'd1;
+                    core_tx_crc_description_clockdomainsrenamer1_next_value0 <= core_tx_crc_value;
+                    core_tx_crc_description_clockdomainsrenamer1_next_value_ce0 <= 1'd1;
                     if (1'd0) begin
-                        core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value1 <= (core_tx_crc_sink_payload_last_be >>> 3'd4);
-                        core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value_ce1 <= 1'd1;
+                        core_tx_crc_fsm_clockdomainsrenamer1_next_value1 <= (core_tx_crc_sink_payload_last_be >>> 3'd4);
+                        core_tx_crc_fsm_clockdomainsrenamer1_next_value_ce1 <= 1'd1;
                     end else begin
-                        core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value1 <= core_tx_crc_sink_payload_last_be;
-                        core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value_ce1 <= 1'd1;
+                        core_tx_crc_fsm_clockdomainsrenamer1_next_value1 <= core_tx_crc_sink_payload_last_be;
+                        core_tx_crc_fsm_clockdomainsrenamer1_next_value_ce1 <= 1'd1;
                     end
-                    maccore_txdatapath_bufferizeendpoints_next_state <= 2'd2;
+                    txdatapath_bufferizeendpoints_next_state <= 2'd2;
                 end
             end
         end
@@ -1914,34 +1775,34 @@ always @(*) begin
             core_tx_crc_source_valid <= 1'd1;
             case (core_tx_crc_cnt)
                 1'd0: begin
-                    core_tx_crc_source_payload_data <= core_tx_crc_crc_packet[31:24];
+                    core_tx_crc_source_payload_data <= core_tx_crc_description[31:24];
                 end
                 1'd1: begin
-                    core_tx_crc_source_payload_data <= core_tx_crc_crc_packet[23:16];
+                    core_tx_crc_source_payload_data <= core_tx_crc_description[23:16];
                 end
                 2'd2: begin
-                    core_tx_crc_source_payload_data <= core_tx_crc_crc_packet[15:8];
+                    core_tx_crc_source_payload_data <= core_tx_crc_description[15:8];
                 end
                 default: begin
-                    core_tx_crc_source_payload_data <= core_tx_crc_crc_packet[7:0];
+                    core_tx_crc_source_payload_data <= core_tx_crc_description[7:0];
                 end
             endcase
             if (core_tx_crc_cnt_done) begin
                 core_tx_crc_source_last <= 1'd1;
                 if (core_tx_crc_source_ready) begin
-                    maccore_txdatapath_bufferizeendpoints_next_state <= 1'd0;
+                    txdatapath_bufferizeendpoints_next_state <= 1'd0;
                 end
             end
-            core_tx_crc_is_ongoing1 <= 1'd1;
+            core_tx_crc_fsm_is_ongoing1 <= 1'd1;
         end
         default: begin
             core_tx_crc_reset <= 1'd1;
             core_tx_crc_sink_ready <= 1'd1;
             if (core_tx_crc_sink_valid) begin
                 core_tx_crc_sink_ready <= 1'd0;
-                maccore_txdatapath_bufferizeendpoints_next_state <= 1'd1;
+                txdatapath_bufferizeendpoints_next_state <= 1'd1;
             end
-            core_tx_crc_is_ongoing0 <= 1'd1;
+            core_tx_crc_fsm_is_ongoing0 <= 1'd1;
         end
     endcase
 end
@@ -1962,18 +1823,18 @@ assign core_tx_crc_source_source_payload_last_be = core_tx_crc_pipe_valid_source
 assign core_tx_crc_source_source_payload_error = core_tx_crc_pipe_valid_source_payload_error;
 assign core_tx_preamble_source_payload_last_be = core_tx_preamble_sink_payload_last_be;
 always @(*) begin
-    core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value <= 3'd0;
-    core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value_ce <= 1'd0;
+    core_tx_preamble_count_clockdomainsrenamer2_next_value <= 3'd0;
+    core_tx_preamble_count_clockdomainsrenamer2_next_value_ce <= 1'd0;
     core_tx_preamble_sink_ready <= 1'd0;
     core_tx_preamble_source_first <= 1'd0;
     core_tx_preamble_source_last <= 1'd0;
     core_tx_preamble_source_payload_data <= 8'd0;
     core_tx_preamble_source_payload_error <= 1'd0;
     core_tx_preamble_source_valid <= 1'd0;
-    maccore_txdatapath_liteethmacpreambleinserter_next_state <= 2'd0;
+    txdatapath_liteethmacpreambleinserter_next_state <= 2'd0;
     core_tx_preamble_source_payload_data <= core_tx_preamble_sink_payload_data;
-    maccore_txdatapath_liteethmacpreambleinserter_next_state <= maccore_txdatapath_liteethmacpreambleinserter_state;
-    case (maccore_txdatapath_liteethmacpreambleinserter_state)
+    txdatapath_liteethmacpreambleinserter_next_state <= txdatapath_liteethmacpreambleinserter_state;
+    case (txdatapath_liteethmacpreambleinserter_state)
         1'd1: begin
             core_tx_preamble_source_valid <= 1'd1;
             case (core_tx_preamble_count)
@@ -2004,10 +1865,10 @@ always @(*) begin
             endcase
             if (core_tx_preamble_source_ready) begin
                 if ((core_tx_preamble_count == 3'd7)) begin
-                    maccore_txdatapath_liteethmacpreambleinserter_next_state <= 2'd2;
+                    txdatapath_liteethmacpreambleinserter_next_state <= 2'd2;
                 end else begin
-                    core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value <= (core_tx_preamble_count + 1'd1);
-                    core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value_ce <= 1'd1;
+                    core_tx_preamble_count_clockdomainsrenamer2_next_value <= (core_tx_preamble_count + 1'd1);
+                    core_tx_preamble_count_clockdomainsrenamer2_next_value_ce <= 1'd1;
                 end
             end
         end
@@ -2018,23 +1879,23 @@ always @(*) begin
             core_tx_preamble_source_last <= core_tx_preamble_sink_last;
             core_tx_preamble_source_payload_error <= core_tx_preamble_sink_payload_error;
             if (((core_tx_preamble_sink_valid & core_tx_preamble_sink_last) & core_tx_preamble_source_ready)) begin
-                maccore_txdatapath_liteethmacpreambleinserter_next_state <= 1'd0;
+                txdatapath_liteethmacpreambleinserter_next_state <= 1'd0;
             end
         end
         default: begin
             core_tx_preamble_sink_ready <= 1'd1;
-            core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value <= 1'd0;
-            core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value_ce <= 1'd1;
+            core_tx_preamble_count_clockdomainsrenamer2_next_value <= 1'd0;
+            core_tx_preamble_count_clockdomainsrenamer2_next_value_ce <= 1'd1;
             if (core_tx_preamble_sink_valid) begin
                 core_tx_preamble_sink_ready <= 1'd0;
-                maccore_txdatapath_liteethmacpreambleinserter_next_state <= 1'd1;
+                txdatapath_liteethmacpreambleinserter_next_state <= 1'd1;
             end
         end
     endcase
 end
 always @(*) begin
-    core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value <= 4'd0;
-    core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value_ce <= 1'd0;
+    core_tx_gap_counter_clockdomainsrenamer3_next_value <= 4'd0;
+    core_tx_gap_counter_clockdomainsrenamer3_next_value_ce <= 1'd0;
     core_tx_gap_sink_ready <= 1'd0;
     core_tx_gap_source_first <= 1'd0;
     core_tx_gap_source_last <= 1'd0;
@@ -2042,19 +1903,19 @@ always @(*) begin
     core_tx_gap_source_payload_error <= 1'd0;
     core_tx_gap_source_payload_last_be <= 1'd0;
     core_tx_gap_source_valid <= 1'd0;
-    maccore_txdatapath_liteethmacgap_next_state <= 1'd0;
-    maccore_txdatapath_liteethmacgap_next_state <= maccore_txdatapath_liteethmacgap_state;
-    case (maccore_txdatapath_liteethmacgap_state)
+    txdatapath_liteethmacgap_next_state <= 1'd0;
+    txdatapath_liteethmacgap_next_state <= txdatapath_liteethmacgap_state;
+    case (txdatapath_liteethmacgap_state)
         1'd1: begin
-            core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value <= (core_tx_gap_counter + 1'd1);
-            core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value_ce <= 1'd1;
+            core_tx_gap_counter_clockdomainsrenamer3_next_value <= (core_tx_gap_counter + 1'd1);
+            core_tx_gap_counter_clockdomainsrenamer3_next_value_ce <= 1'd1;
             if ((core_tx_gap_counter == 4'd11)) begin
-                maccore_txdatapath_liteethmacgap_next_state <= 1'd0;
+                txdatapath_liteethmacgap_next_state <= 1'd0;
             end
         end
         default: begin
-            core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value <= 1'd0;
-            core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value_ce <= 1'd1;
+            core_tx_gap_counter_clockdomainsrenamer3_next_value <= 1'd0;
+            core_tx_gap_counter_clockdomainsrenamer3_next_value_ce <= 1'd1;
             core_tx_gap_source_valid <= core_tx_gap_sink_valid;
             core_tx_gap_sink_ready <= core_tx_gap_source_ready;
             core_tx_gap_source_first <= core_tx_gap_sink_first;
@@ -2063,7 +1924,7 @@ always @(*) begin
             core_tx_gap_source_payload_last_be <= core_tx_gap_sink_payload_last_be;
             core_tx_gap_source_payload_error <= core_tx_gap_sink_payload_error;
             if (((core_tx_gap_sink_valid & core_tx_gap_sink_last) & core_tx_gap_sink_ready)) begin
-                maccore_txdatapath_liteethmacgap_next_state <= 1'd1;
+                txdatapath_liteethmacgap_next_state <= 1'd1;
             end
         end
     endcase
@@ -2135,9 +1996,9 @@ always @(*) begin
     core_rx_preamble_source_last <= 1'd0;
     core_rx_preamble_source_payload_error <= 1'd0;
     core_rx_preamble_source_valid <= 1'd0;
-    maccore_rxdatapath_liteethmacpreamblechecker_next_state <= 1'd0;
-    maccore_rxdatapath_liteethmacpreamblechecker_next_state <= maccore_rxdatapath_liteethmacpreamblechecker_state;
-    case (maccore_rxdatapath_liteethmacpreamblechecker_state)
+    rxdatapath_liteethmacpreamblechecker_next_state <= 1'd0;
+    rxdatapath_liteethmacpreamblechecker_next_state <= rxdatapath_liteethmacpreamblechecker_state;
+    case (rxdatapath_liteethmacpreamblechecker_state)
         1'd1: begin
             core_rx_preamble_source_valid <= core_rx_preamble_sink_valid;
             core_rx_preamble_sink_ready <= core_rx_preamble_source_ready;
@@ -2145,13 +2006,13 @@ always @(*) begin
             core_rx_preamble_source_last <= core_rx_preamble_sink_last;
             core_rx_preamble_source_payload_error <= core_rx_preamble_sink_payload_error;
             if (((core_rx_preamble_source_valid & core_rx_preamble_source_last) & core_rx_preamble_source_ready)) begin
-                maccore_rxdatapath_liteethmacpreamblechecker_next_state <= 1'd0;
+                rxdatapath_liteethmacpreamblechecker_next_state <= 1'd0;
             end
         end
         default: begin
             core_rx_preamble_sink_ready <= 1'd1;
             if (((core_rx_preamble_sink_valid & (~core_rx_preamble_sink_last)) & (core_rx_preamble_sink_payload_data == core_rx_preamble_preamble[63:56]))) begin
-                maccore_rxdatapath_liteethmacpreamblechecker_next_state <= 1'd1;
+                rxdatapath_liteethmacpreamblechecker_next_state <= 1'd1;
             end
             if ((core_rx_preamble_sink_valid & core_rx_preamble_sink_last)) begin
                 core_rx_preamble_error <= 1'd1;
@@ -2267,26 +2128,26 @@ assign core_liteethmaccrc32checker_syncfifo_syncfifo_writable = (core_liteethmac
 assign core_liteethmaccrc32checker_syncfifo_syncfifo_readable = (core_liteethmaccrc32checker_syncfifo_level != 1'd0);
 always @(*) begin
     core_liteethmaccrc32checker_crc_ce <= 1'd0;
-    core_liteethmaccrc32checker_crc_error1_maccore_next_value1 <= 1'd0;
-    core_liteethmaccrc32checker_crc_error1_maccore_next_value_ce1 <= 1'd0;
+    core_liteethmaccrc32checker_crc_error1_next_value1 <= 1'd0;
+    core_liteethmaccrc32checker_crc_error1_next_value_ce1 <= 1'd0;
     core_liteethmaccrc32checker_crc_reset <= 1'd0;
     core_liteethmaccrc32checker_error <= 1'd0;
     core_liteethmaccrc32checker_fifo_reset <= 1'd0;
-    core_liteethmaccrc32checker_last_be_maccore_next_value0 <= 1'd0;
-    core_liteethmaccrc32checker_last_be_maccore_next_value_ce0 <= 1'd0;
+    core_liteethmaccrc32checker_last_be_next_value0 <= 1'd0;
+    core_liteethmaccrc32checker_last_be_next_value_ce0 <= 1'd0;
     core_liteethmaccrc32checker_source_source_last <= 1'd0;
     core_liteethmaccrc32checker_source_source_payload_error <= 1'd0;
     core_liteethmaccrc32checker_source_source_payload_last_be <= 1'd0;
     core_liteethmaccrc32checker_source_source_valid <= 1'd0;
     core_liteethmaccrc32checker_syncfifo_source_ready <= 1'd0;
-    maccore_rxdatapath_bufferizeendpoints_next_state <= 2'd0;
+    rxdatapath_bufferizeendpoints_next_state <= 2'd0;
     core_liteethmaccrc32checker_source_source_payload_error <= core_liteethmaccrc32checker_syncfifo_source_payload_error;
-    maccore_rxdatapath_bufferizeendpoints_next_state <= maccore_rxdatapath_bufferizeendpoints_state;
-    case (maccore_rxdatapath_bufferizeendpoints_state)
+    rxdatapath_bufferizeendpoints_next_state <= rxdatapath_bufferizeendpoints_state;
+    case (rxdatapath_bufferizeendpoints_state)
         1'd1: begin
             if ((core_liteethmaccrc32checker_sink_sink_valid & core_liteethmaccrc32checker_sink_sink_ready)) begin
                 core_liteethmaccrc32checker_crc_ce <= 1'd1;
-                maccore_rxdatapath_bufferizeendpoints_next_state <= 2'd2;
+                rxdatapath_bufferizeendpoints_next_state <= 2'd2;
             end
         end
         2'd2: begin
@@ -2300,10 +2161,10 @@ always @(*) begin
                     core_liteethmaccrc32checker_source_source_last <= core_liteethmaccrc32checker_sink_sink_last;
                     core_liteethmaccrc32checker_source_source_payload_last_be <= (core_liteethmaccrc32checker_sink_sink_payload_last_be <<< -3'd3);
                 end else begin
-                    core_liteethmaccrc32checker_last_be_maccore_next_value0 <= (core_liteethmaccrc32checker_sink_sink_payload_last_be >>> 3'd4);
-                    core_liteethmaccrc32checker_last_be_maccore_next_value_ce0 <= 1'd1;
-                    core_liteethmaccrc32checker_crc_error1_maccore_next_value1 <= core_liteethmaccrc32checker_crc_error0;
-                    core_liteethmaccrc32checker_crc_error1_maccore_next_value_ce1 <= 1'd1;
+                    core_liteethmaccrc32checker_last_be_next_value0 <= (core_liteethmaccrc32checker_sink_sink_payload_last_be >>> 3'd4);
+                    core_liteethmaccrc32checker_last_be_next_value_ce0 <= 1'd1;
+                    core_liteethmaccrc32checker_crc_error1_next_value1 <= core_liteethmaccrc32checker_crc_error0;
+                    core_liteethmaccrc32checker_crc_error1_next_value_ce1 <= 1'd1;
                 end
             end
             core_liteethmaccrc32checker_source_source_payload_error <= (core_liteethmaccrc32checker_sink_sink_payload_error | {1{(core_liteethmaccrc32checker_crc_error0 & core_liteethmaccrc32checker_sink_sink_last)}});
@@ -2311,10 +2172,10 @@ always @(*) begin
             if ((core_liteethmaccrc32checker_sink_sink_valid & core_liteethmaccrc32checker_sink_sink_ready)) begin
                 core_liteethmaccrc32checker_crc_ce <= 1'd1;
                 if ((core_liteethmaccrc32checker_sink_sink_last & (core_liteethmaccrc32checker_sink_sink_payload_last_be > 4'd15))) begin
-                    maccore_rxdatapath_bufferizeendpoints_next_state <= 2'd3;
+                    rxdatapath_bufferizeendpoints_next_state <= 2'd3;
                 end else begin
                     if (core_liteethmaccrc32checker_sink_sink_last) begin
-                        maccore_rxdatapath_bufferizeendpoints_next_state <= 1'd0;
+                        rxdatapath_bufferizeendpoints_next_state <= 1'd0;
                     end
                 end
             end
@@ -2326,13 +2187,13 @@ always @(*) begin
             core_liteethmaccrc32checker_source_source_payload_error <= (core_liteethmaccrc32checker_syncfifo_source_payload_error | {1{core_liteethmaccrc32checker_crc_error1}});
             core_liteethmaccrc32checker_source_source_payload_last_be <= core_liteethmaccrc32checker_last_be;
             if ((core_liteethmaccrc32checker_source_source_valid & core_liteethmaccrc32checker_source_source_ready)) begin
-                maccore_rxdatapath_bufferizeendpoints_next_state <= 1'd0;
+                rxdatapath_bufferizeendpoints_next_state <= 1'd0;
             end
         end
         default: begin
             core_liteethmaccrc32checker_crc_reset <= 1'd1;
             core_liteethmaccrc32checker_fifo_reset <= 1'd1;
-            maccore_rxdatapath_bufferizeendpoints_next_state <= 1'd1;
+            rxdatapath_bufferizeendpoints_next_state <= 1'd1;
         end
     endcase
 end
@@ -2665,74 +2526,74 @@ assign wishbone_interface_writer_stat_fifo_syncfifo_dout = wishbone_interface_wr
 assign wishbone_interface_writer_stat_fifo_syncfifo_writable = (wishbone_interface_writer_stat_fifo_level != 2'd2);
 assign wishbone_interface_writer_stat_fifo_syncfifo_readable = (wishbone_interface_writer_stat_fifo_level != 1'd0);
 always @(*) begin
-    maccore_liteethmacsramwriter_next_state <= 3'd0;
-    wishbone_interface_writer_errors_status_maccore_liteethmacsramwriter_f_next_value <= 32'd0;
-    wishbone_interface_writer_errors_status_maccore_liteethmacsramwriter_f_next_value_ce <= 1'd0;
-    wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value <= 11'd0;
-    wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value_ce <= 1'd0;
-    wishbone_interface_writer_slot_maccore_liteethmacsramwriter_next_value <= 1'd0;
-    wishbone_interface_writer_slot_maccore_liteethmacsramwriter_next_value_ce <= 1'd0;
+    liteethmacsramwriter_next_state <= 3'd0;
+    wishbone_interface_writer_errors_status_liteethmacsramwriter_f_next_value <= 32'd0;
+    wishbone_interface_writer_errors_status_liteethmacsramwriter_f_next_value_ce <= 1'd0;
+    wishbone_interface_writer_length_liteethmacsramwriter_t_next_value <= 11'd0;
+    wishbone_interface_writer_length_liteethmacsramwriter_t_next_value_ce <= 1'd0;
+    wishbone_interface_writer_slot_liteethmacsramwriter_next_value <= 1'd0;
+    wishbone_interface_writer_slot_liteethmacsramwriter_next_value_ce <= 1'd0;
     wishbone_interface_writer_stat_fifo_sink_payload_length <= 11'd0;
     wishbone_interface_writer_stat_fifo_sink_payload_slot <= 1'd0;
     wishbone_interface_writer_stat_fifo_sink_valid <= 1'd0;
     wishbone_interface_writer_write <= 1'd0;
-    maccore_liteethmacsramwriter_next_state <= maccore_liteethmacsramwriter_state;
-    case (maccore_liteethmacsramwriter_state)
+    liteethmacsramwriter_next_state <= liteethmacsramwriter_state;
+    case (liteethmacsramwriter_state)
         1'd1: begin
             if ((wishbone_interface_writer_sink_sink_valid & wishbone_interface_writer_sink_sink_last)) begin
                 if (((wishbone_interface_writer_sink_sink_payload_error & wishbone_interface_writer_sink_sink_payload_last_be) != 1'd0)) begin
-                    maccore_liteethmacsramwriter_next_state <= 2'd3;
+                    liteethmacsramwriter_next_state <= 2'd3;
                 end else begin
-                    maccore_liteethmacsramwriter_next_state <= 3'd4;
+                    liteethmacsramwriter_next_state <= 3'd4;
                 end
             end
         end
         2'd2: begin
             if ((wishbone_interface_writer_sink_sink_valid & wishbone_interface_writer_sink_sink_last)) begin
                 if ((wishbone_interface_writer_sink_sink_payload_last_be != 1'd0)) begin
-                    maccore_liteethmacsramwriter_next_state <= 2'd3;
+                    liteethmacsramwriter_next_state <= 2'd3;
                 end else begin
-                    wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value <= 1'd0;
-                    wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value_ce <= 1'd1;
-                    maccore_liteethmacsramwriter_next_state <= 1'd0;
+                    wishbone_interface_writer_length_liteethmacsramwriter_t_next_value <= 1'd0;
+                    wishbone_interface_writer_length_liteethmacsramwriter_t_next_value_ce <= 1'd1;
+                    liteethmacsramwriter_next_state <= 1'd0;
                 end
             end
         end
         2'd3: begin
-            wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value <= 1'd0;
-            wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value_ce <= 1'd1;
-            maccore_liteethmacsramwriter_next_state <= 1'd0;
+            wishbone_interface_writer_length_liteethmacsramwriter_t_next_value <= 1'd0;
+            wishbone_interface_writer_length_liteethmacsramwriter_t_next_value_ce <= 1'd1;
+            liteethmacsramwriter_next_state <= 1'd0;
         end
         3'd4: begin
             wishbone_interface_writer_stat_fifo_sink_valid <= 1'd1;
             wishbone_interface_writer_stat_fifo_sink_payload_slot <= wishbone_interface_writer_slot;
             wishbone_interface_writer_stat_fifo_sink_payload_length <= wishbone_interface_writer_length;
-            wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value <= 1'd0;
-            wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value_ce <= 1'd1;
-            wishbone_interface_writer_slot_maccore_liteethmacsramwriter_next_value <= (wishbone_interface_writer_slot + 1'd1);
-            wishbone_interface_writer_slot_maccore_liteethmacsramwriter_next_value_ce <= 1'd1;
-            maccore_liteethmacsramwriter_next_state <= 1'd0;
+            wishbone_interface_writer_length_liteethmacsramwriter_t_next_value <= 1'd0;
+            wishbone_interface_writer_length_liteethmacsramwriter_t_next_value_ce <= 1'd1;
+            wishbone_interface_writer_slot_liteethmacsramwriter_next_value <= (wishbone_interface_writer_slot + 1'd1);
+            wishbone_interface_writer_slot_liteethmacsramwriter_next_value_ce <= 1'd1;
+            liteethmacsramwriter_next_state <= 1'd0;
         end
         default: begin
             if (wishbone_interface_writer_sink_sink_valid) begin
                 if (wishbone_interface_writer_stat_fifo_sink_ready) begin
                     wishbone_interface_writer_write <= 1'd1;
-                    wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value <= (wishbone_interface_writer_length + wishbone_interface_writer_length_inc);
-                    wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value_ce <= 1'd1;
+                    wishbone_interface_writer_length_liteethmacsramwriter_t_next_value <= (wishbone_interface_writer_length + wishbone_interface_writer_length_inc);
+                    wishbone_interface_writer_length_liteethmacsramwriter_t_next_value_ce <= 1'd1;
                     if ((wishbone_interface_writer_length >= 11'd1530)) begin
-                        maccore_liteethmacsramwriter_next_state <= 1'd1;
+                        liteethmacsramwriter_next_state <= 1'd1;
                     end
                     if (wishbone_interface_writer_sink_sink_last) begin
                         if (((wishbone_interface_writer_sink_sink_payload_error & wishbone_interface_writer_sink_sink_payload_last_be) != 1'd0)) begin
-                            maccore_liteethmacsramwriter_next_state <= 2'd3;
+                            liteethmacsramwriter_next_state <= 2'd3;
                         end else begin
-                            maccore_liteethmacsramwriter_next_state <= 3'd4;
+                            liteethmacsramwriter_next_state <= 3'd4;
                         end
                     end
                 end else begin
-                    wishbone_interface_writer_errors_status_maccore_liteethmacsramwriter_f_next_value <= (wishbone_interface_writer_errors_status + 1'd1);
-                    wishbone_interface_writer_errors_status_maccore_liteethmacsramwriter_f_next_value_ce <= 1'd1;
-                    maccore_liteethmacsramwriter_next_state <= 2'd2;
+                    wishbone_interface_writer_errors_status_liteethmacsramwriter_f_next_value <= (wishbone_interface_writer_errors_status + 1'd1);
+                    wishbone_interface_writer_errors_status_liteethmacsramwriter_f_next_value_ce <= 1'd1;
+                    liteethmacsramwriter_next_state <= 2'd2;
                 end
             end
         end
@@ -2830,41 +2691,41 @@ assign wishbone_interface_reader_cmd_fifo_syncfifo_dout = wishbone_interface_rea
 assign wishbone_interface_reader_cmd_fifo_syncfifo_writable = (wishbone_interface_reader_cmd_fifo_level != 2'd2);
 assign wishbone_interface_reader_cmd_fifo_syncfifo_readable = (wishbone_interface_reader_cmd_fifo_level != 1'd0);
 always @(*) begin
-    maccore_liteethmacsramreader_next_state <= 2'd0;
+    liteethmacsramreader_next_state <= 2'd0;
     wishbone_interface_reader_cmd_fifo_source_ready <= 1'd0;
     wishbone_interface_reader_eventsourcepulse_trigger <= 1'd0;
-    wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value <= 11'd0;
-    wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value_ce <= 1'd0;
+    wishbone_interface_reader_length_liteethmacsramreader_next_value <= 11'd0;
+    wishbone_interface_reader_length_liteethmacsramreader_next_value_ce <= 1'd0;
     wishbone_interface_reader_read <= 1'd0;
     wishbone_interface_reader_source_source_last <= 1'd0;
     wishbone_interface_reader_source_source_valid <= 1'd0;
-    maccore_liteethmacsramreader_next_state <= maccore_liteethmacsramreader_state;
-    case (maccore_liteethmacsramreader_state)
+    liteethmacsramreader_next_state <= liteethmacsramreader_state;
+    case (liteethmacsramreader_state)
         1'd1: begin
             wishbone_interface_reader_source_source_valid <= 1'd1;
             wishbone_interface_reader_source_source_last <= (wishbone_interface_reader_length >= wishbone_interface_reader_cmd_fifo_source_payload_length);
             if (wishbone_interface_reader_source_source_ready) begin
                 wishbone_interface_reader_read <= 1'd1;
-                wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value <= (wishbone_interface_reader_length + 3'd4);
-                wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value_ce <= 1'd1;
+                wishbone_interface_reader_length_liteethmacsramreader_next_value <= (wishbone_interface_reader_length + 3'd4);
+                wishbone_interface_reader_length_liteethmacsramreader_next_value_ce <= 1'd1;
                 if (wishbone_interface_reader_source_source_last) begin
-                    maccore_liteethmacsramreader_next_state <= 2'd2;
+                    liteethmacsramreader_next_state <= 2'd2;
                 end
             end
         end
         2'd2: begin
-            wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value <= 1'd0;
-            wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value_ce <= 1'd1;
+            wishbone_interface_reader_length_liteethmacsramreader_next_value <= 1'd0;
+            wishbone_interface_reader_length_liteethmacsramreader_next_value_ce <= 1'd1;
             wishbone_interface_reader_eventsourcepulse_trigger <= 1'd1;
             wishbone_interface_reader_cmd_fifo_source_ready <= 1'd1;
-            maccore_liteethmacsramreader_next_state <= 1'd0;
+            liteethmacsramreader_next_state <= 1'd0;
         end
         default: begin
             if (wishbone_interface_reader_cmd_fifo_source_valid) begin
                 wishbone_interface_reader_read <= 1'd1;
-                wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value <= 3'd4;
-                wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value_ce <= 1'd1;
-                maccore_liteethmacsramreader_next_state <= 1'd1;
+                wishbone_interface_reader_length_liteethmacsramreader_next_value <= 3'd4;
+                wishbone_interface_reader_length_liteethmacsramreader_next_value_ce <= 1'd1;
+                liteethmacsramreader_next_state <= 1'd1;
             end
         end
     endcase
@@ -2875,9 +2736,9 @@ assign wishbone_interface_interface0_dat_r = wishbone_interface_sram0_dat_r;
 assign wishbone_interface_sram1_adr = wishbone_interface_interface1_adr[8:0];
 assign wishbone_interface_interface1_dat_r = wishbone_interface_sram1_dat_r;
 always @(*) begin
-    wishbone_interface_decoder0_slave_sel <= 2'd0;
-    wishbone_interface_decoder0_slave_sel[0] <= (wishbone_interface_bus_rx_adr[9] == 1'd0);
-    wishbone_interface_decoder0_slave_sel[1] <= (wishbone_interface_bus_rx_adr[9] == 1'd1);
+    wishbone_interface_decoder0_master <= 2'd0;
+    wishbone_interface_decoder0_master[0] <= (wishbone_interface_bus_rx_adr[9] == 1'd0);
+    wishbone_interface_decoder0_master[1] <= (wishbone_interface_bus_rx_adr[9] == 1'd1);
 end
 assign wishbone_interface_interface0_adr = wishbone_interface_bus_rx_adr;
 assign wishbone_interface_interface0_dat_w = wishbone_interface_bus_rx_dat_w;
@@ -2893,11 +2754,11 @@ assign wishbone_interface_interface1_stb = wishbone_interface_bus_rx_stb;
 assign wishbone_interface_interface1_we = wishbone_interface_bus_rx_we;
 assign wishbone_interface_interface1_cti = wishbone_interface_bus_rx_cti;
 assign wishbone_interface_interface1_bte = wishbone_interface_bus_rx_bte;
-assign wishbone_interface_interface0_cyc = (wishbone_interface_bus_rx_cyc & wishbone_interface_decoder0_slave_sel[0]);
-assign wishbone_interface_interface1_cyc = (wishbone_interface_bus_rx_cyc & wishbone_interface_decoder0_slave_sel[1]);
+assign wishbone_interface_interface0_cyc = (wishbone_interface_bus_rx_cyc & wishbone_interface_decoder0_master[0]);
+assign wishbone_interface_interface1_cyc = (wishbone_interface_bus_rx_cyc & wishbone_interface_decoder0_master[1]);
 assign wishbone_interface_bus_rx_ack = (wishbone_interface_interface0_ack | wishbone_interface_interface1_ack);
 assign wishbone_interface_bus_rx_err = (wishbone_interface_interface0_err | wishbone_interface_interface1_err);
-assign wishbone_interface_bus_rx_dat_r = (({32{wishbone_interface_decoder0_slave_sel_r[0]}} & wishbone_interface_interface0_dat_r) | ({32{wishbone_interface_decoder0_slave_sel_r[1]}} & wishbone_interface_interface1_dat_r));
+assign wishbone_interface_bus_rx_dat_r = (({32{wishbone_interface_decoder0_slaves[0]}} & wishbone_interface_interface0_dat_r) | ({32{wishbone_interface_decoder0_slaves[1]}} & wishbone_interface_interface1_dat_r));
 always @(*) begin
     wishbone_interface_sram2_we <= 4'd0;
     wishbone_interface_sram2_we[0] <= (((wishbone_interface_interface2_cyc & wishbone_interface_interface2_stb) & wishbone_interface_interface2_we) & wishbone_interface_interface2_sel[0]);
@@ -2919,9 +2780,9 @@ assign wishbone_interface_sram3_adr = wishbone_interface_interface3_adr[8:0];
 assign wishbone_interface_interface3_dat_r = wishbone_interface_sram3_dat_r;
 assign wishbone_interface_sram3_dat_w = wishbone_interface_interface3_dat_w;
 always @(*) begin
-    wishbone_interface_decoder1_slave_sel <= 2'd0;
-    wishbone_interface_decoder1_slave_sel[0] <= (wishbone_interface_bus_tx_adr[9] == 1'd0);
-    wishbone_interface_decoder1_slave_sel[1] <= (wishbone_interface_bus_tx_adr[9] == 1'd1);
+    wishbone_interface_decoder1_master <= 2'd0;
+    wishbone_interface_decoder1_master[0] <= (wishbone_interface_bus_tx_adr[9] == 1'd0);
+    wishbone_interface_decoder1_master[1] <= (wishbone_interface_bus_tx_adr[9] == 1'd1);
 end
 assign wishbone_interface_interface2_adr = wishbone_interface_bus_tx_adr;
 assign wishbone_interface_interface2_dat_w = wishbone_interface_bus_tx_dat_w;
@@ -2937,33 +2798,33 @@ assign wishbone_interface_interface3_stb = wishbone_interface_bus_tx_stb;
 assign wishbone_interface_interface3_we = wishbone_interface_bus_tx_we;
 assign wishbone_interface_interface3_cti = wishbone_interface_bus_tx_cti;
 assign wishbone_interface_interface3_bte = wishbone_interface_bus_tx_bte;
-assign wishbone_interface_interface2_cyc = (wishbone_interface_bus_tx_cyc & wishbone_interface_decoder1_slave_sel[0]);
-assign wishbone_interface_interface3_cyc = (wishbone_interface_bus_tx_cyc & wishbone_interface_decoder1_slave_sel[1]);
+assign wishbone_interface_interface2_cyc = (wishbone_interface_bus_tx_cyc & wishbone_interface_decoder1_master[0]);
+assign wishbone_interface_interface3_cyc = (wishbone_interface_bus_tx_cyc & wishbone_interface_decoder1_master[1]);
 assign wishbone_interface_bus_tx_ack = (wishbone_interface_interface2_ack | wishbone_interface_interface3_ack);
 assign wishbone_interface_bus_tx_err = (wishbone_interface_interface2_err | wishbone_interface_interface3_err);
-assign wishbone_interface_bus_tx_dat_r = (({32{wishbone_interface_decoder1_slave_sel_r[0]}} & wishbone_interface_interface2_dat_r) | ({32{wishbone_interface_decoder1_slave_sel_r[1]}} & wishbone_interface_interface3_dat_r));
+assign wishbone_interface_bus_tx_dat_r = (({32{wishbone_interface_decoder1_slaves[0]}} & wishbone_interface_interface2_dat_r) | ({32{wishbone_interface_decoder1_slaves[1]}} & wishbone_interface_interface3_dat_r));
 always @(*) begin
-    maccore_interface0_ack <= 1'd0;
-    maccore_interface0_dat_r <= 32'd0;
-    maccore_interface1_adr <= 14'd0;
-    maccore_interface1_dat_w <= 32'd0;
-    maccore_interface1_re <= 1'd0;
-    maccore_interface1_we <= 1'd0;
-    maccore_next_state <= 1'd0;
-    maccore_next_state <= maccore_state;
-    case (maccore_state)
+    interface0_ack <= 1'd0;
+    interface0_dat_r <= 32'd0;
+    interface1_adr <= 14'd0;
+    interface1_dat_w <= 32'd0;
+    interface1_re <= 1'd0;
+    interface1_we <= 1'd0;
+    next_state <= 1'd0;
+    next_state <= state;
+    case (state)
         1'd1: begin
-            maccore_interface0_ack <= 1'd1;
-            maccore_interface0_dat_r <= maccore_interface1_dat_r;
-            maccore_next_state <= 1'd0;
+            interface0_ack <= 1'd1;
+            interface0_dat_r <= interface1_dat_r;
+            next_state <= 1'd0;
         end
         default: begin
-            maccore_interface1_dat_w <= maccore_interface0_dat_w;
-            if ((maccore_interface0_cyc & maccore_interface0_stb)) begin
-                maccore_interface1_adr <= maccore_interface0_adr;
-                maccore_interface1_re <= ((~maccore_interface0_we) & (maccore_interface0_sel != 1'd0));
-                maccore_interface1_we <= (maccore_interface0_we & (maccore_interface0_sel != 1'd0));
-                maccore_next_state <= 1'd1;
+            interface1_dat_w <= interface0_dat_w;
+            if ((interface0_cyc & interface0_stb)) begin
+                interface1_adr <= interface0_adr;
+                interface1_re <= ((~interface0_we) & (interface0_sel != 1'd0));
+                interface1_we <= (interface0_we & (interface0_sel != 1'd0));
+                next_state <= 1'd1;
             end
         end
     endcase
@@ -3230,11 +3091,11 @@ assign maccore_w = maccore__w_storage[2];
 assign csrbank2_mdio_w0_w = maccore__w_storage;
 assign csrbank2_mdio_r_w = maccore__r_status;
 assign maccore__r_we = csrbank2_mdio_r_we;
-assign adr = maccore_interface1_adr;
-assign re = maccore_interface1_re;
-assign we = maccore_interface1_we;
-assign dat_w = maccore_interface1_dat_w;
-assign maccore_interface1_dat_r = dat_r;
+assign adr = interface1_adr;
+assign re = interface1_re;
+assign we = interface1_we;
+assign dat_w = interface1_dat_w;
+assign interface1_dat_r = dat_r;
 assign interface0_bank_bus_adr = adr;
 assign interface1_bank_bus_adr = adr;
 assign interface2_bank_bus_adr = adr;
@@ -3250,79 +3111,79 @@ assign interface2_bank_bus_dat_w = dat_w;
 assign dat_r = ((interface0_bank_bus_dat_r | interface1_bank_bus_dat_r) | interface2_bank_bus_dat_r);
 always @(*) begin
     self0 <= 30'd0;
-    case (socbushandler_grant)
+    case (grant)
         default: begin
-            self0 <= adapted_interface_adr;
+            self0 <= wb_bus_adr;
         end
     endcase
 end
 always @(*) begin
     self1 <= 32'd0;
-    case (socbushandler_grant)
+    case (grant)
         default: begin
-            self1 <= adapted_interface_dat_w;
+            self1 <= wb_bus_dat_w;
         end
     endcase
 end
 always @(*) begin
     self2 <= 4'd0;
-    case (socbushandler_grant)
+    case (grant)
         default: begin
-            self2 <= adapted_interface_sel;
+            self2 <= wb_bus_sel;
         end
     endcase
 end
 always @(*) begin
     self3 <= 1'd0;
-    case (socbushandler_grant)
+    case (grant)
         default: begin
-            self3 <= adapted_interface_cyc;
+            self3 <= wb_bus_cyc;
         end
     endcase
 end
 always @(*) begin
     self4 <= 1'd0;
-    case (socbushandler_grant)
+    case (grant)
         default: begin
-            self4 <= adapted_interface_stb;
+            self4 <= wb_bus_stb;
         end
     endcase
 end
 always @(*) begin
     self5 <= 1'd0;
-    case (socbushandler_grant)
+    case (grant)
         default: begin
-            self5 <= adapted_interface_we;
+            self5 <= wb_bus_we;
         end
     endcase
 end
 always @(*) begin
     self6 <= 3'd0;
-    case (socbushandler_grant)
+    case (grant)
         default: begin
-            self6 <= adapted_interface_cti;
+            self6 <= wb_bus_cti;
         end
     endcase
 end
 always @(*) begin
     self7 <= 2'd0;
-    case (socbushandler_grant)
+    case (grant)
         default: begin
-            self7 <= adapted_interface_bte;
+            self7 <= wb_bus_bte;
         end
     endcase
 end
 always @(*) begin
     maccore__r_status <= 1'd0;
     maccore__r_status <= maccore_r;
-    maccore__r_status <= xilinxmultiregimpl01;
+    maccore__r_status <= xilinxmultiregimpl0_regs1;
 end
-assign core_tx_cdc_cdc_produce_rdomain = xilinxmultiregimpl11;
-assign core_tx_cdc_cdc_consume_wdomain = xilinxmultiregimpl21;
-assign core_pulsesynchronizer0_toggle_o = xilinxmultiregimpl31;
-assign core_pulsesynchronizer1_toggle_o = xilinxmultiregimpl41;
-assign core_rx_cdc_cdc_produce_rdomain = xilinxmultiregimpl51;
-assign core_rx_cdc_cdc_consume_wdomain = xilinxmultiregimpl61;
+assign core_tx_cdc_cdc_produce_rdomain = xilinxmultiregimpl1_regs1;
+assign core_tx_cdc_cdc_consume_wdomain = xilinxmultiregimpl2_regs1;
+assign core_pulsesynchronizer0_toggle_o = xilinxmultiregimpl3_regs1;
+assign core_pulsesynchronizer1_toggle_o = xilinxmultiregimpl4_regs1;
+assign core_rx_cdc_cdc_produce_rdomain = xilinxmultiregimpl5_regs1;
+assign core_rx_cdc_cdc_consume_wdomain = xilinxmultiregimpl6_regs1;
 
 
 //------------------------------------------------------------------------------
@@ -3377,7 +3238,7 @@ always @(posedge eth_rx_clk) begin
         maccore_liteethphymiirx_converter_demux <= 1'd0;
         maccore_liteethphymiirx_converter_strobe_all <= 1'd0;
     end
-    maccore_rxdatapath_liteethmacpreamblechecker_state <= maccore_rxdatapath_liteethmacpreamblechecker_next_state;
+    rxdatapath_liteethmacpreamblechecker_state <= rxdatapath_liteethmacpreamblechecker_next_state;
     if (core_pulsesynchronizer0_i) begin
         core_pulsesynchronizer0_toggle_i <= (~core_pulsesynchronizer0_toggle_i);
     end
@@ -3415,12 +3276,12 @@ always @(posedge eth_rx_clk) begin
         core_liteethmaccrc32checker_syncfifo_produce <= 3'd0;
         core_liteethmaccrc32checker_syncfifo_consume <= 3'd0;
     end
-    maccore_rxdatapath_bufferizeendpoints_state <= maccore_rxdatapath_bufferizeendpoints_next_state;
-    if (core_liteethmaccrc32checker_last_be_maccore_next_value_ce0) begin
-        core_liteethmaccrc32checker_last_be <= core_liteethmaccrc32checker_last_be_maccore_next_value0;
+    rxdatapath_bufferizeendpoints_state <= rxdatapath_bufferizeendpoints_next_state;
+    if (core_liteethmaccrc32checker_last_be_next_value_ce0) begin
+        core_liteethmaccrc32checker_last_be <= core_liteethmaccrc32checker_last_be_next_value0;
     end
-    if (core_liteethmaccrc32checker_crc_error1_maccore_next_value_ce1) begin
-        core_liteethmaccrc32checker_crc_error1 <= core_liteethmaccrc32checker_crc_error1_maccore_next_value1;
+    if (core_liteethmaccrc32checker_crc_error1_next_value_ce1) begin
+        core_liteethmaccrc32checker_crc_error1 <= core_liteethmaccrc32checker_crc_error1_next_value1;
     end
     if (((~core_bufferizeendpoints_pipe_valid_source_valid) | core_bufferizeendpoints_pipe_valid_source_ready)) begin
         core_bufferizeendpoints_pipe_valid_source_valid <= core_bufferizeendpoints_pipe_valid_sink_valid;
@@ -3511,11 +3372,11 @@ always @(posedge eth_rx_clk) begin
         core_rx_converter_converter_strobe_all <= 1'd0;
         core_rx_cdc_cdc_graycounter0_q <= 6'd0;
         core_rx_cdc_cdc_graycounter0_q_binary <= 6'd0;
-        maccore_rxdatapath_liteethmacpreamblechecker_state <= 1'd0;
-        maccore_rxdatapath_bufferizeendpoints_state <= 2'd0;
+        rxdatapath_liteethmacpreamblechecker_state <= 1'd0;
+        rxdatapath_bufferizeendpoints_state <= 2'd0;
     end
-    xilinxmultiregimpl60 <= core_rx_cdc_cdc_graycounter1_q;
-    xilinxmultiregimpl61 <= xilinxmultiregimpl60;
+    xilinxmultiregimpl6_regs0 <= core_rx_cdc_cdc_graycounter1_q;
+    xilinxmultiregimpl6_regs1 <= xilinxmultiregimpl6_regs0;
 end
 
 always @(posedge eth_tx_clk) begin
@@ -3537,15 +3398,15 @@ always @(posedge eth_tx_clk) begin
             core_tx_converter_converter_mux <= (core_tx_converter_converter_mux + 1'd1);
         end
     end
-    maccore_txdatapath_liteethmactxlastbe_state <= maccore_txdatapath_liteethmactxlastbe_next_state;
-    maccore_txdatapath_liteethmacpaddinginserter_state <= maccore_txdatapath_liteethmacpaddinginserter_next_state;
-    if (core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value_ce) begin
-        core_tx_padding_counter <= core_tx_padding_counter_maccore_clockdomainsrenamer0_next_value;
+    txdatapath_liteethmactxlastbe_state <= txdatapath_liteethmactxlastbe_next_state;
+    txdatapath_liteethmacpaddinginserter_state <= txdatapath_liteethmacpaddinginserter_next_state;
+    if (core_tx_padding_counter_clockdomainsrenamer0_next_value_ce) begin
+        core_tx_padding_counter <= core_tx_padding_counter_clockdomainsrenamer0_next_value;
     end
-    if (core_tx_crc_is_ongoing0) begin
+    if (core_tx_crc_fsm_is_ongoing0) begin
         core_tx_crc_cnt <= 2'd3;
     end else begin
-        if ((core_tx_crc_is_ongoing1 & (~core_tx_crc_cnt_done))) begin
+        if ((core_tx_crc_fsm_is_ongoing1 & (~core_tx_crc_cnt_done))) begin
             core_tx_crc_cnt <= (core_tx_crc_cnt - core_tx_crc_source_ready);
         end
     end
@@ -3555,12 +3416,12 @@ always @(posedge eth_tx_clk) begin
     if (core_tx_crc_reset) begin
         core_tx_crc_reg <= 32'd4294967295;
     end
-    maccore_txdatapath_bufferizeendpoints_state <= maccore_txdatapath_bufferizeendpoints_next_state;
-    if (core_tx_crc_crc_packet_maccore_clockdomainsrenamer1_next_value_ce0) begin
-        core_tx_crc_crc_packet <= core_tx_crc_crc_packet_maccore_clockdomainsrenamer1_next_value0;
+    txdatapath_bufferizeendpoints_state <= txdatapath_bufferizeendpoints_next_state;
+    if (core_tx_crc_description_clockdomainsrenamer1_next_value_ce0) begin
+        core_tx_crc_description <= core_tx_crc_description_clockdomainsrenamer1_next_value0;
     end
-    if (core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value_ce1) begin
-        core_tx_crc_last_be <= core_tx_crc_last_be_maccore_clockdomainsrenamer1_next_value1;
+    if (core_tx_crc_fsm_clockdomainsrenamer1_next_value_ce1) begin
+        core_tx_crc_fsm <= core_tx_crc_fsm_clockdomainsrenamer1_next_value1;
     end
     if (((~core_tx_crc_pipe_valid_source_valid) | core_tx_crc_pipe_valid_source_ready)) begin
         core_tx_crc_pipe_valid_source_valid <= core_tx_crc_pipe_valid_sink_valid;
@@ -3570,13 +3431,13 @@ always @(posedge eth_tx_clk) begin
         core_tx_crc_pipe_valid_source_payload_last_be <= core_tx_crc_pipe_valid_sink_payload_last_be;
         core_tx_crc_pipe_valid_source_payload_error <= core_tx_crc_pipe_valid_sink_payload_error;
     end
-    maccore_txdatapath_liteethmacpreambleinserter_state <= maccore_txdatapath_liteethmacpreambleinserter_next_state;
-    if (core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value_ce) begin
-        core_tx_preamble_count <= core_tx_preamble_count_maccore_clockdomainsrenamer2_next_value;
+    txdatapath_liteethmacpreambleinserter_state <= txdatapath_liteethmacpreambleinserter_next_state;
+    if (core_tx_preamble_count_clockdomainsrenamer2_next_value_ce) begin
+        core_tx_preamble_count <= core_tx_preamble_count_clockdomainsrenamer2_next_value;
     end
-    maccore_txdatapath_liteethmacgap_state <= maccore_txdatapath_liteethmacgap_next_state;
-    if (core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value_ce) begin
-        core_tx_gap_counter <= core_tx_gap_counter_maccore_clockdomainsrenamer3_next_value;
+    txdatapath_liteethmacgap_state <= txdatapath_liteethmacgap_next_state;
+    if (core_tx_gap_counter_clockdomainsrenamer3_next_value_ce) begin
+        core_tx_gap_counter <= core_tx_gap_counter_clockdomainsrenamer3_next_value;
     end
     if (eth_tx_rst) begin
         maccore_liteethphymiitx_converter_mux <= 1'd0;
@@ -3590,14 +3451,14 @@ always @(posedge eth_tx_clk) begin
         core_tx_crc_pipe_valid_source_payload_data <= 8'd0;
         core_tx_crc_pipe_valid_source_payload_last_be <= 1'd0;
         core_tx_crc_pipe_valid_source_payload_error <= 1'd0;
-        maccore_txdatapath_liteethmactxlastbe_state <= 1'd0;
-        maccore_txdatapath_liteethmacpaddinginserter_state <= 1'd0;
-        maccore_txdatapath_bufferizeendpoints_state <= 2'd0;
-        maccore_txdatapath_liteethmacpreambleinserter_state <= 2'd0;
-        maccore_txdatapath_liteethmacgap_state <= 1'd0;
+        txdatapath_liteethmactxlastbe_state <= 1'd0;
+        txdatapath_liteethmacpaddinginserter_state <= 1'd0;
+        txdatapath_bufferizeendpoints_state <= 2'd0;
+        txdatapath_liteethmacpreambleinserter_state <= 2'd0;
+        txdatapath_liteethmacgap_state <= 1'd0;
     end
-    xilinxmultiregimpl10 <= core_tx_cdc_cdc_graycounter0_q;
-    xilinxmultiregimpl11 <= xilinxmultiregimpl10;
+    xilinxmultiregimpl1_regs0 <= core_tx_cdc_cdc_graycounter0_q;
+    xilinxmultiregimpl1_regs1 <= xilinxmultiregimpl1_regs0;
 end
 
 always @(posedge por_clk) begin
@@ -3605,20 +3466,13 @@ always @(posedge por_clk) begin
 end
 
 always @(posedge sys_clk) begin
-    socbushandler_state <= socbushandler_next_state;
-    if (last_ar_aw_n_socbushandler_next_value_ce0) begin
-        last_ar_aw_n <= last_ar_aw_n_socbushandler_next_value0;
-    end
-    if (data_socbushandler_next_value_ce1) begin
-        data <= data_socbushandler_next_value1;
-    end
-    socbushandler_slave_sel_r <= socbushandler_slave_sel;
-    if (socbushandler_wait) begin
-        if ((~socbushandler_done)) begin
-            socbushandler_count <= (socbushandler_count - 1'd1);
+    slaves <= master;
+    if (wait_1) begin
+        if ((~done)) begin
+            count <= (count - 1'd1);
         end
     end else begin
-        socbushandler_count <= 20'd1000000;
+        count <= 20'd1000000;
     end
     if ((maccore_bus_errors != 32'd4294967295)) begin
         if (maccore_bus_error) begin
@@ -3655,15 +3509,15 @@ always @(posedge sys_clk) begin
             wishbone_interface_writer_stat_fifo_level <= (wishbone_interface_writer_stat_fifo_level - 1'd1);
         end
     end
-    maccore_liteethmacsramwriter_state <= maccore_liteethmacsramwriter_next_state;
-    if (wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value_ce) begin
-        wishbone_interface_writer_length <= wishbone_interface_writer_length_maccore_liteethmacsramwriter_t_next_value;
+    liteethmacsramwriter_state <= liteethmacsramwriter_next_state;
+    if (wishbone_interface_writer_length_liteethmacsramwriter_t_next_value_ce) begin
+        wishbone_interface_writer_length <= wishbone_interface_writer_length_liteethmacsramwriter_t_next_value;
     end
-    if (wishbone_interface_writer_errors_status_maccore_liteethmacsramwriter_f_next_value_ce) begin
-        wishbone_interface_writer_errors_status <= wishbone_interface_writer_errors_status_maccore_liteethmacsramwriter_f_next_value;
+    if (wishbone_interface_writer_errors_status_liteethmacsramwriter_f_next_value_ce) begin
+        wishbone_interface_writer_errors_status <= wishbone_interface_writer_errors_status_liteethmacsramwriter_f_next_value;
     end
-    if (wishbone_interface_writer_slot_maccore_liteethmacsramwriter_next_value_ce) begin
-        wishbone_interface_writer_slot <= wishbone_interface_writer_slot_maccore_liteethmacsramwriter_next_value;
+    if (wishbone_interface_writer_slot_liteethmacsramwriter_next_value_ce) begin
+        wishbone_interface_writer_slot <= wishbone_interface_writer_slot_liteethmacsramwriter_next_value;
     end
     if (wishbone_interface_reader_eventsourcepulse_clear) begin
         wishbone_interface_reader_eventsourcepulse_pending <= 1'd0;
@@ -3686,9 +3540,9 @@ always @(posedge sys_clk) begin
             wishbone_interface_reader_cmd_fifo_level <= (wishbone_interface_reader_cmd_fifo_level - 1'd1);
         end
     end
-    maccore_liteethmacsramreader_state <= maccore_liteethmacsramreader_next_state;
-    if (wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value_ce) begin
-        wishbone_interface_reader_length <= wishbone_interface_reader_length_maccore_liteethmacsramreader_next_value;
+    liteethmacsramreader_state <= liteethmacsramreader_next_state;
+    if (wishbone_interface_reader_length_liteethmacsramreader_next_value_ce) begin
+        wishbone_interface_reader_length <= wishbone_interface_reader_length_liteethmacsramreader_next_value;
     end
     wishbone_interface_interface0_ack <= 1'd0;
     if (((wishbone_interface_interface0_cyc & wishbone_interface_interface0_stb) & ((~wishbone_interface_interface0_ack) | wishbone_interface_sram0_adr_burst))) begin
@@ -3698,7 +3552,7 @@ always @(posedge sys_clk) begin
     if (((wishbone_interface_interface1_cyc & wishbone_interface_interface1_stb) & ((~wishbone_interface_interface1_ack) | wishbone_interface_sram1_adr_burst))) begin
         wishbone_interface_interface1_ack <= 1'd1;
     end
-    wishbone_interface_decoder0_slave_sel_r <= wishbone_interface_decoder0_slave_sel;
+    wishbone_interface_decoder0_slaves <= wishbone_interface_decoder0_master;
     wishbone_interface_interface2_ack <= 1'd0;
     if (((wishbone_interface_interface2_cyc & wishbone_interface_interface2_stb) & ((~wishbone_interface_interface2_ack) | wishbone_interface_sram2_adr_burst))) begin
         wishbone_interface_interface2_ack <= 1'd1;
@@ -3707,8 +3561,8 @@ always @(posedge sys_clk) begin
     if (((wishbone_interface_interface3_cyc & wishbone_interface_interface3_stb) & ((~wishbone_interface_interface3_ack) | wishbone_interface_sram3_adr_burst))) begin
         wishbone_interface_interface3_ack <= 1'd1;
     end
-    wishbone_interface_decoder1_slave_sel_r <= wishbone_interface_decoder1_slave_sel;
-    maccore_state <= maccore_next_state;
+    wishbone_interface_decoder1_slaves <= wishbone_interface_decoder1_master;
+    state <= next_state;
     interface0_bank_bus_dat_r <= 1'd0;
     if (csrbank0_sel) begin
         case (interface0_bank_bus_adr[8:0])
@@ -3897,29 +3751,26 @@ always @(posedge sys_clk) begin
         wishbone_interface_reader_cmd_fifo_consume <= 1'd0;
         wishbone_interface_interface0_ack <= 1'd0;
         wishbone_interface_interface1_ack <= 1'd0;
-        wishbone_interface_decoder0_slave_sel_r <= 2'd0;
+        wishbone_interface_decoder0_slaves <= 2'd0;
         wishbone_interface_interface2_ack <= 1'd0;
         wishbone_interface_interface3_ack <= 1'd0;
-        wishbone_interface_decoder1_slave_sel_r <= 2'd0;
-        data <= 32'd0;
-        last_ar_aw_n <= 1'd0;
-        socbushandler_state <= 3'd0;
-        socbushandler_slave_sel_r <= 3'd0;
-        socbushandler_count <= 20'd1000000;
-        maccore_liteethmacsramwriter_state <= 3'd0;
-        maccore_liteethmacsramreader_state <= 2'd0;
-        maccore_state <= 1'd0;
+        wishbone_interface_decoder1_slaves <= 2'd0;
+        slaves <= 3'd0;
+        count <= 20'd1000000;
+        liteethmacsramwriter_state <= 3'd0;
+        liteethmacsramreader_state <= 2'd0;
+        state <= 1'd0;
     end
-    xilinxmultiregimpl00 <= maccore_data_r;
-    xilinxmultiregimpl01 <= xilinxmultiregimpl00;
-    xilinxmultiregimpl20 <= core_tx_cdc_cdc_graycounter1_q;
-    xilinxmultiregimpl21 <= xilinxmultiregimpl20;
-    xilinxmultiregimpl30 <= core_pulsesynchronizer0_toggle_i;
-    xilinxmultiregimpl31 <= xilinxmultiregimpl30;
-    xilinxmultiregimpl40 <= core_pulsesynchronizer1_toggle_i;
-    xilinxmultiregimpl41 <= xilinxmultiregimpl40;
-    xilinxmultiregimpl50 <= core_rx_cdc_cdc_graycounter0_q;
-    xilinxmultiregimpl51 <= xilinxmultiregimpl50;
+    xilinxmultiregimpl0_regs0 <= maccore_data_r;
+    xilinxmultiregimpl0_regs1 <= xilinxmultiregimpl0_regs0;
+    xilinxmultiregimpl2_regs0 <= core_tx_cdc_cdc_graycounter1_q;
+    xilinxmultiregimpl2_regs1 <= xilinxmultiregimpl2_regs0;
+    xilinxmultiregimpl3_regs0 <= core_pulsesynchronizer0_toggle_i;
+    xilinxmultiregimpl3_regs1 <= xilinxmultiregimpl3_regs0;
+    xilinxmultiregimpl4_regs0 <= core_pulsesynchronizer1_toggle_i;
+    xilinxmultiregimpl4_regs1 <= xilinxmultiregimpl4_regs0;
+    xilinxmultiregimpl5_regs0 <= core_rx_cdc_cdc_graycounter0_q;
+    xilinxmultiregimpl5_regs1 <= xilinxmultiregimpl5_regs0;
 end
 
 
@@ -3930,43 +3781,24 @@ end
 assign mii_mdio = maccore_data_oe ? maccore_data_w : 1'bz;
 assign maccore_data_r = mii_mdio;
 
-// //------------------------------------------------------------------------------
-// // Memory storage: 32-words x 42-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 42 
-// // Port 1 | Read: Sync  | Write: ---- | 
-// reg [41:0] storage[0:31];
-// reg [41:0] storage_dat0;
-// reg [41:0] storage_dat1;
-// always @(posedge sys_clk) begin
-// 	if (core_tx_cdc_cdc_wrport_we)
-// 		storage[core_tx_cdc_cdc_wrport_adr] <= core_tx_cdc_cdc_wrport_dat_w;
-// 	storage_dat0 <= storage[core_tx_cdc_cdc_wrport_adr];
-// end
-// always @(posedge eth_tx_clk) begin
-// 	storage_dat1 <= storage[core_tx_cdc_cdc_rdport_adr];
-// end
-// assign core_tx_cdc_cdc_wrport_dat_r = storage_dat0;
-// assign core_tx_cdc_cdc_rdport_dat_r = storage_dat1;
-
-liteeth_42x32_sram u_storage_0 (
-`ifdef USE_POWER_PINS
-    .vdd(vdd),
-    .gnd(gnd),
-`endif
-    // Port 0: RW (Write/Read Port)
-    .clk0(sys_clk),
-    .csb0(~core_tx_cdc_cdc_wrport_en), // active low chip select
-    .web0(~core_tx_cdc_cdc_wrport_we), // active low write enable
-    .addr0(core_tx_cdc_cdc_wrport_adr),
-    .din0(core_tx_cdc_cdc_wrport_dat_w),
-    .dout0(core_tx_cdc_cdc_wrport_dat_r),
-    // Port 1: R (Read-Only Port)
-    .clk1(eth_tx_clk),
-    .csb1(~core_tx_cdc_cdc_rdport_en), // active low chip select
-    .addr1(core_tx_cdc_cdc_rdport_adr),
-    .dout1(core_tx_cdc_cdc_rdport_dat_r)
-);
+//------------------------------------------------------------------------------
+// Memory storage: 32-words x 42-bit
+//------------------------------------------------------------------------------
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 42 
+// Port 1 | Read: Sync  | Write: ---- | 
+reg [41:0] storage[0:31];
+reg [41:0] storage_dat0;
+reg [41:0] storage_dat1;
+always @(posedge sys_clk) begin
+	if (core_tx_cdc_cdc_wrport_we)
+		storage[core_tx_cdc_cdc_wrport_adr] <= core_tx_cdc_cdc_wrport_dat_w;
+	storage_dat0 <= storage[core_tx_cdc_cdc_wrport_adr];
+end
+always @(posedge eth_tx_clk) begin
+	storage_dat1 <= storage[core_tx_cdc_cdc_rdport_adr];
+end
+assign core_tx_cdc_cdc_wrport_dat_r = storage_dat0;
+assign core_tx_cdc_cdc_rdport_dat_r = storage_dat1;
 
 
 //------------------------------------------------------------------------------
@@ -3987,44 +3819,25 @@ assign core_liteethmaccrc32checker_syncfifo_wrport_dat_r = storage_1_dat0;
 assign core_liteethmaccrc32checker_syncfifo_rdport_dat_r = storage_1[core_liteethmaccrc32checker_syncfifo_rdport_adr];
 
 
-// //------------------------------------------------------------------------------
-// // Memory storage_2: 32-words x 42-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 42 
-// // Port 1 | Read: Sync  | Write: ---- | 
-// reg [41:0] storage_2[0:31];
-// reg [41:0] storage_2_dat0;
-// reg [41:0] storage_2_dat1;
-// always @(posedge eth_rx_clk) begin
-// 	if (core_rx_cdc_cdc_wrport_we)
-// 		storage_2[core_rx_cdc_cdc_wrport_adr] <= core_rx_cdc_cdc_wrport_dat_w;
-// 	storage_2_dat0 <= storage_2[core_rx_cdc_cdc_wrport_adr];
-// end
-// always @(posedge sys_clk) begin
-// 	storage_2_dat1 <= storage_2[core_rx_cdc_cdc_rdport_adr];
-// end
-// assign core_rx_cdc_cdc_wrport_dat_r = storage_2_dat0;
-// assign core_rx_cdc_cdc_rdport_dat_r = storage_2_dat1;
-// Instantiate the 32x42 SRAM for LiteEth AXI RX
+//------------------------------------------------------------------------------
+// Memory storage_2: 32-words x 42-bit
+//------------------------------------------------------------------------------
+// Port 0 | Read: Sync  | Write: Sync | Mode: Read-First  | Write-Granularity: 42 
+// Port 1 | Read: Sync  | Write: ---- | 
+reg [41:0] storage_2[0:31];
+reg [41:0] storage_2_dat0;
+reg [41:0] storage_2_dat1;
+always @(posedge eth_rx_clk) begin
+	if (core_rx_cdc_cdc_wrport_we)
+		storage_2[core_rx_cdc_cdc_wrport_adr] <= core_rx_cdc_cdc_wrport_dat_w;
+	storage_2_dat0 <= storage_2[core_rx_cdc_cdc_wrport_adr];
+end
+always @(posedge sys_clk) begin
+	storage_2_dat1 <= storage_2[core_rx_cdc_cdc_rdport_adr];
+end
+assign core_rx_cdc_cdc_wrport_dat_r = storage_2_dat0;
+assign core_rx_cdc_cdc_rdport_dat_r = storage_2_dat1;
 
-liteeth_42x32_sram u_storage_1 (
-`ifdef USE_POWER_PINS
-    .vdd(vdd),
-    .gnd(gnd),
-`endif
-    // Port 0: RW (Write/Read Port)
-    .clk0(eth_rx_clk),
-    .csb0(~core_rx_cdc_cdc_wrport_en), // active low chip select
-    .web0(~core_rx_cdc_cdc_wrport_we), // active low write enable
-    .addr0(core_rx_cdc_cdc_wrport_adr),
-    .din0(core_rx_cdc_cdc_wrport_dat_w),
-    .dout0(core_rx_cdc_cdc_wrport_dat_r),
-    // Port 1: R (Read-Only Port)
-    .clk1(sys_clk),
-    .csb1(~core_rx_cdc_cdc_rdport_en), // active low chip select
-    .addr1(core_rx_cdc_cdc_rdport_adr),
-    .dout1(core_rx_cdc_cdc_rdport_dat_r)
-);
 
 //------------------------------------------------------------------------------
 // Memory storage_3: 2-words x 14-bit
@@ -4043,85 +3856,47 @@ end
 assign wishbone_interface_writer_stat_fifo_wrport_dat_r = storage_3_dat0;
 assign wishbone_interface_writer_stat_fifo_rdport_dat_r = storage_3[wishbone_interface_writer_stat_fifo_rdport_adr];
 
-// ////////////////////////////////// MACRO SRAM INST 0 ///////////////////////////
-// //------------------------------------------------------------------------------
-// // Memory mem: 383-words x 32-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 32 
-// // Port 1 | Read: Sync  | Write: ---- | 
-// reg [31:0] mem[0:382];
-// reg [8:0] mem_adr0;
-// reg [31:0] mem_dat1;
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_writer_memory0_we)
-// 		mem[wishbone_interface_writer_memory0_adr] <= wishbone_interface_writer_memory0_dat_w;
-// 	mem_adr0 <= wishbone_interface_writer_memory0_adr;
-// end
-// always @(posedge sys_clk) begin
-// 	mem_dat1 <= mem[wishbone_interface_sram0_adr];
-// end
-// assign wishbone_interface_writer_memory0_dat_r = mem[mem_adr0];
-// assign wishbone_interface_sram0_dat_r = mem_dat1;
 
-liteeth_32x384_32_sram u_tx_buffer_0 (
-`ifdef USE_POWER_PINS
-    .vdd(vdd),
-    .gnd(gnd),
-`endif
-    // Port 0: RW (Read/Write)
-    .clk0(sys_clk),
-    .csb0(1'b0),                                        // Always enabled
-    .web0(~wishbone_interface_writer_memory0_we),       // Active low write enable
-    .addr0(wishbone_interface_writer_memory0_adr),
-    .din0(wishbone_interface_writer_memory0_dat_w),
-    .dout0(wishbone_interface_writer_memory0_dat_r),
-    
-    // Port 1: R (Read-only)
-    .clk1(sys_clk),
-    .csb1(1'b0),                                        // Always enabled
-    .addr1(wishbone_interface_sram0_adr),
-    .dout1(wishbone_interface_sram0_dat_r)
-);
+//------------------------------------------------------------------------------
+// Memory mem: 383-words x 32-bit
+//------------------------------------------------------------------------------
+// Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 32 
+// Port 1 | Read: Sync  | Write: ---- | 
+reg [31:0] mem[0:382];
+reg [8:0] mem_adr0;
+reg [31:0] mem_dat1;
+always @(posedge sys_clk) begin
+	if (wishbone_interface_writer_memory0_we)
+		mem[wishbone_interface_writer_memory0_adr] <= wishbone_interface_writer_memory0_dat_w;
+	mem_adr0 <= wishbone_interface_writer_memory0_adr;
+end
+always @(posedge sys_clk) begin
+	mem_dat1 <= mem[wishbone_interface_sram0_adr];
+end
+assign wishbone_interface_writer_memory0_dat_r = mem[mem_adr0];
+assign wishbone_interface_sram0_dat_r = mem_dat1;
 
-// ////////////////////////////////// MACRO SRAM INST 1 ///////////////////////////
-// //------------------------------------------------------------------------------
-// // Memory mem_1: 383-words x 32-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 32 
-// // Port 1 | Read: Sync  | Write: ---- | 
-// reg [31:0] mem_1[0:382];
-// reg [8:0] mem_1_adr0;
-// reg [31:0] mem_1_dat1;
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_writer_memory1_we)
-// 		mem_1[wishbone_interface_writer_memory1_adr] <= wishbone_interface_writer_memory1_dat_w;
-// 	mem_1_adr0 <= wishbone_interface_writer_memory1_adr;
-// end
-// always @(posedge sys_clk) begin
-// 	mem_1_dat1 <= mem_1[wishbone_interface_sram1_adr];
-// end
-// assign wishbone_interface_writer_memory1_dat_r = mem_1[mem_1_adr0];
-// assign wishbone_interface_sram1_dat_r = mem_1_dat1;
 
-liteeth_32x384_32_sram u_tx_buffer_1 (
-`ifdef USE_POWER_PINS
-    .vdd(vdd),
-    .gnd(gnd),
-`endif
-    // Port 0: RW (Read/Write)
-    .clk0(sys_clk),
-    .csb0(1'b0),                                        // Always enabled
-    .web0(~wishbone_interface_writer_memory1_we),       // Active low write enable
-    .addr0(wishbone_interface_writer_memory1_adr),
-    .din0(wishbone_interface_writer_memory1_dat_w),
-    .dout0(wishbone_interface_writer_memory1_dat_r),
-    
-    // Port 1: R (Read-only) - FIXED: Connect to sram1 signals, not sram0
-    .clk1(sys_clk),
-    .csb1(1'b0),                                        // Always enabled
-    .addr1(wishbone_interface_sram1_adr),
-    .dout1(wishbone_interface_sram1_dat_r)
-);
+//------------------------------------------------------------------------------
+// Memory mem_1: 383-words x 32-bit
+//------------------------------------------------------------------------------
+// Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 32 
+// Port 1 | Read: Sync  | Write: ---- | 
+reg [31:0] mem_1[0:382];
+reg [8:0] mem_1_adr0;
+reg [31:0] mem_1_dat1;
+always @(posedge sys_clk) begin
+	if (wishbone_interface_writer_memory1_we)
+		mem_1[wishbone_interface_writer_memory1_adr] <= wishbone_interface_writer_memory1_dat_w;
+	mem_1_adr0 <= wishbone_interface_writer_memory1_adr;
+end
+always @(posedge sys_clk) begin
+	mem_1_dat1 <= mem_1[wishbone_interface_sram1_adr];
+end
+assign wishbone_interface_writer_memory1_dat_r = mem_1[mem_1_adr0];
+assign wishbone_interface_sram1_dat_r = mem_1_dat1;
+
+
 //------------------------------------------------------------------------------
 // Memory storage_4: 2-words x 14-bit
 //------------------------------------------------------------------------------
@@ -4139,184 +3914,135 @@ end
 assign wishbone_interface_reader_cmd_fifo_wrport_dat_r = storage_4_dat0;
 assign wishbone_interface_reader_cmd_fifo_rdport_dat_r = storage_4[wishbone_interface_reader_cmd_fifo_rdport_adr];
 
-// ////////////////////////////////// MACRO SRAM INST 2 ///////////////////////////
-// //------------------------------------------------------------------------------
-// // Memory mem_2: 383-words x 32-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: ---- | 
-// // Port 1 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 8 
-// reg [31:0] mem_2[0:382];
-// reg [31:0] mem_2_dat0;
-// reg [8:0] mem_2_adr1;
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_reader_memory0_re)
-// 		mem_2_dat0 <= mem_2[wishbone_interface_reader_memory0_adr];
-// end
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_sram2_we[0])
-// 		mem_2[wishbone_interface_sram2_adr][7:0] <= wishbone_interface_sram2_dat_w[7:0];
-// 	if (wishbone_interface_sram2_we[1])
-// 		mem_2[wishbone_interface_sram2_adr][15:8] <= wishbone_interface_sram2_dat_w[15:8];
-// 	if (wishbone_interface_sram2_we[2])
-// 		mem_2[wishbone_interface_sram2_adr][23:16] <= wishbone_interface_sram2_dat_w[23:16];
-// 	if (wishbone_interface_sram2_we[3])
-// 		mem_2[wishbone_interface_sram2_adr][31:24] <= wishbone_interface_sram2_dat_w[31:24];
-// 	mem_2_adr1 <= wishbone_interface_sram2_adr;
-// end
-// assign wishbone_interface_reader_memory0_dat_r = mem_2_dat0;
-// assign wishbone_interface_sram2_dat_r = mem_2[mem_2_adr1];
+
+//------------------------------------------------------------------------------
+// Memory mem_2: 383-words x 32-bit
+//------------------------------------------------------------------------------
+// Port 0 | Read: Sync  | Write: ---- | 
+// Port 1 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 8 
+reg [31:0] mem_2[0:382];
+reg [31:0] mem_2_dat0;
+reg [8:0] mem_2_adr1;
+always @(posedge sys_clk) begin
+	if (wishbone_interface_reader_memory0_re)
+		mem_2_dat0 <= mem_2[wishbone_interface_reader_memory0_adr];
+end
+always @(posedge sys_clk) begin
+	if (wishbone_interface_sram2_we[0])
+		mem_2[wishbone_interface_sram2_adr][7:0] <= wishbone_interface_sram2_dat_w[7:0];
+	if (wishbone_interface_sram2_we[1])
+		mem_2[wishbone_interface_sram2_adr][15:8] <= wishbone_interface_sram2_dat_w[15:8];
+	if (wishbone_interface_sram2_we[2])
+		mem_2[wishbone_interface_sram2_adr][23:16] <= wishbone_interface_sram2_dat_w[23:16];
+	if (wishbone_interface_sram2_we[3])
+		mem_2[wishbone_interface_sram2_adr][31:24] <= wishbone_interface_sram2_dat_w[31:24];
+	mem_2_adr1 <= wishbone_interface_sram2_adr;
+end
+assign wishbone_interface_reader_memory0_dat_r = mem_2_dat0;
+assign wishbone_interface_sram2_dat_r = mem_2[mem_2_adr1];
 
 
-liteeth_32x384_8_sram u_rx_buffer_0 (
-`ifdef USE_POWER_PINS
-    .vdd(vdd),
-    .gnd(gnd),
-`endif
-    // Port 0: Write/Read functionality
-    .clk0(sys_clk),
-    .csb0(1'b0),                                 // Always enabled
-    .web0(~wishbone_interface_sram2_we),      // 0 = write, 1 = read
-    .wmask0(wishbone_interface_sram2_we),        // Byte write enables
-    .addr0(wishbone_interface_sram2_adr),
-    .din0(wishbone_interface_sram2_dat_w),
-    .dout0(wishbone_interface_sram2_dat_r),
-
-    // Port 1: Read-only functionality  
-    .clk1(sys_clk),
-    .csb1(~wishbone_interface_reader_memory0_re), // Active low: 0=enable
-    .addr1(wishbone_interface_reader_memory0_adr),
-    .dout1(wishbone_interface_reader_memory0_dat_r)
-);
-
-// ////////////////////////////////// MACRO SRAM INST 3 ///////////////////////////
-// // ------------------------------------------------------------------------------
-// // Memory mem_3: 383-words x 32-bit
-// //------------------------------------------------------------------------------
-// // Port 0 | Read: Sync  | Write: ---- | 
-// // Port 1 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 8 
-// reg [31:0] mem_3[0:382];
-// reg [31:0] mem_3_dat0;
-// reg [8:0] mem_3_adr1;
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_reader_memory1_re)
-// 		mem_3_dat0 <= mem_3[wishbone_interface_reader_memory1_adr];
-// end
-// always @(posedge sys_clk) begin
-// 	if (wishbone_interface_sram3_we[0])
-// 		mem_3[wishbone_interface_sram3_adr][7:0] <= wishbone_interface_sram3_dat_w[7:0];
-// 	if (wishbone_interface_sram3_we[1])
-// 		mem_3[wishbone_interface_sram3_adr][15:8] <= wishbone_interface_sram3_dat_w[15:8];
-// 	if (wishbone_interface_sram3_we[2])
-// 		mem_3[wishbone_interface_sram3_adr][23:16] <= wishbone_interface_sram3_dat_w[23:16];
-// 	if (wishbone_interface_sram3_we[3])
-// 		mem_3[wishbone_interface_sram3_adr][31:24] <= wishbone_interface_sram3_dat_w[31:24];
-// 	mem_3_adr1 <= wishbone_interface_sram3_adr;
-// end
-// assign wishbone_interface_reader_memory1_dat_r = mem_3_dat0;
-// assign wishbone_interface_sram3_dat_r = mem_3[mem_3_adr1];
-
-liteeth_32x384_8_sram u_rx_buffer_1 (
-`ifdef USE_POWER_PINS
-    .vdd(vdd),
-    .gnd(gnd),
-`endif
-    // Port 0: Write/Read functionality
-    .clk0(sys_clk),
-    .csb0(1'b0),                                 // Always enabled
-    .web0(~wishbone_interface_sram3_we),      // 0 = write, 1 = read
-    .wmask0(wishbone_interface_sram3_we),        // Byte write enables
-    .addr0(wishbone_interface_sram3_adr),
-    .din0(wishbone_interface_sram3_dat_w),
-    .dout0(wishbone_interface_sram3_dat_r),
-
-    // Port 1: Read-only functionality
-    .clk1(sys_clk),
-    .csb1(~wishbone_interface_reader_memory1_re), // Active low: 0=enable
-    .addr1(wishbone_interface_reader_memory1_adr),
-    .dout1(wishbone_interface_reader_memory1_dat_r)
-);
+//------------------------------------------------------------------------------
+// Memory mem_3: 383-words x 32-bit
+//------------------------------------------------------------------------------
+// Port 0 | Read: Sync  | Write: ---- | 
+// Port 1 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 8 
+reg [31:0] mem_3[0:382];
+reg [31:0] mem_3_dat0;
+reg [8:0] mem_3_adr1;
+always @(posedge sys_clk) begin
+	if (wishbone_interface_reader_memory1_re)
+		mem_3_dat0 <= mem_3[wishbone_interface_reader_memory1_adr];
+end
+always @(posedge sys_clk) begin
+	if (wishbone_interface_sram3_we[0])
+		mem_3[wishbone_interface_sram3_adr][7:0] <= wishbone_interface_sram3_dat_w[7:0];
+	if (wishbone_interface_sram3_we[1])
+		mem_3[wishbone_interface_sram3_adr][15:8] <= wishbone_interface_sram3_dat_w[15:8];
+	if (wishbone_interface_sram3_we[2])
+		mem_3[wishbone_interface_sram3_adr][23:16] <= wishbone_interface_sram3_dat_w[23:16];
+	if (wishbone_interface_sram3_we[3])
+		mem_3[wishbone_interface_sram3_adr][31:24] <= wishbone_interface_sram3_dat_w[31:24];
+	mem_3_adr1 <= wishbone_interface_sram3_adr;
+end
+assign wishbone_interface_reader_memory1_dat_r = mem_3_dat0;
+assign wishbone_interface_sram3_dat_r = mem_3[mem_3_adr1];
 
 
 (* ars_ff1 = "true", async_reg = "true" *)
 //------------------------------------------------------------------------------
-// Behavioral replacement for FDPE primitive
+// Instance FDPE of FDPE Module.
 //------------------------------------------------------------------------------
-// reg rst_meta0;
-always @(posedge eth_tx_clk or posedge maccore_crg_reset0) begin
-    if (maccore_crg_reset0)
-        rst_meta0 <= 1'b1;  // INIT=1, PRE sets to 1
-    else
-        rst_meta0 <= 1'b0;  // D input
-end
+FDPE #(
+	// Parameters.
+	.INIT (1'd1)
+) FDPE (
+	// Inputs.
+	.C   (eth_tx_clk),
+	.CE  (1'd1),
+	.D   (1'd0),
+	.PRE (maccore_crg_reset0),
+
+	// Outputs.
+	.Q   (rst_meta0)
+);
 
 (* ars_ff2 = "true", async_reg = "true" *)
 //------------------------------------------------------------------------------
-// Behavioral replacement for FDPE_1 primitive
+// Instance FDPE_1 of FDPE Module.
 //------------------------------------------------------------------------------
-// reg eth_tx_rst;
-always @(posedge eth_tx_clk or posedge maccore_crg_reset0) begin
-    if (maccore_crg_reset0)
-        eth_tx_rst <= 1'b1;  // INIT=1, PRE sets to 1
-    else
-        eth_tx_rst <= rst_meta0;  // D input
-end
+FDPE #(
+	// Parameters.
+	.INIT (1'd1)
+) FDPE_1 (
+	// Inputs.
+	.C   (eth_tx_clk),
+	.CE  (1'd1),
+	.D   (rst_meta0),
+	.PRE (maccore_crg_reset0),
+
+	// Outputs.
+	.Q   (eth_tx_rst)
+);
 
 (* ars_ff1 = "true", async_reg = "true" *)
 //------------------------------------------------------------------------------
-// Behavioral replacement for FDPE_2 primitive
+// Instance FDPE_2 of FDPE Module.
 //------------------------------------------------------------------------------
-// reg rst_meta1;
-always @(posedge eth_rx_clk or posedge maccore_crg_reset0) begin
-    if (maccore_crg_reset0)
-        rst_meta1 <= 1'b1;  // INIT=1, PRE sets to 1
-    else
-        rst_meta1 <= 1'b0;  // D input
-end
+FDPE #(
+	// Parameters.
+	.INIT (1'd1)
+) FDPE_2 (
+	// Inputs.
+	.C   (eth_rx_clk),
+	.CE  (1'd1),
+	.D   (1'd0),
+	.PRE (maccore_crg_reset0),
+
+	// Outputs.
+	.Q   (rst_meta1)
+);
 
 (* ars_ff2 = "true", async_reg = "true" *)
 //------------------------------------------------------------------------------
-// Behavioral replacement for FDPE_3 primitive
+// Instance FDPE_3 of FDPE Module.
 //------------------------------------------------------------------------------
-// reg eth_rx_rst;
-always @(posedge eth_rx_clk or posedge maccore_crg_reset0) begin
-    if (maccore_crg_reset0)
-        eth_rx_rst <= 1'b1;  // INIT=1, PRE sets to 1
-    else
-        eth_rx_rst <= rst_meta1;  // D input
-end
+FDPE #(
+	// Parameters.
+	.INIT (1'd1)
+) FDPE_3 (
+	// Inputs.
+	.C   (eth_rx_clk),
+	.CE  (1'd1),
+	.D   (rst_meta1),
+	.PRE (maccore_crg_reset0),
+
+	// Outputs.
+	.Q   (eth_rx_rst)
+);
 
 endmodule
 
 // -----------------------------------------------------------------------------
-//  Auto-Generated by LiteX on 2025-06-18 21:26:29.
+//  Auto-Generated by LiteX on 2025-07-10 06:24:17.
 //------------------------------------------------------------------------------
-
-//==============================================================================
-// FDPE PRIMITIVE BEHAVIORAL REPLACEMENTS FOR ASIC SYNTHESIS
-//==============================================================================
-// 
-// MODIFICATION SUMMARY:
-// Replaced 4 Xilinx FDPE (D flip-flop with Preset and Enable) primitives
-// with functionally equivalent behavioral Verilog code for ASIC synthesis.
-//
-// PURPOSE: 
-// - FDPE primitives are Xilinx FPGA-specific and not available in ASIC flows
-// - These instances implement reset synchronizers for clock domain crossing
-// - Ensures safe reset deassertion across different clock domains
-//
-// REPLACED INSTANCES:
-// 1. FDPE_0 -> rst_meta0  : TX clock domain reset synchronizer (stage 1)
-// 2. FDPE_1 -> eth_tx_rst : TX clock domain reset synchronizer (stage 2) 
-// 3. FDPE_2 -> rst_meta1  : RX clock domain reset synchronizer (stage 1)
-// 4. FDPE_3 -> eth_rx_rst : RX clock domain reset synchronizer (stage 2)
-//
-// BEHAVIOR:
-// - Asynchronous preset: Immediately sets output to '1' when reset asserted
-// - Synchronous release: Output follows input on clock edge when reset released
-// - Two-stage synchronizers prevent metastability during reset deassertion
-// - Maintains timing attributes for synthesis optimization
-//
-// VERIFICATION:
-// Behavioral model validated against official Xilinx FDPE specification
-// and Yosys technology library implementation.
-//==============================================================================

@@ -1,0 +1,164 @@
+{
+    "csr_bases": {
+        "ctrl": 0,
+        "ethphy": 2048,
+        "ethmac": 4096
+    },
+    "csr_registers": {
+        "ctrl_reset": {
+            "addr": 0,
+            "size": 1,
+            "type": "rw"
+        },
+        "ctrl_scratch": {
+            "addr": 4,
+            "size": 1,
+            "type": "rw"
+        },
+        "ctrl_bus_errors": {
+            "addr": 8,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethphy_crg_reset": {
+            "addr": 2048,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethphy_mdio_w": {
+            "addr": 2052,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethphy_mdio_r": {
+            "addr": 2056,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_sram_writer_slot": {
+            "addr": 4096,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_sram_writer_length": {
+            "addr": 4100,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_sram_writer_errors": {
+            "addr": 4104,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_sram_writer_ev_status": {
+            "addr": 4108,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_sram_writer_ev_pending": {
+            "addr": 4112,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethmac_sram_writer_ev_enable": {
+            "addr": 4116,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethmac_sram_reader_start": {
+            "addr": 4120,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethmac_sram_reader_ready": {
+            "addr": 4124,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_sram_reader_level": {
+            "addr": 4128,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_sram_reader_slot": {
+            "addr": 4132,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethmac_sram_reader_length": {
+            "addr": 4136,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethmac_sram_reader_ev_status": {
+            "addr": 4140,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_sram_reader_ev_pending": {
+            "addr": 4144,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethmac_sram_reader_ev_enable": {
+            "addr": 4148,
+            "size": 1,
+            "type": "rw"
+        },
+        "ethmac_preamble_crc": {
+            "addr": 4152,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_rx_datapath_preamble_errors": {
+            "addr": 4156,
+            "size": 1,
+            "type": "ro"
+        },
+        "ethmac_rx_datapath_crc_errors": {
+            "addr": 4160,
+            "size": 1,
+            "type": "ro"
+        }
+    },
+    "constants": {
+        "config_platform_name": "platform",
+        "config_clock_frequency": 100000000,
+        "config_cpu_type_none": null,
+        "config_cpu_variant_standard": null,
+        "config_cpu_family": null,
+        "config_cpu_name": null,
+        "config_cpu_human_name": "unknown",
+        "config_csr_data_width": 32,
+        "config_csr_alignment": 32,
+        "config_bus_standard": "wishbone",
+        "config_bus_data_width": 32,
+        "config_bus_address_width": 32,
+        "config_bus_bursting": 0,
+        "ethmac_rx_slots": 2,
+        "ethmac_tx_slots": 2,
+        "ethmac_slot_size": 2048
+    },
+    "memories": {
+        "ethmac": {
+            "base": 1342177280,
+            "size": 8192,
+            "type": "io+linker"
+        },
+        "ethmac_rx": {
+            "base": 1342177280,
+            "size": 4096,
+            "type": "io+linker"
+        },
+        "ethmac_tx": {
+            "base": 1342181376,
+            "size": 4096,
+            "type": "io+linker"
+        },
+        "csr": {
+            "base": 0,
+            "size": 65536,
+            "type": "io"
+        }
+    }
+}
