@@ -3,13 +3,7 @@
 	url = https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts.git
 [submodule "designs/src/lfsr_top/repo"]
 	path = designs/src/lfsr_top/repo
-	url = git@github.com:alexforencich/verilog-lfsr.git
-[submodule "designs/src/liteeth_mac_axi_mii/design/src/liteeth_mac_axi_mii/repo"]
-	path = designs/src/liteeth_mac_axi_mii/design/src/liteeth_mac_axi_mii/repo
-	url = https://github.com/enjoy-digital/liteeth.git
-[submodule "designs/src/liteeth_mac_axi_mii/repo"]
-	path = designs/src/liteeth_mac_axi_mii/repo
-	url = https://github.com/enjoy-digital/liteeth.git
-[submodule "designs/src/liteeth/repo"]
-	path = designs/src/liteeth/repo
-	url = https://github.com/enjoy-digital/liteeth
+	url = https://github.com/alexforencich/verilog-lfsr.git
+[submodule "designs/src/minimax/repo"]
+	path = designs/src/minimax/repo
+	url = https://github.com/gsmecher/minimax.git
