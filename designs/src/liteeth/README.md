@@ -2,27 +2,18 @@
 
 ## Quick Start
 
-<<<<<<< HEAD
 
-=======
->>>>>>> main
 ### Prerequisites
 - WSL Ubuntu on Windows 11 (tested)
 - Python 3.6+
 - Git
 
 ### Setup & Generate Cores
-<<<<<<< HEAD
 
 Then run:
 ```bash
 make DESIGN_CONFIG=designs/nangate45/liteeth/<DESIGN_NAME>/config.mk
 
-=======
-```bash
-# Run setup (installs dependencies + generates all cores + setup SRAM instances)
-source setup.sh
->>>>>>> main
 ```
 
 This automatically:
@@ -33,14 +24,10 @@ This automatically:
 
 ### Run ASIC Flow
 ```bash
-<<<<<<< HEAD
 make DESIGN_CONFIG=designs/nangate45/liteeth/<DESIGN>/config.mk
 
 make DESIGN_CONFIG=designs/nangate45/liteeth/liteeth_mac_axi_mii/config.mk
 
-=======
-make DESIGN_CONFIG=designs/nangate45/liteeth/mac_axi_nangate45_config.mk
->>>>>>> main
 ```
 
 ## Generated Cores

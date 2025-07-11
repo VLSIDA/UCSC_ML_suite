@@ -4,6 +4,12 @@
 
 echo "Starting Setup..."
 
+# Change to the script's directory to ensure .venv is created in the right place
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+echo "Working in directory: $(pwd)"
+
 # Create virtual environment if it doesn't exist
 if [ ! -d ".venv" ]; then
     echo "Creating virtual environment..."
@@ -90,6 +96,6 @@ rm -rf scripts/build
 # bash setup_udp_raw.sh && \
 # bash setup_usp_gth.sh && \
 rm -rf build
-cd ..
+
 
 echo "setup successful"
