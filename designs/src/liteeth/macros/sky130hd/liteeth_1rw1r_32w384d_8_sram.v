@@ -1,4 +1,4 @@
-module liteeth_32x384_8_sram (
+module liteeth_1rw1r_32w384d_8_sram (
 `ifdef USE_POWER_PINS
     vdd,
     gnd,

@@ -1,17 +1,17 @@
 VERSION 5.7 ;
 BUSBITCHARS "[]" ;
-MACRO liteeth_32x384_32_sram
-  FOREIGN liteeth_32x384_32_sram 0 0 ;
+MACRO liteeth_1rw1r_32w384d_8_sram
+  FOREIGN liteeth_1rw1r_32w384d_8_sram 0 0 ;
   SYMMETRY X Y R90 ;
-  SIZE 568.100 BY 544.000 ;
+  SIZE 114.000 BY 256.200 ;
   CLASS BLOCK ;
   PIN clk0
     DIRECTION INPUT ;
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 5.850 0.800 6.150 ;
+      LAYER metal3 ;
+      RECT 0.000 1.365 0.070 1.435 ;
     END
   END clk0
   PIN csb0
@@ -19,8 +19,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 10.050 0.800 10.350 ;
+      LAYER metal3 ;
+      RECT 0.000 3.325 0.070 3.395 ;
     END
   END csb0
   PIN web0
@@ -28,8 +28,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 14.250 0.800 14.550 ;
+      LAYER metal3 ;
+      RECT 0.000 5.285 0.070 5.355 ;
     END
   END web0
   PIN addr0[0]
@@ -37,8 +37,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 19.050 0.800 19.350 ;
+      LAYER metal3 ;
+      RECT 0.000 7.245 0.070 7.315 ;
     END
   END addr0[0]
   PIN addr0[1]
@@ -46,8 +46,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 23.250 0.800 23.550 ;
+      LAYER metal3 ;
+      RECT 0.000 9.205 0.070 9.275 ;
     END
   END addr0[1]
   PIN addr0[2]
@@ -55,8 +55,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 27.450 0.800 27.750 ;
+      LAYER metal3 ;
+      RECT 0.000 11.165 0.070 11.235 ;
     END
   END addr0[2]
   PIN addr0[3]
@@ -64,8 +64,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 31.650 0.800 31.950 ;
+      LAYER metal3 ;
+      RECT 0.000 13.125 0.070 13.195 ;
     END
   END addr0[3]
   PIN addr0[4]
@@ -73,8 +73,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 35.850 0.800 36.150 ;
+      LAYER metal3 ;
+      RECT 0.000 15.085 0.070 15.155 ;
     END
   END addr0[4]
   PIN addr0[5]
@@ -82,8 +82,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 40.050 0.800 40.350 ;
+      LAYER metal3 ;
+      RECT 0.000 17.045 0.070 17.115 ;
     END
   END addr0[5]
   PIN addr0[6]
@@ -91,8 +91,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 44.250 0.800 44.550 ;
+      LAYER metal3 ;
+      RECT 0.000 19.005 0.070 19.075 ;
     END
   END addr0[6]
   PIN addr0[7]
@@ -100,8 +100,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 48.450 0.800 48.750 ;
+      LAYER metal3 ;
+      RECT 0.000 20.965 0.070 21.035 ;
     END
   END addr0[7]
   PIN addr0[8]
@@ -109,8 +109,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 52.650 0.800 52.950 ;
+      LAYER metal3 ;
+      RECT 0.000 22.925 0.070 22.995 ;
     END
   END addr0[8]
   PIN din0[0]
@@ -118,8 +118,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 57.450 0.800 57.750 ;
+      LAYER metal3 ;
+      RECT 0.000 24.885 0.070 24.955 ;
     END
   END din0[0]
   PIN din0[1]
@@ -127,8 +127,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 61.650 0.800 61.950 ;
+      LAYER metal3 ;
+      RECT 0.000 26.845 0.070 26.915 ;
     END
   END din0[1]
   PIN din0[2]
@@ -136,8 +136,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 65.850 0.800 66.150 ;
+      LAYER metal3 ;
+      RECT 0.000 28.805 0.070 28.875 ;
     END
   END din0[2]
   PIN din0[3]
@@ -145,8 +145,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 70.050 0.800 70.350 ;
+      LAYER metal3 ;
+      RECT 0.000 30.765 0.070 30.835 ;
     END
   END din0[3]
   PIN din0[4]
@@ -154,8 +154,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 74.250 0.800 74.550 ;
+      LAYER metal3 ;
+      RECT 0.000 32.725 0.070 32.795 ;
     END
   END din0[4]
   PIN din0[5]
@@ -163,8 +163,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 78.450 0.800 78.750 ;
+      LAYER metal3 ;
+      RECT 0.000 34.685 0.070 34.755 ;
     END
   END din0[5]
   PIN din0[6]
@@ -172,8 +172,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 82.650 0.800 82.950 ;
+      LAYER metal3 ;
+      RECT 0.000 36.645 0.070 36.715 ;
     END
   END din0[6]
   PIN din0[7]
@@ -181,8 +181,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 86.850 0.800 87.150 ;
+      LAYER metal3 ;
+      RECT 0.000 38.605 0.070 38.675 ;
     END
   END din0[7]
   PIN din0[8]
@@ -190,8 +190,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 91.050 0.800 91.350 ;
+      LAYER metal3 ;
+      RECT 0.000 40.565 0.070 40.635 ;
     END
   END din0[8]
   PIN din0[9]
@@ -199,8 +199,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 95.250 0.800 95.550 ;
+      LAYER metal3 ;
+      RECT 0.000 42.525 0.070 42.595 ;
     END
   END din0[9]
   PIN din0[10]
@@ -208,8 +208,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 99.450 0.800 99.750 ;
+      LAYER metal3 ;
+      RECT 0.000 44.485 0.070 44.555 ;
     END
   END din0[10]
   PIN din0[11]
@@ -217,8 +217,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 103.650 0.800 103.950 ;
+      LAYER metal3 ;
+      RECT 0.000 46.445 0.070 46.515 ;
     END
   END din0[11]
   PIN din0[12]
@@ -226,8 +226,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 107.850 0.800 108.150 ;
+      LAYER metal3 ;
+      RECT 0.000 48.405 0.070 48.475 ;
     END
   END din0[12]
   PIN din0[13]
@@ -235,8 +235,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 112.050 0.800 112.350 ;
+      LAYER metal3 ;
+      RECT 0.000 50.365 0.070 50.435 ;
     END
   END din0[13]
   PIN din0[14]
@@ -244,8 +244,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 116.250 0.800 116.550 ;
+      LAYER metal3 ;
+      RECT 0.000 52.325 0.070 52.395 ;
     END
   END din0[14]
   PIN din0[15]
@@ -253,8 +253,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 120.450 0.800 120.750 ;
+      LAYER metal3 ;
+      RECT 0.000 54.285 0.070 54.355 ;
     END
   END din0[15]
   PIN din0[16]
@@ -262,8 +262,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 124.650 0.800 124.950 ;
+      LAYER metal3 ;
+      RECT 0.000 56.245 0.070 56.315 ;
     END
   END din0[16]
   PIN din0[17]
@@ -271,8 +271,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 128.850 0.800 129.150 ;
+      LAYER metal3 ;
+      RECT 0.000 58.205 0.070 58.275 ;
     END
   END din0[17]
   PIN din0[18]
@@ -280,8 +280,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 133.050 0.800 133.350 ;
+      LAYER metal3 ;
+      RECT 0.000 60.165 0.070 60.235 ;
     END
   END din0[18]
   PIN din0[19]
@@ -289,8 +289,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 137.250 0.800 137.550 ;
+      LAYER metal3 ;
+      RECT 0.000 62.125 0.070 62.195 ;
     END
   END din0[19]
   PIN din0[20]
@@ -298,8 +298,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 141.450 0.800 141.750 ;
+      LAYER metal3 ;
+      RECT 0.000 64.085 0.070 64.155 ;
     END
   END din0[20]
   PIN din0[21]
@@ -307,8 +307,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 145.650 0.800 145.950 ;
+      LAYER metal3 ;
+      RECT 0.000 66.045 0.070 66.115 ;
     END
   END din0[21]
   PIN din0[22]
@@ -316,8 +316,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 149.850 0.800 150.150 ;
+      LAYER metal3 ;
+      RECT 0.000 68.005 0.070 68.075 ;
     END
   END din0[22]
   PIN din0[23]
@@ -325,8 +325,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 154.050 0.800 154.350 ;
+      LAYER metal3 ;
+      RECT 0.000 69.965 0.070 70.035 ;
     END
   END din0[23]
   PIN din0[24]
@@ -334,8 +334,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 158.250 0.800 158.550 ;
+      LAYER metal3 ;
+      RECT 0.000 71.925 0.070 71.995 ;
     END
   END din0[24]
   PIN din0[25]
@@ -343,8 +343,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 162.450 0.800 162.750 ;
+      LAYER metal3 ;
+      RECT 0.000 73.885 0.070 73.955 ;
     END
   END din0[25]
   PIN din0[26]
@@ -352,8 +352,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 166.650 0.800 166.950 ;
+      LAYER metal3 ;
+      RECT 0.000 75.845 0.070 75.915 ;
     END
   END din0[26]
   PIN din0[27]
@@ -361,8 +361,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 170.850 0.800 171.150 ;
+      LAYER metal3 ;
+      RECT 0.000 77.805 0.070 77.875 ;
     END
   END din0[27]
   PIN din0[28]
@@ -370,8 +370,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 175.050 0.800 175.350 ;
+      LAYER metal3 ;
+      RECT 0.000 79.765 0.070 79.835 ;
     END
   END din0[28]
   PIN din0[29]
@@ -379,8 +379,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 179.250 0.800 179.550 ;
+      LAYER metal3 ;
+      RECT 0.000 81.725 0.070 81.795 ;
     END
   END din0[29]
   PIN din0[30]
@@ -388,8 +388,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 183.450 0.800 183.750 ;
+      LAYER metal3 ;
+      RECT 0.000 83.685 0.070 83.755 ;
     END
   END din0[30]
   PIN din0[31]
@@ -397,17 +397,53 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 187.650 0.800 187.950 ;
+      LAYER metal3 ;
+      RECT 0.000 85.645 0.070 85.715 ;
     END
   END din0[31]
+  PIN wmask0[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 87.605 0.070 87.675 ;
+    END
+  END wmask0[0]
+  PIN wmask0[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 89.565 0.070 89.635 ;
+    END
+  END wmask0[1]
+  PIN wmask0[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 91.525 0.070 91.595 ;
+    END
+  END wmask0[2]
+  PIN wmask0[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER metal3 ;
+      RECT 0.000 93.485 0.070 93.555 ;
+    END
+  END wmask0[3]
   PIN dout0[0]
     DIRECTION OUTPUT ;
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 192.450 0.800 192.750 ;
+      LAYER metal3 ;
+      RECT 0.000 95.445 0.070 95.515 ;
     END
   END dout0[0]
   PIN dout0[1]
@@ -415,8 +451,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 196.650 0.800 196.950 ;
+      LAYER metal3 ;
+      RECT 0.000 97.405 0.070 97.475 ;
     END
   END dout0[1]
   PIN dout0[2]
@@ -424,8 +460,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 200.850 0.800 201.150 ;
+      LAYER metal3 ;
+      RECT 0.000 99.365 0.070 99.435 ;
     END
   END dout0[2]
   PIN dout0[3]
@@ -433,8 +469,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 205.050 0.800 205.350 ;
+      LAYER metal3 ;
+      RECT 0.000 101.325 0.070 101.395 ;
     END
   END dout0[3]
   PIN dout0[4]
@@ -442,8 +478,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 209.250 0.800 209.550 ;
+      LAYER metal3 ;
+      RECT 0.000 103.285 0.070 103.355 ;
     END
   END dout0[4]
   PIN dout0[5]
@@ -451,8 +487,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 213.450 0.800 213.750 ;
+      LAYER metal3 ;
+      RECT 0.000 105.245 0.070 105.315 ;
     END
   END dout0[5]
   PIN dout0[6]
@@ -460,8 +496,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 217.650 0.800 217.950 ;
+      LAYER metal3 ;
+      RECT 0.000 107.205 0.070 107.275 ;
     END
   END dout0[6]
   PIN dout0[7]
@@ -469,8 +505,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 221.850 0.800 222.150 ;
+      LAYER metal3 ;
+      RECT 0.000 109.165 0.070 109.235 ;
     END
   END dout0[7]
   PIN dout0[8]
@@ -478,8 +514,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 226.050 0.800 226.350 ;
+      LAYER metal3 ;
+      RECT 0.000 111.125 0.070 111.195 ;
     END
   END dout0[8]
   PIN dout0[9]
@@ -487,8 +523,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 230.250 0.800 230.550 ;
+      LAYER metal3 ;
+      RECT 0.000 113.085 0.070 113.155 ;
     END
   END dout0[9]
   PIN dout0[10]
@@ -496,8 +532,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 234.450 0.800 234.750 ;
+      LAYER metal3 ;
+      RECT 0.000 115.045 0.070 115.115 ;
     END
   END dout0[10]
   PIN dout0[11]
@@ -505,8 +541,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 238.650 0.800 238.950 ;
+      LAYER metal3 ;
+      RECT 0.000 117.005 0.070 117.075 ;
     END
   END dout0[11]
   PIN dout0[12]
@@ -514,8 +550,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 242.850 0.800 243.150 ;
+      LAYER metal3 ;
+      RECT 0.000 118.965 0.070 119.035 ;
     END
   END dout0[12]
   PIN dout0[13]
@@ -523,8 +559,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 247.050 0.800 247.350 ;
+      LAYER metal3 ;
+      RECT 0.000 120.925 0.070 120.995 ;
     END
   END dout0[13]
   PIN dout0[14]
@@ -532,8 +568,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 251.250 0.800 251.550 ;
+      LAYER metal3 ;
+      RECT 0.000 122.885 0.070 122.955 ;
     END
   END dout0[14]
   PIN dout0[15]
@@ -541,8 +577,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 255.450 0.800 255.750 ;
+      LAYER metal3 ;
+      RECT 0.000 124.845 0.070 124.915 ;
     END
   END dout0[15]
   PIN dout0[16]
@@ -550,8 +586,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 259.650 0.800 259.950 ;
+      LAYER metal3 ;
+      RECT 0.000 126.805 0.070 126.875 ;
     END
   END dout0[16]
   PIN dout0[17]
@@ -559,8 +595,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 263.850 0.800 264.150 ;
+      LAYER metal3 ;
+      RECT 0.000 128.765 0.070 128.835 ;
     END
   END dout0[17]
   PIN dout0[18]
@@ -568,8 +604,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 268.050 0.800 268.350 ;
+      LAYER metal3 ;
+      RECT 0.000 130.725 0.070 130.795 ;
     END
   END dout0[18]
   PIN dout0[19]
@@ -577,8 +613,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 272.250 0.800 272.550 ;
+      LAYER metal3 ;
+      RECT 0.000 132.685 0.070 132.755 ;
     END
   END dout0[19]
   PIN dout0[20]
@@ -586,8 +622,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 276.450 0.800 276.750 ;
+      LAYER metal3 ;
+      RECT 0.000 134.645 0.070 134.715 ;
     END
   END dout0[20]
   PIN dout0[21]
@@ -595,8 +631,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 280.650 0.800 280.950 ;
+      LAYER metal3 ;
+      RECT 0.000 136.605 0.070 136.675 ;
     END
   END dout0[21]
   PIN dout0[22]
@@ -604,8 +640,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 284.850 0.800 285.150 ;
+      LAYER metal3 ;
+      RECT 0.000 138.565 0.070 138.635 ;
     END
   END dout0[22]
   PIN dout0[23]
@@ -613,8 +649,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 289.050 0.800 289.350 ;
+      LAYER metal3 ;
+      RECT 0.000 140.525 0.070 140.595 ;
     END
   END dout0[23]
   PIN dout0[24]
@@ -622,8 +658,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 293.250 0.800 293.550 ;
+      LAYER metal3 ;
+      RECT 0.000 142.485 0.070 142.555 ;
     END
   END dout0[24]
   PIN dout0[25]
@@ -631,8 +667,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 297.450 0.800 297.750 ;
+      LAYER metal3 ;
+      RECT 0.000 144.445 0.070 144.515 ;
     END
   END dout0[25]
   PIN dout0[26]
@@ -640,8 +676,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 301.650 0.800 301.950 ;
+      LAYER metal3 ;
+      RECT 0.000 146.405 0.070 146.475 ;
     END
   END dout0[26]
   PIN dout0[27]
@@ -649,8 +685,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 305.850 0.800 306.150 ;
+      LAYER metal3 ;
+      RECT 0.000 148.365 0.070 148.435 ;
     END
   END dout0[27]
   PIN dout0[28]
@@ -658,8 +694,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 310.050 0.800 310.350 ;
+      LAYER metal3 ;
+      RECT 0.000 150.325 0.070 150.395 ;
     END
   END dout0[28]
   PIN dout0[29]
@@ -667,8 +703,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 314.250 0.800 314.550 ;
+      LAYER metal3 ;
+      RECT 0.000 152.285 0.070 152.355 ;
     END
   END dout0[29]
   PIN dout0[30]
@@ -676,8 +712,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 318.450 0.800 318.750 ;
+      LAYER metal3 ;
+      RECT 0.000 154.245 0.070 154.315 ;
     END
   END dout0[30]
   PIN dout0[31]
@@ -685,8 +721,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 322.650 0.800 322.950 ;
+      LAYER metal3 ;
+      RECT 0.000 156.205 0.070 156.275 ;
     END
   END dout0[31]
   PIN clk1
@@ -694,8 +730,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 327.450 0.800 327.750 ;
+      LAYER metal3 ;
+      RECT 0.000 158.165 0.070 158.235 ;
     END
   END clk1
   PIN csb1
@@ -703,8 +739,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 331.650 0.800 331.950 ;
+      LAYER metal3 ;
+      RECT 0.000 160.125 0.070 160.195 ;
     END
   END csb1
   PIN addr1[0]
@@ -712,8 +748,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 335.850 0.800 336.150 ;
+      LAYER metal3 ;
+      RECT 0.000 162.085 0.070 162.155 ;
     END
   END addr1[0]
   PIN addr1[1]
@@ -721,8 +757,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 340.050 0.800 340.350 ;
+      LAYER metal3 ;
+      RECT 0.000 164.045 0.070 164.115 ;
     END
   END addr1[1]
   PIN addr1[2]
@@ -730,8 +766,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 344.250 0.800 344.550 ;
+      LAYER metal3 ;
+      RECT 0.000 166.005 0.070 166.075 ;
     END
   END addr1[2]
   PIN addr1[3]
@@ -739,8 +775,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 348.450 0.800 348.750 ;
+      LAYER metal3 ;
+      RECT 0.000 167.965 0.070 168.035 ;
     END
   END addr1[3]
   PIN addr1[4]
@@ -748,8 +784,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 352.650 0.800 352.950 ;
+      LAYER metal3 ;
+      RECT 0.000 169.925 0.070 169.995 ;
     END
   END addr1[4]
   PIN addr1[5]
@@ -757,8 +793,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 356.850 0.800 357.150 ;
+      LAYER metal3 ;
+      RECT 0.000 171.885 0.070 171.955 ;
     END
   END addr1[5]
   PIN addr1[6]
@@ -766,8 +802,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 361.050 0.800 361.350 ;
+      LAYER metal3 ;
+      RECT 0.000 173.845 0.070 173.915 ;
     END
   END addr1[6]
   PIN addr1[7]
@@ -775,8 +811,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 365.250 0.800 365.550 ;
+      LAYER metal3 ;
+      RECT 0.000 175.805 0.070 175.875 ;
     END
   END addr1[7]
   PIN addr1[8]
@@ -784,8 +820,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 369.450 0.800 369.750 ;
+      LAYER metal3 ;
+      RECT 0.000 177.765 0.070 177.835 ;
     END
   END addr1[8]
   PIN dout1[0]
@@ -793,8 +829,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 374.250 0.800 374.550 ;
+      LAYER metal3 ;
+      RECT 0.000 179.725 0.070 179.795 ;
     END
   END dout1[0]
   PIN dout1[1]
@@ -802,8 +838,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 378.450 0.800 378.750 ;
+      LAYER metal3 ;
+      RECT 0.000 181.685 0.070 181.755 ;
     END
   END dout1[1]
   PIN dout1[2]
@@ -811,8 +847,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 382.650 0.800 382.950 ;
+      LAYER metal3 ;
+      RECT 0.000 183.645 0.070 183.715 ;
     END
   END dout1[2]
   PIN dout1[3]
@@ -820,8 +856,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 386.850 0.800 387.150 ;
+      LAYER metal3 ;
+      RECT 0.000 185.605 0.070 185.675 ;
     END
   END dout1[3]
   PIN dout1[4]
@@ -829,8 +865,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 391.050 0.800 391.350 ;
+      LAYER metal3 ;
+      RECT 0.000 187.565 0.070 187.635 ;
     END
   END dout1[4]
   PIN dout1[5]
@@ -838,8 +874,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 395.250 0.800 395.550 ;
+      LAYER metal3 ;
+      RECT 0.000 189.525 0.070 189.595 ;
     END
   END dout1[5]
   PIN dout1[6]
@@ -847,8 +883,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 399.450 0.800 399.750 ;
+      LAYER metal3 ;
+      RECT 0.000 191.485 0.070 191.555 ;
     END
   END dout1[6]
   PIN dout1[7]
@@ -856,8 +892,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 403.650 0.800 403.950 ;
+      LAYER metal3 ;
+      RECT 0.000 193.445 0.070 193.515 ;
     END
   END dout1[7]
   PIN dout1[8]
@@ -865,8 +901,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 407.850 0.800 408.150 ;
+      LAYER metal3 ;
+      RECT 0.000 195.405 0.070 195.475 ;
     END
   END dout1[8]
   PIN dout1[9]
@@ -874,8 +910,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 412.050 0.800 412.350 ;
+      LAYER metal3 ;
+      RECT 0.000 197.365 0.070 197.435 ;
     END
   END dout1[9]
   PIN dout1[10]
@@ -883,8 +919,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 416.250 0.800 416.550 ;
+      LAYER metal3 ;
+      RECT 0.000 199.325 0.070 199.395 ;
     END
   END dout1[10]
   PIN dout1[11]
@@ -892,8 +928,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 420.450 0.800 420.750 ;
+      LAYER metal3 ;
+      RECT 0.000 201.285 0.070 201.355 ;
     END
   END dout1[11]
   PIN dout1[12]
@@ -901,8 +937,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 424.650 0.800 424.950 ;
+      LAYER metal3 ;
+      RECT 0.000 203.245 0.070 203.315 ;
     END
   END dout1[12]
   PIN dout1[13]
@@ -910,8 +946,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 428.850 0.800 429.150 ;
+      LAYER metal3 ;
+      RECT 0.000 205.205 0.070 205.275 ;
     END
   END dout1[13]
   PIN dout1[14]
@@ -919,8 +955,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 433.050 0.800 433.350 ;
+      LAYER metal3 ;
+      RECT 0.000 207.165 0.070 207.235 ;
     END
   END dout1[14]
   PIN dout1[15]
@@ -928,8 +964,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 437.250 0.800 437.550 ;
+      LAYER metal3 ;
+      RECT 0.000 209.125 0.070 209.195 ;
     END
   END dout1[15]
   PIN dout1[16]
@@ -937,8 +973,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 441.450 0.800 441.750 ;
+      LAYER metal3 ;
+      RECT 0.000 211.085 0.070 211.155 ;
     END
   END dout1[16]
   PIN dout1[17]
@@ -946,8 +982,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 445.650 0.800 445.950 ;
+      LAYER metal3 ;
+      RECT 0.000 213.045 0.070 213.115 ;
     END
   END dout1[17]
   PIN dout1[18]
@@ -955,8 +991,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 449.850 0.800 450.150 ;
+      LAYER metal3 ;
+      RECT 0.000 215.005 0.070 215.075 ;
     END
   END dout1[18]
   PIN dout1[19]
@@ -964,8 +1000,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 454.050 0.800 454.350 ;
+      LAYER metal3 ;
+      RECT 0.000 216.965 0.070 217.035 ;
     END
   END dout1[19]
   PIN dout1[20]
@@ -973,8 +1009,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 458.250 0.800 458.550 ;
+      LAYER metal3 ;
+      RECT 0.000 218.925 0.070 218.995 ;
     END
   END dout1[20]
   PIN dout1[21]
@@ -982,8 +1018,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 462.450 0.800 462.750 ;
+      LAYER metal3 ;
+      RECT 0.000 220.885 0.070 220.955 ;
     END
   END dout1[21]
   PIN dout1[22]
@@ -991,8 +1027,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 466.650 0.800 466.950 ;
+      LAYER metal3 ;
+      RECT 0.000 222.845 0.070 222.915 ;
     END
   END dout1[22]
   PIN dout1[23]
@@ -1000,8 +1036,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 470.850 0.800 471.150 ;
+      LAYER metal3 ;
+      RECT 0.000 224.805 0.070 224.875 ;
     END
   END dout1[23]
   PIN dout1[24]
@@ -1009,8 +1045,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 475.050 0.800 475.350 ;
+      LAYER metal3 ;
+      RECT 0.000 226.765 0.070 226.835 ;
     END
   END dout1[24]
   PIN dout1[25]
@@ -1018,8 +1054,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 479.250 0.800 479.550 ;
+      LAYER metal3 ;
+      RECT 0.000 228.725 0.070 228.795 ;
     END
   END dout1[25]
   PIN dout1[26]
@@ -1027,8 +1063,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 483.450 0.800 483.750 ;
+      LAYER metal3 ;
+      RECT 0.000 230.685 0.070 230.755 ;
     END
   END dout1[26]
   PIN dout1[27]
@@ -1036,8 +1072,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 487.650 0.800 487.950 ;
+      LAYER metal3 ;
+      RECT 0.000 232.645 0.070 232.715 ;
     END
   END dout1[27]
   PIN dout1[28]
@@ -1045,8 +1081,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 491.850 0.800 492.150 ;
+      LAYER metal3 ;
+      RECT 0.000 234.605 0.070 234.675 ;
     END
   END dout1[28]
   PIN dout1[29]
@@ -1054,8 +1090,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 496.050 0.800 496.350 ;
+      LAYER metal3 ;
+      RECT 0.000 236.565 0.070 236.635 ;
     END
   END dout1[29]
   PIN dout1[30]
@@ -1063,8 +1099,8 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 500.250 0.800 500.550 ;
+      LAYER metal3 ;
+      RECT 0.000 238.525 0.070 238.595 ;
     END
   END dout1[30]
   PIN dout1[31]
@@ -1072,152 +1108,136 @@ MACRO liteeth_32x384_32_sram
     USE SIGNAL ;
     SHAPE ABUTMENT ;
     PORT
-      LAYER met3 ;
-      RECT 0.000 504.450 0.800 504.750 ;
+      LAYER metal3 ;
+      RECT 0.000 240.485 0.070 240.555 ;
     END
   END dout1[31]
   PIN VSS
     DIRECTION INOUT ;
     USE GROUND ;
     PORT
-      LAYER met4 ;
-      RECT 5.400 6.000 6.600 538.000 ;
-      RECT 15.000 6.000 16.200 538.000 ;
-      RECT 24.600 6.000 25.800 538.000 ;
-      RECT 34.200 6.000 35.400 538.000 ;
-      RECT 43.800 6.000 45.000 538.000 ;
-      RECT 53.400 6.000 54.600 538.000 ;
-      RECT 63.000 6.000 64.200 538.000 ;
-      RECT 72.600 6.000 73.800 538.000 ;
-      RECT 82.200 6.000 83.400 538.000 ;
-      RECT 91.800 6.000 93.000 538.000 ;
-      RECT 101.400 6.000 102.600 538.000 ;
-      RECT 111.000 6.000 112.200 538.000 ;
-      RECT 120.600 6.000 121.800 538.000 ;
-      RECT 130.200 6.000 131.400 538.000 ;
-      RECT 139.800 6.000 141.000 538.000 ;
-      RECT 149.400 6.000 150.600 538.000 ;
-      RECT 159.000 6.000 160.200 538.000 ;
-      RECT 168.600 6.000 169.800 538.000 ;
-      RECT 178.200 6.000 179.400 538.000 ;
-      RECT 187.800 6.000 189.000 538.000 ;
-      RECT 197.400 6.000 198.600 538.000 ;
-      RECT 207.000 6.000 208.200 538.000 ;
-      RECT 216.600 6.000 217.800 538.000 ;
-      RECT 226.200 6.000 227.400 538.000 ;
-      RECT 235.800 6.000 237.000 538.000 ;
-      RECT 245.400 6.000 246.600 538.000 ;
-      RECT 255.000 6.000 256.200 538.000 ;
-      RECT 264.600 6.000 265.800 538.000 ;
-      RECT 274.200 6.000 275.400 538.000 ;
-      RECT 283.800 6.000 285.000 538.000 ;
-      RECT 293.400 6.000 294.600 538.000 ;
-      RECT 303.000 6.000 304.200 538.000 ;
-      RECT 312.600 6.000 313.800 538.000 ;
-      RECT 322.200 6.000 323.400 538.000 ;
-      RECT 331.800 6.000 333.000 538.000 ;
-      RECT 341.400 6.000 342.600 538.000 ;
-      RECT 351.000 6.000 352.200 538.000 ;
-      RECT 360.600 6.000 361.800 538.000 ;
-      RECT 370.200 6.000 371.400 538.000 ;
-      RECT 379.800 6.000 381.000 538.000 ;
-      RECT 389.400 6.000 390.600 538.000 ;
-      RECT 399.000 6.000 400.200 538.000 ;
-      RECT 408.600 6.000 409.800 538.000 ;
-      RECT 418.200 6.000 419.400 538.000 ;
-      RECT 427.800 6.000 429.000 538.000 ;
-      RECT 437.400 6.000 438.600 538.000 ;
-      RECT 447.000 6.000 448.200 538.000 ;
-      RECT 456.600 6.000 457.800 538.000 ;
-      RECT 466.200 6.000 467.400 538.000 ;
-      RECT 475.800 6.000 477.000 538.000 ;
-      RECT 485.400 6.000 486.600 538.000 ;
-      RECT 495.000 6.000 496.200 538.000 ;
-      RECT 504.600 6.000 505.800 538.000 ;
-      RECT 514.200 6.000 515.400 538.000 ;
-      RECT 523.800 6.000 525.000 538.000 ;
-      RECT 533.400 6.000 534.600 538.000 ;
-      RECT 543.000 6.000 544.200 538.000 ;
-      RECT 552.600 6.000 553.800 538.000 ;
+      LAYER metal4 ;
+      RECT 1.260 1.400 1.540 254.800 ;
+      RECT 3.500 1.400 3.780 254.800 ;
+      RECT 5.740 1.400 6.020 254.800 ;
+      RECT 7.980 1.400 8.260 254.800 ;
+      RECT 10.220 1.400 10.500 254.800 ;
+      RECT 12.460 1.400 12.740 254.800 ;
+      RECT 14.700 1.400 14.980 254.800 ;
+      RECT 16.940 1.400 17.220 254.800 ;
+      RECT 19.180 1.400 19.460 254.800 ;
+      RECT 21.420 1.400 21.700 254.800 ;
+      RECT 23.660 1.400 23.940 254.800 ;
+      RECT 25.900 1.400 26.180 254.800 ;
+      RECT 28.140 1.400 28.420 254.800 ;
+      RECT 30.380 1.400 30.660 254.800 ;
+      RECT 32.620 1.400 32.900 254.800 ;
+      RECT 34.860 1.400 35.140 254.800 ;
+      RECT 37.100 1.400 37.380 254.800 ;
+      RECT 39.340 1.400 39.620 254.800 ;
+      RECT 41.580 1.400 41.860 254.800 ;
+      RECT 43.820 1.400 44.100 254.800 ;
+      RECT 46.060 1.400 46.340 254.800 ;
+      RECT 48.300 1.400 48.580 254.800 ;
+      RECT 50.540 1.400 50.820 254.800 ;
+      RECT 52.780 1.400 53.060 254.800 ;
+      RECT 55.020 1.400 55.300 254.800 ;
+      RECT 57.260 1.400 57.540 254.800 ;
+      RECT 59.500 1.400 59.780 254.800 ;
+      RECT 61.740 1.400 62.020 254.800 ;
+      RECT 63.980 1.400 64.260 254.800 ;
+      RECT 66.220 1.400 66.500 254.800 ;
+      RECT 68.460 1.400 68.740 254.800 ;
+      RECT 70.700 1.400 70.980 254.800 ;
+      RECT 72.940 1.400 73.220 254.800 ;
+      RECT 75.180 1.400 75.460 254.800 ;
+      RECT 77.420 1.400 77.700 254.800 ;
+      RECT 79.660 1.400 79.940 254.800 ;
+      RECT 81.900 1.400 82.180 254.800 ;
+      RECT 84.140 1.400 84.420 254.800 ;
+      RECT 86.380 1.400 86.660 254.800 ;
+      RECT 88.620 1.400 88.900 254.800 ;
+      RECT 90.860 1.400 91.140 254.800 ;
+      RECT 93.100 1.400 93.380 254.800 ;
+      RECT 95.340 1.400 95.620 254.800 ;
+      RECT 97.580 1.400 97.860 254.800 ;
+      RECT 99.820 1.400 100.100 254.800 ;
+      RECT 102.060 1.400 102.340 254.800 ;
+      RECT 104.300 1.400 104.580 254.800 ;
+      RECT 106.540 1.400 106.820 254.800 ;
+      RECT 108.780 1.400 109.060 254.800 ;
+      RECT 111.020 1.400 111.300 254.800 ;
     END
   END VSS
   PIN VDD
     DIRECTION INOUT ;
     USE POWER ;
     PORT
-      LAYER met4 ;
-      RECT 10.200 6.000 11.400 538.000 ;
-      RECT 19.800 6.000 21.000 538.000 ;
-      RECT 29.400 6.000 30.600 538.000 ;
-      RECT 39.000 6.000 40.200 538.000 ;
-      RECT 48.600 6.000 49.800 538.000 ;
-      RECT 58.200 6.000 59.400 538.000 ;
-      RECT 67.800 6.000 69.000 538.000 ;
-      RECT 77.400 6.000 78.600 538.000 ;
-      RECT 87.000 6.000 88.200 538.000 ;
-      RECT 96.600 6.000 97.800 538.000 ;
-      RECT 106.200 6.000 107.400 538.000 ;
-      RECT 115.800 6.000 117.000 538.000 ;
-      RECT 125.400 6.000 126.600 538.000 ;
-      RECT 135.000 6.000 136.200 538.000 ;
-      RECT 144.600 6.000 145.800 538.000 ;
-      RECT 154.200 6.000 155.400 538.000 ;
-      RECT 163.800 6.000 165.000 538.000 ;
-      RECT 173.400 6.000 174.600 538.000 ;
-      RECT 183.000 6.000 184.200 538.000 ;
-      RECT 192.600 6.000 193.800 538.000 ;
-      RECT 202.200 6.000 203.400 538.000 ;
-      RECT 211.800 6.000 213.000 538.000 ;
-      RECT 221.400 6.000 222.600 538.000 ;
-      RECT 231.000 6.000 232.200 538.000 ;
-      RECT 240.600 6.000 241.800 538.000 ;
-      RECT 250.200 6.000 251.400 538.000 ;
-      RECT 259.800 6.000 261.000 538.000 ;
-      RECT 269.400 6.000 270.600 538.000 ;
-      RECT 279.000 6.000 280.200 538.000 ;
-      RECT 288.600 6.000 289.800 538.000 ;
-      RECT 298.200 6.000 299.400 538.000 ;
-      RECT 307.800 6.000 309.000 538.000 ;
-      RECT 317.400 6.000 318.600 538.000 ;
-      RECT 327.000 6.000 328.200 538.000 ;
-      RECT 336.600 6.000 337.800 538.000 ;
-      RECT 346.200 6.000 347.400 538.000 ;
-      RECT 355.800 6.000 357.000 538.000 ;
-      RECT 365.400 6.000 366.600 538.000 ;
-      RECT 375.000 6.000 376.200 538.000 ;
-      RECT 384.600 6.000 385.800 538.000 ;
-      RECT 394.200 6.000 395.400 538.000 ;
-      RECT 403.800 6.000 405.000 538.000 ;
-      RECT 413.400 6.000 414.600 538.000 ;
-      RECT 423.000 6.000 424.200 538.000 ;
-      RECT 432.600 6.000 433.800 538.000 ;
-      RECT 442.200 6.000 443.400 538.000 ;
-      RECT 451.800 6.000 453.000 538.000 ;
-      RECT 461.400 6.000 462.600 538.000 ;
-      RECT 471.000 6.000 472.200 538.000 ;
-      RECT 480.600 6.000 481.800 538.000 ;
-      RECT 490.200 6.000 491.400 538.000 ;
-      RECT 499.800 6.000 501.000 538.000 ;
-      RECT 509.400 6.000 510.600 538.000 ;
-      RECT 519.000 6.000 520.200 538.000 ;
-      RECT 528.600 6.000 529.800 538.000 ;
-      RECT 538.200 6.000 539.400 538.000 ;
-      RECT 547.800 6.000 549.000 538.000 ;
-      RECT 557.400 6.000 558.600 538.000 ;
+      LAYER metal4 ;
+      RECT 2.380 1.400 2.660 254.800 ;
+      RECT 4.620 1.400 4.900 254.800 ;
+      RECT 6.860 1.400 7.140 254.800 ;
+      RECT 9.100 1.400 9.380 254.800 ;
+      RECT 11.340 1.400 11.620 254.800 ;
+      RECT 13.580 1.400 13.860 254.800 ;
+      RECT 15.820 1.400 16.100 254.800 ;
+      RECT 18.060 1.400 18.340 254.800 ;
+      RECT 20.300 1.400 20.580 254.800 ;
+      RECT 22.540 1.400 22.820 254.800 ;
+      RECT 24.780 1.400 25.060 254.800 ;
+      RECT 27.020 1.400 27.300 254.800 ;
+      RECT 29.260 1.400 29.540 254.800 ;
+      RECT 31.500 1.400 31.780 254.800 ;
+      RECT 33.740 1.400 34.020 254.800 ;
+      RECT 35.980 1.400 36.260 254.800 ;
+      RECT 38.220 1.400 38.500 254.800 ;
+      RECT 40.460 1.400 40.740 254.800 ;
+      RECT 42.700 1.400 42.980 254.800 ;
+      RECT 44.940 1.400 45.220 254.800 ;
+      RECT 47.180 1.400 47.460 254.800 ;
+      RECT 49.420 1.400 49.700 254.800 ;
+      RECT 51.660 1.400 51.940 254.800 ;
+      RECT 53.900 1.400 54.180 254.800 ;
+      RECT 56.140 1.400 56.420 254.800 ;
+      RECT 58.380 1.400 58.660 254.800 ;
+      RECT 60.620 1.400 60.900 254.800 ;
+      RECT 62.860 1.400 63.140 254.800 ;
+      RECT 65.100 1.400 65.380 254.800 ;
+      RECT 67.340 1.400 67.620 254.800 ;
+      RECT 69.580 1.400 69.860 254.800 ;
+      RECT 71.820 1.400 72.100 254.800 ;
+      RECT 74.060 1.400 74.340 254.800 ;
+      RECT 76.300 1.400 76.580 254.800 ;
+      RECT 78.540 1.400 78.820 254.800 ;
+      RECT 80.780 1.400 81.060 254.800 ;
+      RECT 83.020 1.400 83.300 254.800 ;
+      RECT 85.260 1.400 85.540 254.800 ;
+      RECT 87.500 1.400 87.780 254.800 ;
+      RECT 89.740 1.400 90.020 254.800 ;
+      RECT 91.980 1.400 92.260 254.800 ;
+      RECT 94.220 1.400 94.500 254.800 ;
+      RECT 96.460 1.400 96.740 254.800 ;
+      RECT 98.700 1.400 98.980 254.800 ;
+      RECT 100.940 1.400 101.220 254.800 ;
+      RECT 103.180 1.400 103.460 254.800 ;
+      RECT 105.420 1.400 105.700 254.800 ;
+      RECT 107.660 1.400 107.940 254.800 ;
+      RECT 109.900 1.400 110.180 254.800 ;
+      RECT 112.140 1.400 112.420 254.800 ;
     END
   END VDD
   OBS
-    LAYER met1 ;
-    RECT 0 0 568.100 544.000 ;
-    LAYER met2 ;
-    RECT 0 0 568.100 544.000 ;
-    LAYER met3 ;
-    RECT 0.800 0 568.100 544.000 ;
-    LAYER met4 ;
-    RECT 0 0 568.100 544.000 ;
+    LAYER metal1 ;
+    RECT 0 0 114.000 256.200 ;
+    LAYER metal2 ;
+    RECT 0 0 114.000 256.200 ;
+    LAYER metal3 ;
+    RECT 0.070 0 114.000 256.200 ;
+    LAYER metal4 ;
+    RECT 0 0 114.000 256.200 ;
     LAYER OVERLAP ;
-    RECT 0 0 568.100 544.000 ;
+    RECT 0 0 114.000 256.200 ;
   END
-END liteeth_32x384_32_sram
+END liteeth_1rw1r_32w384d_8_sram
 
 END LIBRARY

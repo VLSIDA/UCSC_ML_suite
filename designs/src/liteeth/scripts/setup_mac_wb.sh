@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # liteeth_mac_wb_mii
 echo "Setting up liteeth_mac_wb_mii..."
 rm -rf build
@@ -9,7 +11,7 @@ cp -r build ../builds/mac_wb_build
 sed -i 's/^module liteeth_core (/module liteeth_mac_wb_mii (/' ../liteeth_mac_wb_mii.v
 
 sed -i '/\/\/ Memory mem: 383-words x 32-bit/,/assign wishbone_interface_sram0_dat_r = mem_dat1;/c\
-liteeth_32x384_32_sram u_tx_buffer_0 (\
+liteeth_1rw1r_32w384d_32_sram u_tx_buffer_0 (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
     .gnd(gnd),\
@@ -30,7 +32,7 @@ liteeth_32x384_32_sram u_tx_buffer_0 (\
 );' ../liteeth_mac_wb_mii.v
 
 sed -i '/\/\/ Memory mem_1: 383-words x 32-bit/,/assign wishbone_interface_sram1_dat_r = mem_1_dat1;/c\
-liteeth_32x384_32_sram u_tx_buffer_1 (\
+liteeth_1rw1r_32w384d_32_sram u_tx_buffer_1 (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
     .gnd(gnd),\
@@ -51,7 +53,7 @@ liteeth_32x384_32_sram u_tx_buffer_1 (\
 );' ../liteeth_mac_wb_mii.v
 
 sed -i '/^\/\/ Memory mem_2: 383-words x 32-bit/,/^assign wishbone_interface_sram2_dat_r = mem_2\[mem_2_adr1\];$/c\
-liteeth_32x384_8_sram u_rx_buffer_0 (\
+liteeth_1rw1r_32w384d_8_sram u_rx_buffer_0 (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
     .gnd(gnd),\
@@ -70,7 +72,7 @@ liteeth_32x384_8_sram u_rx_buffer_0 (\
 );' ../liteeth_mac_wb_mii.v
 
 sed -i '/^\/\/ Memory mem_3: 383-words x 32-bit/,/^assign wishbone_interface_sram3_dat_r = mem_3\[mem_3_adr1\];$/c\
-liteeth_32x384_8_sram u_rx_buffer_1 (\
+liteeth_1rw1r_32w384d_8_sram u_rx_buffer_1 (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
     .gnd(gnd),\

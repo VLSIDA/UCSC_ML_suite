@@ -22,19 +22,19 @@ $(GENERATED_FILE): do-setup $(YML_FILE)
 
 export VERILOG_FILES = $(DESIGN_HOME)/src/liteeth/liteeth_mac_axi_mii.v \
                        $(DESIGN_HOME)/src/liteeth/xilinx2asic/FDPE.v \
-                       $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_32_sram.v \
-                       $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_8_sram.v
+                       $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_1rw1r_32w384d_32_sram.v \
+                       $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_1rw1r_32w384d_8_sram.v
 
 export SDC_FILE      = $(DESIGN_HOME)/$(PLATFORM)/liteeth/liteeth_mac_axi_mii/constraint.sdc
 export MACRO_PLACEMENT_TCL = $(DESIGN_HOME)/$(PLATFORM)/liteeth/liteeth_mac_axi_mii/macro_placement.tcl
 
 export ADDITIONAL_LEFS = \
-  $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_32_sram.lef \
-  $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_8_sram.lef
+  $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_1rw1r_32w384d_32_sram.lef \
+  $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_1rw1r_32w384d_8_sram.lef
 
 export ADDITIONAL_LIBS = \
-  $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_32_sram.lib \
-  $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_8_sram.lib
+  $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_1rw1r_32w384d_32_sram.lib \
+  $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_1rw1r_32w384d_8_sram.lib
 
 
 export DIE_AREA = 0 0 1630 1630
