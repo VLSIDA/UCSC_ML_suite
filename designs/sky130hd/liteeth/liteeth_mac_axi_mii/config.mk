@@ -21,7 +21,7 @@ $(GENERATED_FILE): do-setup $(YML_FILE)
 	echo "Done."
 
 export VERILOG_FILES = $(DESIGN_HOME)/src/liteeth/liteeth_mac_axi_mii.v \
-                       $(DESIGN_HOME)/src/liteeth/FDPE.v \
+                       $(DESIGN_HOME)/src/liteeth/xilinx2asic/FDPE.v \
                        $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_32_sram.v \
                        $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_8_sram.v
 
@@ -37,16 +37,12 @@ export ADDITIONAL_LIBS = \
   $(DESIGN_HOME)/src/liteeth/macros/sky130hd/liteeth_32x384_8_sram.lib
 
 
-### Parameters ###
 export DIE_AREA = 0 0 1630 1630
 export CORE_AREA = 30 30 1600 1600
-# export CORE_UTILIZATION = 30
-export PLACE_DENSITY = 0.3
+export PLACE_DENSITY = 0.2
 
-export CAP_MARGIN = 0.25
-export SLEW_MARGIN = 0.4
-export CELL_PAD_IN_SITES_GLOBAL_PLACEMENT = 2
-export CELL_PAD_IN_SITES_DETAIL_PLACEMENT = 2
+export CAP_MARGIN = 0.02
+export SLEW_MARGIN = 0.02
 export MACRO_PLACE_HALO = 40 40
 
 export ROUTING_LAYER_ADJUSTMENT = 0.4

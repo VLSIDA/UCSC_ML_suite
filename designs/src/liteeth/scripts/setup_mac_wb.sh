@@ -3,6 +3,9 @@ echo "Setting up liteeth_mac_wb_mii..."
 rm -rf build
 python ../repo/liteeth/gen.py ../repo/examples/wishbone_mii.yml
 cp build/gateware/liteeth_core.v ../liteeth_mac_wb_mii.v
+mkdir ../builds
+cp -r build ../builds/mac_wb_build
+
 sed -i 's/^module liteeth_core (/module liteeth_mac_wb_mii (/' ../liteeth_mac_wb_mii.v
 
 sed -i '/\/\/ Memory mem: 383-words x 32-bit/,/assign wishbone_interface_sram0_dat_r = mem_dat1;/c\

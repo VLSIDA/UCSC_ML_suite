@@ -1,9 +1,10 @@
-
 # liteeth_mac_axi_mii
 echo "Setting up liteeth_mac_axi_mii..."
 rm -rf build
 python ../repo/liteeth/gen.py ../repo/examples/axi-lite-mii.yml
 cp build/gateware/liteeth_core.v ../liteeth_mac_axi_mii.v
+mkdir ../builds
+cp -r build ../builds/mac_axi_build
 
 sed -i 's/^module liteeth_core (/module liteeth_mac_axi_mii (/' ../liteeth_mac_axi_mii.v
 
