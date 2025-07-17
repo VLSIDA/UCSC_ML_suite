@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # liteeth_mac_axi_mii
 echo "Setting up liteeth_mac_axi_mii..."
 rm -rf build
