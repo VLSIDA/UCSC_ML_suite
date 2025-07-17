@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#!/bin/bash
+
 # liteeth_mac_wb_mii
 echo "Setting up liteeth_mac_wb_mii..."
 rm -rf build

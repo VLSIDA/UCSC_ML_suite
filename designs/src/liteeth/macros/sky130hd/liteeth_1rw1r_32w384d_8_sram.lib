@@ -1,8 +1,8 @@
-library(liteeth_32x384_32_sram) {
+library(liteeth_1rw1r_32w384d_8_sram) {
     technology (cmos);
     delay_model : table_lookup;
     revision : 1.0;
-    date : "2025-07-07 01:31:54Z";
+    date : "2025-07-16 08:19:28Z";
     comment : "SRAM";
     time_unit : "1ns";
     voltage_unit : "1V";
@@ -45,32 +45,32 @@ library(liteeth_32x384_32_sram) {
     output_threshold_pct_rise : 50.000;
 
 
-    lu_table_template(liteeth_32x384_32_sram_mem_out_delay_template) {
+    lu_table_template(liteeth_1rw1r_32w384d_8_sram_mem_out_delay_template) {
         variable_1 : input_net_transition;
         variable_2 : total_output_net_capacitance;
             index_1 ("1000, 1001");
             index_2 ("1000, 1001");
     }
-    lu_table_template(liteeth_32x384_32_sram_mem_out_slew_template) {
+    lu_table_template(liteeth_1rw1r_32w384d_8_sram_mem_out_slew_template) {
         variable_1 : total_output_net_capacitance;
             index_1 ("1000, 1001");
     }
-    lu_table_template(liteeth_32x384_32_sram_constraint_template) {
+    lu_table_template(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
         variable_1 : related_pin_transition;
         variable_2 : constrained_pin_transition;
             index_1 ("1000, 1001");
             index_2 ("1000, 1001");
     }
-    power_lut_template(liteeth_32x384_32_sram_energy_template_clkslew) {
+    power_lut_template(liteeth_1rw1r_32w384d_8_sram_energy_template_clkslew) {
         variable_1 : input_transition_time;
             index_1 ("1000, 1001");
     }
-    power_lut_template(liteeth_32x384_32_sram_energy_template_sigslew) {
+    power_lut_template(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
         variable_1 : input_transition_time;
             index_1 ("1000, 1001");
     }
     library_features(report_delay_calculation);
-    type (liteeth_32x384_32_sram_DATA) {
+    type (liteeth_1rw1r_32w384d_8_sram_DATA) {
         base_type : array ;
         data_type : bit ;
         bit_width : 32;
@@ -78,7 +78,7 @@ library(liteeth_32x384_32_sram) {
         bit_to : 0 ;
         downto : true ;
     }
-    type (liteeth_32x384_32_sram_ADDRESS) {
+    type (liteeth_1rw1r_32w384d_8_sram_ADDRESS) {
         base_type : array ;
         data_type : bit ;
         bit_width : 9;
@@ -86,7 +86,15 @@ library(liteeth_32x384_32_sram) {
         bit_to : 0 ;
         downto : true ;
     }
-cell(liteeth_32x384_32_sram) {
+    type (liteeth_1rw1r_32w384d_8_sram_WMASK) {
+        base_type : array ;
+        data_type : bit ;
+        bit_width : 4;
+        bit_from : 3;
+        bit_to : 0 ;
+        downto : true ;
+    }
+cell(liteeth_1rw1r_32w384d_8_sram) {
     area : 309046.400;
     interface_timing : true;
     memory() {
@@ -100,11 +108,11 @@ cell(liteeth_32x384_32_sram) {
         clock : true;
         min_period           : 0.466 ;
         internal_power(){
-            rise_power(liteeth_32x384_32_sram_energy_template_clkslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_clkslew) {
                 index_1 ("0.044, 1.110");
                 values ("21.832, 21.832")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_clkslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_clkslew) {
                 index_1 ("0.044, 1.110");
                 values ("21.832, 21.832")
             }
@@ -118,7 +126,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk0;
             timing_type : setup_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -126,7 +134,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -138,7 +146,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk0;
             timing_type : hold_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -146,7 +154,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -156,11 +164,11 @@ cell(liteeth_32x384_32_sram) {
             }
         }
         internal_power(){
-            rise_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
@@ -173,7 +181,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk0;
             timing_type : setup_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -181,7 +189,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -193,7 +201,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk0;
             timing_type : hold_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -201,7 +209,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -211,24 +219,24 @@ cell(liteeth_32x384_32_sram) {
             }
         }
         internal_power(){
-            rise_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
         }
     }
     bus(addr0)   {
-        bus_type : liteeth_32x384_32_sram_ADDRESS;
+        bus_type : liteeth_1rw1r_32w384d_8_sram_ADDRESS;
         direction : input;
         capacitance : 0.005;
         timing() {
             related_pin : clk0;
             timing_type : setup_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -236,7 +244,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -248,7 +256,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk0;
             timing_type : hold_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -256,7 +264,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -266,18 +274,18 @@ cell(liteeth_32x384_32_sram) {
             }
         }
         internal_power(){
-            rise_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
         }
     }
     bus(din0)   {
-        bus_type : liteeth_32x384_32_sram_DATA;
+        bus_type : liteeth_1rw1r_32w384d_8_sram_DATA;
         memory_write() {
             address : addr0;
             clocked_on : "clk0";
@@ -287,7 +295,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk0;
             timing_type : setup_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -295,7 +303,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -307,7 +315,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk0;
             timing_type : hold_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -315,7 +323,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -326,29 +334,96 @@ cell(liteeth_32x384_32_sram) {
         }
         internal_power(){
             when : "(web0)";
-            rise_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
         }
         internal_power(){
             when : "(! (web0) )";
-            rise_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
+                index_1 ("0.044, 1.110");
+                values ("0.218, 0.218")
+            }
+        }
+    }
+    bus(wmask0)   {
+        bus_type : liteeth_1rw1r_32w384d_8_sram_WMASK;
+        direction : input;
+        capacitance : 0.005;
+        timing() {
+            related_pin : clk0;
+            timing_type : setup_rising ;
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
+                index_1 ("0.044, 1.110");
+                index_2 ("0.044, 1.110");
+                values ( \
+                  "0.050, 0.050", \
+                  "0.050, 0.050" \
+                )
+            }
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
+                index_1 ("0.044, 1.110");
+                index_2 ("0.044, 1.110");
+                values ( \
+                  "0.050, 0.050", \
+                  "0.050, 0.050" \
+                )
+            }
+        } 
+        timing() {
+            related_pin : clk0;
+            timing_type : hold_rising ;
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
+                index_1 ("0.044, 1.110");
+                index_2 ("0.044, 1.110");
+                values ( \
+                  "0.050, 0.050", \
+                  "0.050, 0.050" \
+                )
+            }
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
+                index_1 ("0.044, 1.110");
+                index_2 ("0.044, 1.110");
+                values ( \
+                  "0.050, 0.050", \
+                  "0.050, 0.050" \
+                )
+            }
+        }
+        internal_power(){
+            when : "(web0)";
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
+                index_1 ("0.044, 1.110");
+                values ("0.218, 0.218")
+            }
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
+                index_1 ("0.044, 1.110");
+                values ("0.218, 0.218")
+            }
+        }
+        internal_power(){
+            when : "(! (web0) )";
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
+                index_1 ("0.044, 1.110");
+                values ("0.218, 0.218")
+            }
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
         }
     }
     bus(dout0)   {
-        bus_type : liteeth_32x384_32_sram_DATA;
+        bus_type : liteeth_1rw1r_32w384d_8_sram_DATA;
         direction : output;
         max_capacitance : 0.500;
         memory_read() {
@@ -358,7 +433,7 @@ cell(liteeth_32x384_32_sram) {
             related_pin : "clk0" ;
             timing_type : rising_edge;
             timing_sense : non_unate;
-            cell_rise(liteeth_32x384_32_sram_mem_out_delay_template) {
+            cell_rise(liteeth_1rw1r_32w384d_8_sram_mem_out_delay_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.005, 0.500");
                 values ( \
@@ -366,7 +441,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.673, 0.673" \
                 )
             }
-            cell_fall(liteeth_32x384_32_sram_mem_out_delay_template) {
+            cell_fall(liteeth_1rw1r_32w384d_8_sram_mem_out_delay_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.005, 0.500");
                 values ( \
@@ -374,11 +449,11 @@ cell(liteeth_32x384_32_sram) {
                   "0.673, 0.673" \
                 )
             }
-            rise_transition(liteeth_32x384_32_sram_mem_out_slew_template) {
+            rise_transition(liteeth_1rw1r_32w384d_8_sram_mem_out_slew_template) {
                 index_1 ("0.005, 0.500");
                 values ("0.044, 1.110")
             }
-            fall_transition(liteeth_32x384_32_sram_mem_out_slew_template) {
+            fall_transition(liteeth_1rw1r_32w384d_8_sram_mem_out_slew_template) {
                 index_1 ("0.005, 0.500");
                 values ("0.044, 1.110")
             }
@@ -390,11 +465,11 @@ cell(liteeth_32x384_32_sram) {
         clock : true;
         min_period           : 0.466 ;
         internal_power(){
-            rise_power(liteeth_32x384_32_sram_energy_template_clkslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_clkslew) {
                 index_1 ("0.044, 1.110");
                 values ("21.832, 21.832")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_clkslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_clkslew) {
                 index_1 ("0.044, 1.110");
                 values ("21.832, 21.832")
             }
@@ -408,7 +483,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk1;
             timing_type : setup_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -416,7 +491,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -428,7 +503,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk1;
             timing_type : hold_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -436,7 +511,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -446,24 +521,24 @@ cell(liteeth_32x384_32_sram) {
             }
         }
         internal_power(){
-            rise_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
         }
     }
     bus(addr1)   {
-        bus_type : liteeth_32x384_32_sram_ADDRESS;
+        bus_type : liteeth_1rw1r_32w384d_8_sram_ADDRESS;
         direction : input;
         capacitance : 0.005;
         timing() {
             related_pin : clk1;
             timing_type : setup_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -471,7 +546,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -483,7 +558,7 @@ cell(liteeth_32x384_32_sram) {
         timing() {
             related_pin : clk1;
             timing_type : hold_rising ;
-            rise_constraint(liteeth_32x384_32_sram_constraint_template) {
+            rise_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -491,7 +566,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.050, 0.050" \
                 )
             }
-            fall_constraint(liteeth_32x384_32_sram_constraint_template) {
+            fall_constraint(liteeth_1rw1r_32w384d_8_sram_constraint_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.044, 1.110");
                 values ( \
@@ -501,18 +576,18 @@ cell(liteeth_32x384_32_sram) {
             }
         }
         internal_power(){
-            rise_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            rise_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
-            fall_power(liteeth_32x384_32_sram_energy_template_sigslew) {
+            fall_power(liteeth_1rw1r_32w384d_8_sram_energy_template_sigslew) {
                 index_1 ("0.044, 1.110");
                 values ("0.218, 0.218")
             }
         }
     }
     bus(dout1)   {
-        bus_type : liteeth_32x384_32_sram_DATA;
+        bus_type : liteeth_1rw1r_32w384d_8_sram_DATA;
         direction : output;
         max_capacitance : 0.500;
         memory_read() {
@@ -522,7 +597,7 @@ cell(liteeth_32x384_32_sram) {
             related_pin : "clk1" ;
             timing_type : rising_edge;
             timing_sense : non_unate;
-            cell_rise(liteeth_32x384_32_sram_mem_out_delay_template) {
+            cell_rise(liteeth_1rw1r_32w384d_8_sram_mem_out_delay_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.005, 0.500");
                 values ( \
@@ -530,7 +605,7 @@ cell(liteeth_32x384_32_sram) {
                   "0.673, 0.673" \
                 )
             }
-            cell_fall(liteeth_32x384_32_sram_mem_out_delay_template) {
+            cell_fall(liteeth_1rw1r_32w384d_8_sram_mem_out_delay_template) {
                 index_1 ("0.044, 1.110");
                 index_2 ("0.005, 0.500");
                 values ( \
@@ -538,11 +613,11 @@ cell(liteeth_32x384_32_sram) {
                   "0.673, 0.673" \
                 )
             }
-            rise_transition(liteeth_32x384_32_sram_mem_out_slew_template) {
+            rise_transition(liteeth_1rw1r_32w384d_8_sram_mem_out_slew_template) {
                 index_1 ("0.005, 0.500");
                 values ("0.044, 1.110")
             }
-            fall_transition(liteeth_32x384_32_sram_mem_out_slew_template) {
+            fall_transition(liteeth_1rw1r_32w384d_8_sram_mem_out_slew_template) {
                 index_1 ("0.005, 0.500");
                 values ("0.044, 1.110")
             }
