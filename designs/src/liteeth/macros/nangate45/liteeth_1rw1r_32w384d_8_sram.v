@@ -1,4 +1,4 @@
-module liteeth_32x384_8_sram (
+module liteeth_1rw1r_32w384d_8_sram (
 `ifdef USE_POWER_PINS
     vdd,
     gnd,
@@ -56,6 +56,7 @@ module liteeth_32x384_8_sram (
       if (!csb0 && !web0) begin  // Active low chip select
          if (BITS == 32) begin  // Active low write enable - writing when web0=0
             if (wmask0[0])
+               mem[addr0][7:0] <= din0[7:0];
             if (wmask0[1])
               mem[addr0][15:8] <= din0[15:8];
             if (wmask0[2])

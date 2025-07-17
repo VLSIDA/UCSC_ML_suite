@@ -1,4 +1,4 @@
-module liteeth_42x32_sram (
+module liteeth_1rw1r_32w384d_32_sram (
 `ifdef USE_POWER_PINS
     vdd,
     gnd,
@@ -17,9 +17,9 @@ module liteeth_42x32_sram (
     dout1
 );
 
-   parameter BITS = 42;
-   parameter WORD_DEPTH = 32;
-   parameter ADDR_WIDTH = 5;
+   parameter BITS = 32;
+   parameter WORD_DEPTH = 384;
+   parameter ADDR_WIDTH = 9;
 
 `ifdef USE_POWER_PINS
    inout vdd;
@@ -45,23 +45,22 @@ module liteeth_42x32_sram (
 
    integer i;
 
-// Write mode: read_first
-   // Port 0: Read-Write Port with Read-First behavior
-   reg [BITS-1:0] dout0_reg;
+// Write mode: write_first
+   // Port 0: Read-Write Port with Write-First behavior
+   reg [ADDR_WIDTH-1:0] addr0_reg;
    
    always @(posedge clk0) begin
-      if (!csb0) begin  // Active low chip select
-         // Read-first: capture data before potential write
-         dout0_reg <= mem[addr0];
-         
-         if (!web0) begin  // Active low write enable - writing when web0=0
+      if (!csb0 && !web0) begin  // Active low chip select
+         if (BITS == 32) begin  // Active low write enable - writing when web0=0
             mem[addr0] <= din0;
          end
+         // Always register the address (for write-first behavior)
+         addr0_reg <= addr0;
       end
    end
    
-   // Read-first: output registered old data
-   assign dout0 = dout0_reg;
+   // Write-first read: output data from registered address
+   assign dout0 = mem[addr0_reg];
 
    // Port 1: Read-Only Port
    reg [BITS-1:0] dout1_reg;
