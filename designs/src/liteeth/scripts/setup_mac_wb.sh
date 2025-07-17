@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # liteeth_mac_wb_mii
 echo "Setting up liteeth_mac_wb_mii..."
 rm -rf build
@@ -8,7 +10,12 @@ cp -r build ../builds/mac_wb_build
 
 sed -i 's/^module liteeth_core (/module liteeth_mac_wb_mii (/' ../liteeth_mac_wb_mii.v
 
+# Replace mem (32-bit x 384-word)
 sed -i '/\/\/ Memory mem: 383-words x 32-bit/,/assign wishbone_interface_sram0_dat_r = mem_dat1;/c\
+\/\/ Modified Memory mem: 384-words x 32-bit \
+\/\/------------------------------------------------------------------------------\
+\/\/ Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 32 \
+\/\/ Port 1 | Read: Sync  | Write: ---- | \
 liteeth_32x384_32_sram u_tx_buffer_0 (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
@@ -29,7 +36,12 @@ liteeth_32x384_32_sram u_tx_buffer_0 (\
     .dout1(wishbone_interface_sram0_dat_r)\
 );' ../liteeth_mac_wb_mii.v
 
+# Replace mem_1 (32-bit x 384-word)
 sed -i '/\/\/ Memory mem_1: 383-words x 32-bit/,/assign wishbone_interface_sram1_dat_r = mem_1_dat1;/c\
+\/\/ Modified Memory mem_1: 384-words x 32-bit \
+\/\/------------------------------------------------------------------------------\
+\/\/ Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 32 \
+\/\/ Port 1 | Read: Sync  | Write: ---- | \
 liteeth_32x384_32_sram u_tx_buffer_1 (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
@@ -50,7 +62,12 @@ liteeth_32x384_32_sram u_tx_buffer_1 (\
     .dout1(wishbone_interface_sram1_dat_r)\
 );' ../liteeth_mac_wb_mii.v
 
+# Replace mem_2 (32-bit x 384-word)
 sed -i '/^\/\/ Memory mem_2: 383-words x 32-bit/,/^assign wishbone_interface_sram2_dat_r = mem_2\[mem_2_adr1\];$/c\
+\/\/ Modified Memory mem_2: 384-words x 32-bit \
+\/\/------------------------------------------------------------------------------\
+\/\/ Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 8 \
+\/\/ Port 1 | Read: Sync  | Write: ---- | \
 liteeth_32x384_8_sram u_rx_buffer_0 (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
@@ -69,7 +86,12 @@ liteeth_32x384_8_sram u_rx_buffer_0 (\
     .dout1(wishbone_interface_reader_memory0_dat_r)\
 );' ../liteeth_mac_wb_mii.v
 
+# Replace mem_3 (32-bit x 384-word)
 sed -i '/^\/\/ Memory mem_3: 383-words x 32-bit/,/^assign wishbone_interface_sram3_dat_r = mem_3\[mem_3_adr1\];$/c\
+\/\/ Modified Memory mem_3: 384-words x 32-bit \
+\/\/------------------------------------------------------------------------------\
+\/\/ Port 0 | Read: Sync  | Write: Sync | Mode: Write-First | Write-Granularity: 8 \
+\/\/ Port 1 | Read: Sync  | Write: ---- | \
 liteeth_32x384_8_sram u_rx_buffer_1 (\
 `ifdef USE_POWER_PINS\
     .vdd(vdd),\
@@ -87,47 +109,5 @@ liteeth_32x384_8_sram u_rx_buffer_1 (\
     .addr1(wishbone_interface_reader_memory1_adr),\
     .dout1(wishbone_interface_reader_memory1_dat_r)\
 );' ../liteeth_mac_wb_mii.v
-
-# sed -i '/^\/\/ Memory storage_2: 32-words x 42-bit/,/^assign core_rx_cdc_cdc_rdport_dat_r = storage_2_dat1;$/c\
-# liteeth_48x32_sram u_rx_cdc_storage (\
-# `ifdef USE_POWER_PINS\
-#     .vdd(vdd),\
-#     .gnd(gnd),\
-# `endif\
-#     // Port 0: RW (Write/Read Port - eth_rx_clk domain)\
-#     .clk0(eth_rx_clk),\
-#     .csb0(1'\''b0),                                    // Always enabled\
-#     .web0(~core_rx_cdc_cdc_wrport_we),                // Active low write enable\
-#     .addr0(core_rx_cdc_cdc_wrport_adr),\
-#     .din0(core_rx_cdc_cdc_wrport_dat_w),\
-#     .dout0(core_rx_cdc_cdc_wrport_dat_r),\
-#     \
-#     // Port 1: R (Read-Only Port - sys_clk domain)\
-#     .clk1(sys_clk),\
-#     .csb1(1'\''b0),                                    // Always enabled\
-#     .addr1(core_rx_cdc_cdc_rdport_adr),\
-#     .dout1(core_rx_cdc_cdc_rdport_dat_r)\
-# );' ../liteeth_mac_wb_mii.v
-
-# sed -i '/^\/\/ Memory storage: 32-words x 42-bit/,/^assign core_tx_cdc_cdc_rdport_dat_r = storage_dat1;$/c\
-# liteeth_48x32_sram u_tx_cdc_storage (\
-# `ifdef USE_POWER_PINS\
-#     .vdd(vdd),\
-#     .gnd(gnd),\
-# `endif\
-#     // Port 0: RW (Write/Read Port - sys_clk domain)\
-#     .clk0(sys_clk),\
-#     .csb0(1'\''b0),                                    // Always enabled\
-#     .web0(~core_tx_cdc_cdc_wrport_we),                // Active low write enable\
-#     .addr0(core_tx_cdc_cdc_wrport_adr),\
-#     .din0(core_tx_cdc_cdc_wrport_dat_w),\
-#     .dout0(core_tx_cdc_cdc_wrport_dat_r),\
-#     \
-#     // Port 1: R (Read-Only Port - eth_tx_clk domain)\
-#     .clk1(eth_tx_clk),\
-#     .csb1(1'\''b0),                                    // Always enabled\
-#     .addr1(core_tx_cdc_cdc_rdport_adr),\
-#     .dout1(core_tx_cdc_cdc_rdport_dat_r)\
-# );' ../liteeth_mac_wb_mii.v
 
 echo "Successfully setting up liteeth_mac_wb_mii"
