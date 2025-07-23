@@ -1,24 +1,6 @@
 export DESIGN_NAME = liteeth_mac_axi_mii
-export DESIGN_DIRECTORY = liteeth
+export DESIGN_NICKNAME = liteeth
 export PLATFORM    = nangate45
-
-export LITEETH_DIR = $(BENCH_DESIGN_HOME)/src/liteeth
-
-REPO_LICENSE = $(BENCH_DESIGN_HOME)/src/$(DESIGN_DIRECTORY)/repo/LICENSE
-LICENSE_FILE = $(BENCH_DESIGN_HOME)/src/$(DESIGN_DIRECTORY)/LICENSE
-YML_FILE = $(BENCH_DESIGN_HOME)/src/liteeth/repo/examples/axi-lite-mii.yml
-GENERATED_FILE = $(BENCH_DESIGN_HOME)/src/liteeth/liteeth_mac_axi_mii.v
-
-$(GENERATED_FILE): do-setup $(YML_FILE)
-	echo "Copying $(REPO_LICENSE)  ->  $(LICENSE_FILE)"
-	cp -u $(REPO_LICENSE) $(LICENSE_FILE)
-	echo "Activating python environment and generating Verilog files..."
-	cd $(LITEETH_DIR) && \
-	source .venv/bin/activate && \
-	cd scripts && \
-	[ ! -f "../liteeth_mac_axi_mii.v" ] && bash setup_mac_axi.sh; \
-	echo "Finished verilog file setup."
-	echo "Done."
 
 export VERILOG_FILES = $(DESIGN_HOME)/src/liteeth/liteeth_mac_axi_mii.v \
                        $(DESIGN_HOME)/src/liteeth/xilinx2asic/FDPE.v \
