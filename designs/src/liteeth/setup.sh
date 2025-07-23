@@ -5,18 +5,15 @@
 echo "Starting Setup..."
 
 # Change to the script's directory to ensure .venv is created in the right place
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+export LITEETH_REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/repo" && pwd)"
+export LITEETH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$LITEETH_DIR" && echo "Working in directory: $(pwd)"
 
-echo "Working in directory: $(pwd)"
-
-# Create virtual environment if it doesn't exist
 if [ ! -d ".venv" ]; then
     echo "Creating virtual environment..."
     python3 -m venv .venv
 fi
 
-# Always activate the virtual environment
 echo "Activating virtual environment..."
 source .venv/bin/activate
 
@@ -29,13 +26,10 @@ else
     echo "Warning: Cannot set git config (permission denied), skipping..."
 fi
 
-
-
 check_package() {
     python3 -c "import $1" 2>/dev/null
 }
 
-# Check if pip 25.1.1 is already installed
 if pip --version 2>/dev/null | grep -q "25.1.1"; then
     echo "Pip 25.1.1 is already installed, skipping upgrade..."
 else
@@ -43,7 +37,6 @@ else
     pip install --upgrade pip --no-cache-dir
 fi
 
-# Check and install each package with progress
 echo "Checking and installing Python packages..."
 
 if ! check_package yaml; then
@@ -71,31 +64,29 @@ if ! check_package liteiclink; then
     pip install --no-cache-dir git+https://github.com/enjoy-digital/liteiclink.git 
 fi
 
+REPO_LICENSE=$LITEETH_REPO/LICENSE
+LICENSE_FILE=$LITEETH_DIR/LICENSE
+
+if [ ! -f $LICENSE_FILE ]; then
+    echo "Copying $REPO_LICENSE  ->  $LICENSE_FILE"
+    cp -u $REPO_LICENSE $LICENSE_FILE
+fi
+
 echo "Finished Initial Setup"
 
-# SETTING UP CORES
+# Ensure build is cleaned
+rm -rf $LITEETH_DIR/build
+rm -rf $LITEETH_DIR/scripts/build
 
-rm -rf build
-rm -rf scripts/build
+cd "$LITEETH_DIR/scripts"
 
-# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# cd "$SCRIPT_DIR/scripts"
-
-# [ ! -f "../liteeth_mac_axi_mii.v" ] && bash setup_mac_axi.sh
-# [ ! -f "../liteeth_mac_wb_mii.v" ] && bash setup_mac_wb.sh  
+[ ! -f "../liteeth_mac_axi_mii.v" ] && bash setup_mac_axi.sh
+[ ! -f "../liteeth_mac_wb_mii.v" ] && bash setup_mac_wb.sh  
 
 # # Cores left to be modified
 # [ ! -f "../liteeth_udp_stream_sgmii.v" ] && bash setup_udp_sgmii.sh
 # [ ! -f "../liteeth_udp_stream_rgmii.v" ] && bash setup_udp_rgmii.sh
 # [ ! -f "../liteeth_udp_raw_rgmii.v" ] && bash setup_udp_raw.sh
 # [ ! -f "../liteeth_udp_gth_sgmii.v" ] && bash setup_usp_gth.sh
-
-# bash setup_udp_sgmii.sh && \
-# bash setup_udp_rgmii.sh && \
-# bash setup_udp_raw.sh && \
-# bash setup_usp_gth.sh && \
-rm -rf build
-
 
 echo "setup successful"
