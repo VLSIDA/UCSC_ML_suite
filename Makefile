@@ -14,9 +14,9 @@ do-setup:
 
 .PHONY: fresh
 
-fresh: do-setup all
+fresh: do-setup finish
 
-ifeq ($(wildcard $(BENCH_DESIGN_HOME)/src/$(DESIGN_NICKNAME)/repo),)
+ifeq ($(wildcard $(BENCH_DESIGN_HOME)/src/$(DESIGN_NICKNAME)/repo/),)
 .DEFAULT_GOAL := fresh
 endif
 
