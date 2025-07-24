@@ -1,7 +1,6 @@
 #!/bin/bash
-git submodule init
-git submodule update --recursive
+git submodule init OpenROAD-flow-scripts
+git submodule update --recursive --depth 1 --recommend-shallow OpenROAD-flow-scripts
 ln -s OpenROAD-flow-scripts/flow/util .
 ln -s OpenROAD-flow-scripts/flow/scripts .
 ln -s OpenROAD-flow-scripts/flow/platforms .
-ln -s OpenROAD-flow-scripts/flow/Makefile .
