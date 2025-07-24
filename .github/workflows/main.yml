@@ -11,7 +11,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run setup script
-        run: ./setup.sh            
+        run: ./setup.sh
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
       - name: Determine ORFS tag
         id: get_tag
@@ -33,7 +38,7 @@ jobs:
                 cd UCSC_ML_suite
 
                 # Only run a single design for testing
-                # make DESIGN_CONFIG=./designs/nangate45/lfsr_top/config.mk
+                make DESIGN_CONFIG=./designs/nangate45/lfsr_top/config.mk
 
                 configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
 
@@ -41,7 +46,49 @@ jobs:
                 echo "Running design: $config"
 
                 # Uncomment the line below to actually run the designs
-                make DESIGN_CONFIG="$config"
+                # make DESIGN_CONFIG="$config"
 
                 done
             '
+
+      - name: Extract and update results
+        run: |
+            echo "Extracting results from OpenROAD runs..."
+            
+            # Check if the script exists
+            if [ ! -f "extract_results.py" ]; then
+                echo "Error: extract_results.py not found"
+                exit 1
+            fi
+            
+            # Run the extraction script
+            python3 extract_results.py --base-dir . --readme README.md
+            
+            # Show a preview of the results
+            echo "Generated results table preview:"
+            if grep -A 10 "OpenROAD Flow Results" README.md; then
+                echo "✅ Results table successfully updated"
+            else
+                echo "⚠️  No results table found in README.md"
+            fi
+            
+            # Show summary statistics
+            if [ -d "logs" ]; then
+                total_reports=$(find logs -name "6_report.json" | wc -l)
+                echo "📊 Found $total_reports completed design runs"
+            fi
+
+      - name: Commit and push results
+        if: github.ref == 'refs/heads/main'
+        run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            
+            # Check if there are any changes to commit
+            if git diff --quiet; then
+                echo "No changes to commit"
+            else
+                git add README.md
+                git commit -m "Update OpenROAD flow results [skip ci]" || echo "No changes to commit"
+                git push
+            fi
