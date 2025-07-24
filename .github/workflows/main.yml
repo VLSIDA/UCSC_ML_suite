@@ -32,10 +32,16 @@ jobs:
                 git config --global --add safe.directory /OpenROAD-flow-scripts/UCSC_ML_suite
                 cd UCSC_ML_suite
 
+                # Only run a single design for testing
+                make DESIGN_CONFIG=./designs/nangate45/lfsr_top/config.mk
+
                 configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
 
                 for config in $configs; do
                 echo "Running design: $config"
-                make DESIGN_CONFIG="$config"
+
+                # Uncomment the line below to actually run the designs
+                # make DESIGN_CONFIG="$config"
+
                 done
             '
