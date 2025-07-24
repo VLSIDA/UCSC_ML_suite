@@ -73,20 +73,3 @@ if [ ! -f $LICENSE_FILE ]; then
 fi
 
 echo "Finished Initial Setup"
-
-# Ensure build is cleaned
-rm -rf $LITEETH_DIR/build
-rm -rf $LITEETH_DIR/scripts/build
-
-cd "$LITEETH_DIR/scripts"
-
-[ ! -f "../liteeth_mac_axi_mii.v" ] && bash setup_mac_axi.sh
-[ ! -f "../liteeth_mac_wb_mii.v" ] && bash setup_mac_wb.sh  
-
-# # Cores left to be modified
-# [ ! -f "../liteeth_udp_stream_sgmii.v" ] && bash setup_udp_sgmii.sh
-# [ ! -f "../liteeth_udp_stream_rgmii.v" ] && bash setup_udp_rgmii.sh
-# [ ! -f "../liteeth_udp_raw_rgmii.v" ] && bash setup_udp_raw.sh
-# [ ! -f "../liteeth_udp_gth_sgmii.v" ] && bash setup_usp_gth.sh
-
-echo "setup successful"
