@@ -67,28 +67,35 @@ jobs:
             # Show a preview of the results
             echo "Generated results table preview:"
             if grep -A 10 "OpenROAD Flow Results" README.md; then
-                echo "✅ Results table successfully updated"
+                echo "Results table successfully updated"
             else
-                echo "⚠️  No results table found in README.md"
+                echo "No results table found in README.md"
             fi
             
             # Show summary statistics
             if [ -d "logs" ]; then
                 total_reports=$(find logs -name "6_report.json" | wc -l)
-                echo "📊 Found $total_reports completed design runs"
+                echo "Found $total_reports completed design runs"
             fi
 
       - name: Commit and push results
-        if: github.ref == 'refs/heads/main'
         run: |
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
+            echo "Current ref: ${{ github.ref }}"
+            echo "Branch: ${{ github.ref_name }}"
             
-            # Check if there are any changes to commit
-            if git diff --quiet; then
-                echo "No changes to commit"
+            if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+                echo "Running on main branch - will commit results"
+                git config --local user.email "action@github.com"
+                git config --local user.name "GitHub Action"
+                
+                # Check if there are any changes to commit
+                if git diff --quiet; then
+                    echo "No changes to commit"
+                else
+                    git add README.md
+                    git commit -m "Update OpenROAD flow results [skip ci]" || echo "No changes to commit"
+                    git push
+                fi
             else
-                git add README.md
-                git commit -m "Update OpenROAD flow results [skip ci]" || echo "No changes to commit"
-                git push
+                echo "Skipping commit - not on main branch (current: ${{ github.ref }})"
             fi
