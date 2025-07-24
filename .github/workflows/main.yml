@@ -86,7 +86,12 @@ jobs:
             fi
             
             # Run the extraction script
-            python3 extract_results.py --base-dir . --readme README.md
+            if python3 extract_results.py --base-dir . --readme README.md; then
+                echo "Results extraction completed successfully"
+            else
+                echo "Results extraction failed, but continuing with workflow"
+                echo "This may happen if no designs completed or there were format issues"
+            fi
             
             # Show a preview of the results
             echo "Generated results table preview:"
