@@ -34,21 +34,45 @@ jobs:
             -w /OpenROAD-flow-scripts \
             openroad/orfs:$tag \
             bash -c '
+                set +e
                 git config --global --add safe.directory "*"
                 cd UCSC_ML_suite
 
-                # Only run a single design for testing
-                make DESIGN_CONFIG=./designs/nangate45/lfsr_top/config.mk
+                # Initialize counters
+                success_count=0
+                failure_count=0
+                total_count=0
 
                 configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
 
                 for config in $configs; do
-                echo "Running design: $config"
-
-                # Uncomment the line below to actually run the designs
-                # make DESIGN_CONFIG="$config"
-
+                    echo ""
+                    echo "===================="
+                    echo "Running design: $config"
+                    echo "===================="
+                    
+                    ((total_count++))
+                    
+                    if make DESIGN_CONFIG="$config"; then
+                        echo "Design $config completed successfully"
+                        ((success_count++))
+                    else
+                        exit_code=$?
+                        echo "Design $config failed (exit code: $exit_code)"
+                        ((failure_count++))
+                        echo "Continuing with remaining designs..."
+                    fi
                 done
+
+                echo ""
+                echo "===================="
+                echo "SUMMARY:"
+                echo "Total designs: $total_count"
+                echo "Successful: $success_count"
+                echo "Failed: $failure_count"
+                echo "===================="
+                
+                exit 0
             '
 
       - name: Extract and update results
