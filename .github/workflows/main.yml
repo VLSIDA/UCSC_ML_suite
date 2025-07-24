@@ -11,10 +11,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run setup script
-        run: ./setup.sh 
-        
-      - name: Mark repo as safe
-        run: git config --global --add safe.directory /OpenROAD-flow-scripts/UCSC_ML_suite
+        run: ./setup.sh            
 
       - name: Determine ORFS tag
         id: get_tag
@@ -32,6 +29,7 @@ jobs:
             -w /OpenROAD-flow-scripts \
             openroad/orfs:$tag \
             bash -c '
+                git config --global --add safe.directory /OpenROAD-flow-scripts/UCSC_ML_suite
                 cd UCSC_ML_suite
 
                 configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
