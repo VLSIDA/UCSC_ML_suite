@@ -50,7 +50,9 @@ export ABC_AREA = 1
 
 export SDC_FILE      = $(BENCH_DESIGN_HOME)/$(PLATFORM)/$(DESIGN_NICKNAME)/constraint.sdc
 
-export CORE_UTILIZATION = 43
+export DIE_AREA  = 0 0 2450 2450 
+export CORE_AREA = 30 30 2420 2420
+
 
 export PLACE_DENSITY_LB_ADDON = 0.05
 
@@ -58,4 +60,4 @@ export MACRO_PLACE_HALO    = 25 25
 
 export TNS_END_PERCENT     = 100
 
-
+export FASTROUTE_TCL = $(DESIGN_HOME)/$(PLATFORM)/$(DESIGN_NICKNAME)/fastroute.tcl
