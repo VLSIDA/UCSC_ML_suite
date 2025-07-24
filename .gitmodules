@@ -10,3 +10,6 @@
 [submodule "designs/src/NyuziProcessor/repo"]
 	path = designs/src/NyuziProcessor/repo
 	url = https://github.com/jbush001/NyuziProcessor.git
+[submodule "designs/src/liteeth/repo"]
+	path = designs/src/liteeth/repo
+	url = https://github.com/enjoy-digital/liteeth.git
