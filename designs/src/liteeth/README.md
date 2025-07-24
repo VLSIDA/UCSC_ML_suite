@@ -37,6 +37,7 @@ make DESIGN_CONFIG=designs/nangate45/liteeth/liteeth_mac_axi_mii/config.mk
 - liteeth_udp_stream_sgmii
 - liteeth_udp_stream_rgmii
 - liteeth_udp_raw_rgmii
+- liteeth_udp_usp_gth_sgmii
 
 #### liteeth_mac_axi_mii
 Ethernet MAC core with AXI-Lite CPU interface and MII PHY connection. Provides basic Ethernet MAC functionality at 100 MHz with big-endian data ordering.
@@ -62,6 +63,11 @@ UDP/IP stack with RGMII gigabit interface in streaming mode with configurable bu
 Advanced UDP core with RGMII interface providing raw UDP port access without automatic packet filtering. Gives direct control over UDP headers and packet transmission for custom protocols.
 - Protocol Stack: Raw UDP mode for full header control
 - PHY Interface: RGMII with configurable TX/RX delays and CDC buffering
+
+## liteeth_udp_usp_gth_sgmii
+Advanced UDP core with GTH transceiver-based SGMII interface for high-performance Gigabit Ethernet applications. Supports both 1000BASE-X and 2500BASE-X SGMII configurations using USP_GTH transceivers with integrated clock domain crossing and low-latency packet processing.
+- Protocol Stack: Full UDP/IP stack with hardware-accelerated packet processing and configurable buffering
+- PHY Interface: SGMII over GTH transceivers with auto-adaptive equalization for backplane and optical interconnects
 
 ## What the Setup Does
 

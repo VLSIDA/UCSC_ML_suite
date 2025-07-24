@@ -2,21 +2,33 @@ export DESIGN_NAME = liteeth_mac_axi_mii
 export DESIGN_NICKNAME = liteeth
 export PLATFORM    = nangate45
 
-export VERILOG_FILES = $(DESIGN_HOME)/src/liteeth/liteeth_mac_axi_mii.v \
-                       $(DESIGN_HOME)/src/liteeth/xilinx2asic/FDPE.v \
-                       $(DESIGN_HOME)/src/liteeth/macros/nangate45/liteeth_1rw1r_32w384d_32_sram.v \
-                       $(DESIGN_HOME)/src/liteeth/macros/nangate45/liteeth_1rw1r_32w384d_8_sram.v
+PLATFORM_DESIGN_DIR=$(BENCH_DESIGN_HOME)/$(PLATFORM)/$(DESIGN_NICKNAME)
+REPO_SRC_DIR = $(BENCH_DESIGN_HOME)/src/$(DESIGN_NICKNAME)
 
-export SDC_FILE      = $(DESIGN_HOME)/$(PLATFORM)/liteeth/liteeth_mac_axi_mii/constraint.sdc
+TARGET_FILE = $(REPO_SRC_DIR)/$(DESIGN_NAME).v
+
+# Target yml file to be generated
+export YML_FILE=$(REPO_SRC_DIR)/repo/examples/axi-lite-mii.yml
+
+USED_REPO_FILES=$(YML_FILE)
+$(TARGET_FILE) : $(USED_REPO_FILES) 
+	bash $(REPO_SRC_DIR)/gen.sh && echo "Starting Generation..."
+	patch --silent -N -l $(TARGET_FILE) < $(REPO_SRC_DIR)/patch/mac_axi_mii.patch && echo "Converting to ASIC..."
+
+export VERILOG_FILES = $(TARGET_FILE) \
+                       $(PLATFORM_DESIGN_DIR)/xilinx2asic/FDPE.v \
+                       $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_32_sram.v \
+                       $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_8_sram.v
+
+export SDC_FILE      = $(PLATFORM_DESIGN_DIR)/$(DESIGN_NAME)/constraint.sdc
 
 export ADDITIONAL_LEFS = \
-  $(DESIGN_HOME)/src/liteeth/macros/nangate45/liteeth_1rw1r_32w384d_32_sram.lef \
-  $(DESIGN_HOME)/src/liteeth/macros/nangate45/liteeth_1rw1r_32w384d_8_sram.lef \
+  $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_32_sram.lef \
+  $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_8_sram.lef
 
 export ADDITIONAL_LIBS = \
-  $(DESIGN_HOME)/src/liteeth/macros/nangate45/liteeth_1rw1r_32w384d_32_sram.lib \
-  $(DESIGN_HOME)/src/liteeth/macros/nangate45/liteeth_1rw1r_32w384d_8_sram.lib
-
+  $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_32_sram.lib \
+  $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_8_sram.lib
 
 export DIE_AREA = 0 0 700 700
 export CORE_AREA = 15 15 685 685
