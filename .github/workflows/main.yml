@@ -86,7 +86,7 @@ jobs:
             fi
             
             # Run the extraction script
-            if python3 extract_results.py --base-dir . --readme README.md; then
+            if python3 extract_results.py --base-dir . --output QOR.md; then
                 echo "Results extraction completed successfully"
             else
                 echo "Results extraction failed, but continuing with workflow"
@@ -95,10 +95,10 @@ jobs:
             
             # Show a preview of the results
             echo "Generated results table preview:"
-            if grep -A 10 "OpenROAD Flow Results" README.md; then
+            if grep -A 10 "OpenROAD Flow Results" QOR.md; then
                 echo "Results table successfully updated"
             else
-                echo "No results table found in README.md"
+                echo "No results table found in QOR.md"
             fi
             
             # Show summary statistics
@@ -121,7 +121,7 @@ jobs:
                 if git diff --quiet; then
                     echo "No changes to commit"
                 else
-                    git add README.md
+                    git add QOR.md
                     git commit -m "Update OpenROAD flow results [skip ci]" || echo "No changes to commit"
                     git push
                 fi
