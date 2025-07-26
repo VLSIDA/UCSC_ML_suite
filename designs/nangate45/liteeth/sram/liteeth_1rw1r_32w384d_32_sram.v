@@ -1,94 +1,70 @@
 module liteeth_1rw1r_32w384d_32_sram (
-`ifdef USE_POWER_PINS
-    vdd,
-    gnd,
-`endif
     // Port 0: RW (Write/Read Port)
     clk0,
-    csb0,
-    web0,
-    addr0,
-    din0,
-    dout0,
+    ce_rw1,
+    we_in_rw1,
+    w_mask_rw1,
+    addr_rw1,
+    wd_in_rw1,
+    rd_out_rw1,
     // Port 1: R (Read-Only Port)
     clk1,
-    csb1,
-    addr1,
-    dout1
+    ce_r1,
+    addr_r1,
+    rd_out_r1
 );
 
    parameter BITS = 32;
    parameter WORD_DEPTH = 384;
    parameter ADDR_WIDTH = 9;
 
-`ifdef USE_POWER_PINS
-   inout vdd;
-   inout gnd;
-`endif
 
    // Port 0: RW
    input                    clk0;
-   input                    csb0;  // Active low chip select
-   input                    web0;  // Active low write enable
-   input  [ADDR_WIDTH-1:0]  addr0;
-   input  [BITS-1:0]        din0;
-   output [BITS-1:0]        dout0;
+   input                    ce_rw1;
+   input                    we_in_rw1;
+   input  [BITS-1:0]        w_mask_rw1;
+   input  [ADDR_WIDTH-1:0]  addr_rw1;
+   input  [BITS-1:0]        wd_in_rw1;
+   output [BITS-1:0]        rd_out_rw1;
    
    // Port 1: R
    input                    clk1;
-   input                    csb1;  // Active low chip select
-   input  [ADDR_WIDTH-1:0]  addr1;
-   output [BITS-1:0]        dout1;
+   input                    ce_r1;
+   input  [ADDR_WIDTH-1:0]  addr_r1;
+   output [BITS-1:0]        rd_out_r1;
 
    // Memory array
    reg    [BITS-1:0]        mem [0:WORD_DEPTH-1];
 
    integer i;
 
-// Write mode: write_first
-   // Port 0: Read-Write Port with Write-First behavior
-   reg [ADDR_WIDTH-1:0] addr0_reg;
-   
    always @(posedge clk0) begin
-      if (!csb0 && !web0) begin  // Active low chip select
-         if (BITS == 32) begin  // Active low write enable - writing when web0=0
-            mem[addr0] <= din0;
+      if(ce_rw1) 
+      begin
+         
+         if (we_in_rw1)   
+         begin
+            mem[addr_rw1] <= (wd_in_rw1 & w_mask_rw1) | (mem[addr_rw1] & ~w_mask_rw1);
          end
-         // Always register the address (for write-first behavior)
-         addr0_reg <= addr0;
+         rd_out_rw1 <= mem[addr_rw1];
       end
    end
    
-   // Write-first read: output data from registered address
-   assign dout0 = mem[addr0_reg];
-
-   // Port 1: Read-Only Port
-   reg [BITS-1:0] dout1_reg;
    
    always @(posedge clk1) begin
-      if (!csb1) begin  // Active low chip select
-         dout1_reg <= mem[addr1];
+      if (!ce_r1) begin  // Active low chip select
+         rd_out_r1 <= mem[addr_r1];
       end
    end
    
-   assign dout1 = dout1_reg;
 
-   // X-propagation and debug logic (optional)
-   `ifdef SRAM_MONITOR
-   always @(posedge clk0) begin
-      if (!csb0 && !web0) begin
-         $display("%t: %m writing addr0=%h din0=%h", $time, addr0, din0);
-      end
-   end
-   `endif
-
-   // Timing check placeholders
-   `ifdef SRAM_TIMING_CHECK
+   `ifdef SRAM_TIMING
    reg notifier;
    specify
       // Delays from clk to outputs (registered outputs)
-      (posedge clk0 *> dout0) = (0, 0);
-      (posedge clk1 *> dout1) = (0, 0);
+      (posedge clk0 *> rd_out_rw1) = (0, 0);
+      (posedge clk1 *> rd_out_r1) = (0, 0);
 
       // Timing checks
       $width     (posedge clk0,              0, 0, notifier);
@@ -97,12 +73,91 @@ module liteeth_1rw1r_32w384d_32_sram (
       $width     (posedge clk1,              0, 0, notifier);
       $width     (negedge clk1,              0, 0, notifier);
       $period    (posedge clk1,              0,    notifier);
-      $setuphold (posedge clk0, csb0, 0, 0, notifier);
-      $setuphold (posedge clk0, web0, 0, 0, notifier);
-      $setuphold (posedge clk0, addr0, 0, 0, notifier);
-      $setuphold (posedge clk0, din0, 0, 0, notifier);
-      $setuphold (posedge clk1, csb1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr1, 0, 0, notifier);
+      $setuphold (posedge clk0, we_in_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, ce_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
+      $setuphold (posedge clk1, ce_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
+      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
 
    endspecify
    `endif
