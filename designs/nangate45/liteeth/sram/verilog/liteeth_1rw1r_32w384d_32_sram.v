@@ -53,7 +53,7 @@ module liteeth_1rw1r_32w384d_32_sram (
    
    
    always @(posedge clk1) begin
-      if (!ce_r1) begin  // Active low chip select
+      if (ce_r1) begin  // Active low chip select
          rd_out_r1 <= mem[addr_r1];
       end
    end
@@ -76,87 +76,9 @@ module liteeth_1rw1r_32w384d_32_sram (
       $setuphold (posedge clk0, we_in_rw1, 0, 0, notifier);
       $setuphold (posedge clk0, ce_rw1, 0, 0, notifier);
       $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, addr_rw1, 0, 0, notifier);
       $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, wd_in1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
-      $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
       $setuphold (posedge clk0, w_mask_rw1, 0, 0, notifier);
       $setuphold (posedge clk1, ce_r1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
-      $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
       $setuphold (posedge clk1, addr_r1, 0, 0, notifier);
 
    endspecify
