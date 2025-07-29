@@ -1,4 +1,4 @@
-module liteeth_1rw1r_32w384d_8_sram (
+module liteeth_1rw1r_48w32d_sram (
     // Port 0: RW (Write/Read Port)
     clk0,
     ce_rw1,
@@ -14,9 +14,9 @@ module liteeth_1rw1r_32w384d_8_sram (
     rd_out_r1
 );
 
-   parameter BITS = 32;
-   parameter WORD_DEPTH = 384;
-   parameter ADDR_WIDTH = 9;
+   parameter BITS = 48;
+   parameter WORD_DEPTH = 32;
+   parameter ADDR_WIDTH = 5;
 
 
    // Port 0: RW
@@ -42,18 +42,18 @@ module liteeth_1rw1r_32w384d_8_sram (
    always @(posedge clk0) begin
       if(ce_rw1) 
       begin
-         
+         rd_out_rw1 <= mem[addr_rw1];
          if (we_in_rw1)   
          begin
-            mem[addr_rw1][39:32] <= (wd_in_rw1[39:32] & w_mask_rw1[39:32]) | (mem[addr_rw1][39:32] & ~w_mask_rw1[39:32]);
+            mem[addr_rw1] <= (wd_in_rw1 & w_mask_rw1) | (mem[addr_rw1] & ~w_mask_rw1);
          end
-         rd_out_rw1 <= mem[addr_rw1];
+         
       end
    end
    
    
    always @(posedge clk1) begin
-      if (ce_r1) begin
+      if (ce_r1) begin  // Active low chip select
          rd_out_r1 <= mem[addr_r1];
       end
    end

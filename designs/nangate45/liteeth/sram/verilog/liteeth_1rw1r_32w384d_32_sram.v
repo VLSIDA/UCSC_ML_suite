@@ -53,7 +53,7 @@ module liteeth_1rw1r_32w384d_32_sram (
    
    
    always @(posedge clk1) begin
-      if (ce_r1) begin  // Active low chip select
+      if (ce_r1) begin
          rd_out_r1 <= mem[addr_r1];
       end
    end
