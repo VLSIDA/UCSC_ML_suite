@@ -1,0 +1,17 @@
+name: Example Manual Trigger
+
+on:
+  workflow_dispatch:
+    inputs:
+      example_input:
+        description: 'Example input'
+        required: false
+        default: 'default-value'
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print input
+        run: | 
+            echo "Input: ${{ github.event.inputs.example_input }}"
