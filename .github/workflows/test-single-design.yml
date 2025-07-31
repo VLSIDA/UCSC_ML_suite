@@ -113,27 +113,3 @@ jobs:
           else
             echo "Results extraction failed, but test was successful"
           fi
-          
-          # Show summary of what was generated
-          if [ -d "logs" ]; then
-            echo "Generated log files:"
-            find logs -name "*.log" -newer /tmp -type f 2>/dev/null | head -10 || echo "No recent log files found"
-          fi
-          
-          if [ -d "reports" ]; then  
-            echo "Generated report files:"
-            find reports -name "*.json" -newer /tmp -type f 2>/dev/null | head -10 || echo "No recent report files found"
-          fi
-
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: design-test-results-${{ github.run_number }}
-          path: |
-            logs/
-            reports/
-            results/
-            objects/
-            QOR-test.md
-          retention-days: 7
