@@ -32,8 +32,7 @@ export ADDITIONAL_LIBS = \
   $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_32_sram.lib \
   $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_8_sram.lib
 
-export DIE_AREA = 0 0 1630 1630
-export CORE_AREA = 30 30 1600 1600
+export CORE_UTILIZATION = 35
 export PLACE_DENSITY = 0.2
 
 export CAP_MARGIN = 0.02
