@@ -1,9 +1,17 @@
---- a/liteeth_mac_axi_mii.v
-+++ b/liteeth_mac_axi_mii.v
-@@ -21,1 +21,1 @@
+--- liteeth_mac_axi_mii.v
++++ liteeth_mac_axi_mii.v
+@@ -18,7 +18,7 @@
+ // Module
+ //------------------------------------------------------------------------------
+ 
 -module liteeth_core (
 +module liteeth_mac_axi_mii (
-@@ -4008,18 +4008,24 @@
+     input  wire   [31:0] bus_araddr,
+     input  wire    [2:0] bus_arprot,
+     output wire          bus_arready,
+@@ -4006,43 +4006,41 @@
+ 
+ 
  //------------------------------------------------------------------------------
 -// Memory mem: 383-words x 32-bit
 +// Modified Memory mem: 384-words x 32-bit 
@@ -23,26 +31,20 @@
 -end
 -assign wishbone_interface_writer_memory0_dat_r = mem[mem_adr0];
 -assign wishbone_interface_sram0_dat_r = mem_dat1;
-+liteeth_1rw1r_32w384d_32_sram u_tx_buffer_0 (
-+`ifdef USE_POWER_PINS
-+    .vdd(vdd),
-+    .gnd(gnd),
-+`endif
-+    // Port 0: RW (Read/Write)
-+    .clk0(sys_clk),
-+    .ce_rw1(1'b1),                                        // Always enabled
-+    .we_in_rw1(wishbone_interface_writer_memory0_we),       // Active low write enable
-+    .addr_rw1(wishbone_interface_writer_memory0_adr),
-+    .wd_in_rw1(wishbone_interface_writer_memory0_dat_w),
-+    .rd_out_rw1(wishbone_interface_writer_memory0_dat_r),
-+    
-+    // Port 1: R (Read-only)
-+    .clk1(sys_clk),
-+    .ce_r1(1'b1),                                        // Always enabled
-+    .addr_r1(wishbone_interface_sram0_adr),
-+    .rd_out_r1(wishbone_interface_sram0_dat_r)
++(* keep *) liteeth_1rw1r_32w384d_32_sram u_tx_buffer_0 (
++    .rw0_clk(sys_clk),
++    .rw0_ce_in(1'b1),
++    .rw0_we_in(wishbone_interface_writer_memory0_we),
++    .rw0_addr_in(wishbone_interface_writer_memory0_adr),
++    .rw0_wd_in(wishbone_interface_writer_memory0_dat_w),
++    .rw0_rd_out(wishbone_interface_writer_memory0_dat_r),    
++    .r0_clk(sys_clk),
++    .r0_ce_in(1'b1),
++    .r0_addr_in(wishbone_interface_sram0_adr),
++    .r0_rd_out(wishbone_interface_sram0_dat_r)
 +);
-@@ -4028,18 +4034,24 @@
+ 
+ 
  //------------------------------------------------------------------------------
 -// Memory mem_1: 383-words x 32-bit
 +// Modified Memory mem_1: 384-words x 32-bit 
@@ -62,26 +64,24 @@
 -end
 -assign wishbone_interface_writer_memory1_dat_r = mem_1[mem_1_adr0];
 -assign wishbone_interface_sram1_dat_r = mem_1_dat1;
-+liteeth_1rw1r_32w384d_32_sram u_tx_buffer_1 (
-+`ifdef USE_POWER_PINS
-+    .vdd(vdd),
-+    .gnd(gnd),
-+`endif
-+    // Port 0: RW (Read/Write)
-+    .clk0(sys_clk),
-+    .ce_rw1(1'b1),                                        // Always enabled
-+    .we_in_rw1(wishbone_interface_writer_memory1_we),       // Active low write enable
-+    .addr_rw1(wishbone_interface_writer_memory1_adr),
-+    .wd_in_rw1(wishbone_interface_writer_memory1_dat_w),
-+    .rd_out_rw1(wishbone_interface_writer_memory1_dat_r),
-+    
-+    // Port 1: R (Read-only)
-+    .clk1(sys_clk),
-+    .ce_r1(1'b1),                                        // Always enabled
-+    .addr_r1(wishbone_interface_sram1_adr),
-+    .rd_out_r1(wishbone_interface_sram1_dat_r)
++(* keep *) liteeth_1rw1r_32w384d_32_sram u_tx_buffer_1 (
++    .rw0_clk(sys_clk),
++    .rw0_ce_in(1'b1),
++    .rw0_we_in(wishbone_interface_writer_memory1_we),
++    .rw0_addr_in(wishbone_interface_writer_memory1_adr),
++    .rw0_wd_in(wishbone_interface_writer_memory1_dat_w),
++    .rw0_rd_out(wishbone_interface_writer_memory1_dat_r),    
++    .r0_clk(sys_clk),
++    .r0_ce_in(1'b1),
++    .r0_addr_in(wishbone_interface_sram1_adr),
++    .r0_rd_out(wishbone_interface_sram1_dat_r)
 +);
-@@ -4066,25 +4078,22 @@
+ 
+ 
+ //------------------------------------------------------------------------------
+@@ -4064,57 +4062,43 @@
+ 
+ 
  //------------------------------------------------------------------------------
 -// Memory mem_2: 383-words x 32-bit
 +// Modified Memory mem_2: 384-words x 32-bit
@@ -108,24 +108,21 @@
 -end
 -assign wishbone_interface_reader_memory0_dat_r = mem_2_dat0;
 -assign wishbone_interface_sram2_dat_r = mem_2[mem_2_adr1];
-+liteeth_1rw1r_32w384d_8_sram u_rx_buffer_0 (
-+`ifdef USE_POWER_PINS
-+    .vdd(vdd),
-+    .gnd(gnd),
-+`endif
-+    .clk0(sys_clk),
-+    .ce_rw1(1'b1),
-+    .we_in_rw1(~|wishbone_interface_sram2_we),
-+    .w_mask_rw1(wishbone_interface_sram2_we),
-+    .addr_rw1(wishbone_interface_sram2_adr),
-+    .wd_in_rw1(wishbone_interface_sram2_dat_w),
-+    .rd_out_rw1(wishbone_interface_sram2_dat_r),
-+    .clk1(sys_clk),
-+    .ce_r1(wishbone_interface_reader_memory0_re),
-+    .addr_r1(wishbone_interface_reader_memory0_adr),
-+    .rd_out_r1(wishbone_interface_reader_memory0_dat_r)
++(* keep *) liteeth_1rw1r_32w384d_8_sram u_rx_buffer_0 (
++    .rw0_clk(sys_clk),
++    .rw0_ce_in(1'b1),
++    .rw0_we_in(wishbone_interface_sram2_we),
++    .rw0_wmask_in(wishbone_interface_sram2_we),
++    .rw0_addr_in(wishbone_interface_sram2_adr),
++    .rw0_wd_in(wishbone_interface_sram2_dat_w),
++    .rw0_rd_out(wishbone_interface_sram2_dat_r),
++    .r0_clk(sys_clk),
++    .r0_ce_in(wishbone_interface_reader_memory0_re),
++    .r0_addr_in(wishbone_interface_reader_memory0_adr),
++    .r0_rd_out(wishbone_interface_reader_memory0_dat_r)
 +);
-@@ -4093,25 +4102,22 @@
+ 
+ 
  //------------------------------------------------------------------------------
 -// Memory mem_3: 383-words x 32-bit
 +// Modified Memory mem_3: 384-words x 32-bit
@@ -152,21 +149,19 @@
 -end
 -assign wishbone_interface_reader_memory1_dat_r = mem_3_dat0;
 -assign wishbone_interface_sram3_dat_r = mem_3[mem_3_adr1];
-+liteeth_1rw1r_32w384d_8_sram u_rx_buffer_1 (
-+`ifdef USE_POWER_PINS
-+    .vdd(vdd),
-+    .gnd(gnd),
-+`endif
-+    .clk0(sys_clk),
-+    .ce_rw1(1'b1),
-+    .we_in_rw1(~|wishbone_interface_sram3_we),
-+    .w_mask_rw1(wishbone_interface_sram3_we),
-+    .addr_rw1(wishbone_interface_sram3_adr),
-+    .wd_in_rw1(wishbone_interface_sram3_dat_w),
-+    .rd_out_rw1(wishbone_interface_sram3_dat_r),
-+    .clk1(sys_clk),
-+    .ce_r1(wishbone_interface_reader_memory1_re),
-+    .addr_r1(wishbone_interface_reader_memory1_adr),
-+    .rd_out_r1(wishbone_interface_reader_memory1_dat_r)
++(* keep *) liteeth_1rw1r_32w384d_8_sram u_rx_buffer_1 (
++    .rw0_clk(sys_clk),
++    .rw0_ce_in(1'b1),
++    .rw0_we_in(wishbone_interface_sram3_we),
++    .rw0_wmask_in(wishbone_interface_sram3_we),
++    .rw0_addr_in(wishbone_interface_sram3_adr),
++    .rw0_wd_in(wishbone_interface_sram3_dat_w),
++    .rw0_rd_out(wishbone_interface_sram3_dat_r),
++    .r0_clk(sys_clk),
++    .r0_ce_in(wishbone_interface_reader_memory1_re),
++    .r0_addr_in(wishbone_interface_reader_memory1_adr),
++    .r0_rd_out(wishbone_interface_reader_memory1_dat_r)
 +);
  
+ 
+ (* ars_ff1 = "true", async_reg = "true" *)
