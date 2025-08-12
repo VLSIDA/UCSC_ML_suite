@@ -88,7 +88,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: design-logs-${{ steps.sanitize.outputs.sanitized_name }}
-          path: logs/
+          path: |
+            logs/
+            reports/
+            results/
           retention-days: 30
         if: success() || failure()
 
@@ -149,7 +152,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Download all artifacts
+      - name: Download logs
         uses: actions/download-artifact@v4
         with:
           pattern: design-logs-*
