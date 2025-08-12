@@ -81,7 +81,15 @@ jobs:
             logs/
             reports/
             results/
-          retention-days: 30
+          retention-days: 90
+
+      - name: Upload design image
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-image-${{ steps.sanitize.outputs.sanitized_name }}
+          path: reports/**/final_all.webp
+          retention-days: 90
+        if: success() || failure()
 
   collect-results:
     needs: [find-designs, build]
@@ -112,8 +120,12 @@ jobs:
                 exit 1
             fi
             
-            # Run the extraction script
-            if python3 extract_results.py --base-dir . --output QOR.md; then
+            # Run the extraction script with GitHub context
+            if python3 extract_results.py \
+                --base-dir . \
+                --output QOR.md \
+                --github-repo "${{ github.repository }}" \
+                --github-run-id "${{ github.run_id }}"; then
                 echo "Results extraction completed successfully"
             else
                 echo "Results extraction failed, but continuing with workflow"

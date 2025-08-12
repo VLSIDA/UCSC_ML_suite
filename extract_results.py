@@ -60,13 +60,23 @@ def find_report_files(base_dir):
     return report_files
 
 
-def generate_markdown_table(results):
+def generate_markdown_table(results, github_repo=None, github_run_id=None):
     """Generate a markdown table from the results."""
     if not results:
         return "No results found.\n"
 
-    # Table header
-    table = """
+    # Table header - add Image column if GitHub info is provided
+    if github_repo and github_run_id:
+        table = """
+## OpenROAD Flow Results
+
+Last updated: {}
+
+| Design | Platform | Status | Area (μm²) | Utilization | Instances | Setup TNS | Setup WNS | Hold TNS | Hold WNS | Power | Clock Skew | Warnings | Errors | Image |
+|--------|----------|--------|------------|-------------|-----------|-----------|-----------|----------|----------|-------|------------|----------|--------|-------|
+""".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC"))
+    else:
+        table = """
 ## OpenROAD Flow Results
 
 Last updated: {}
@@ -81,7 +91,15 @@ Last updated: {}
 
     # Table rows
     for result in sorted_results:
-        table += f"| {result['design_name']} | {result['platform']} | {result['status']} | {result['total_area']} | {result['utilization']} | {result['instance_count']} | {result['setup_tns']} | {result['setup_wns']} | {result['hold_tns']} | {result['hold_wns']} | {result['total_power']} | {result['clock_skew']} | {result['warnings']} | {result['errors']} |\n"
+        if github_repo and github_run_id:
+            # Generate artifact name for this design's image
+            artifact_name = f"designs-{result['platform']}-{result['design_name']}"
+            artifact_url = f"https://github.com/{github_repo}/actions/runs/{github_run_id}/artifacts"
+            image_link = f"[�️ Image]({artifact_url})"
+            
+            table += f"| {result['design_name']} | {result['platform']} | {result['status']} | {result['total_area']} | {result['utilization']} | {result['instance_count']} | {result['setup_tns']} | {result['setup_wns']} | {result['hold_tns']} | {result['hold_wns']} | {result['total_power']} | {result['clock_skew']} | {result['warnings']} | {result['errors']} | {image_link} |\n"
+        else:
+            table += f"| {result['design_name']} | {result['platform']} | {result['status']} | {result['total_area']} | {result['utilization']} | {result['instance_count']} | {result['setup_tns']} | {result['setup_wns']} | {result['hold_tns']} | {result['hold_wns']} | {result['total_power']} | {result['clock_skew']} | {result['warnings']} | {result['errors']} |\n"
 
     table += "\n"
     return table
@@ -129,6 +147,10 @@ def main():
                         help='Path to README.md file to update (default: README.md)')
     parser.add_argument('--output', default=None,
                         help='Output file for results table (default: update README)')
+    parser.add_argument('--github-repo', default=None,
+                        help='GitHub repository (owner/repo) for artifact links')
+    parser.add_argument('--github-run-id', default=None,
+                        help='GitHub Actions run ID for artifact links')
 
     args = parser.parse_args()
 
@@ -148,7 +170,7 @@ def main():
             results.append(metrics)
 
     # Generate markdown table
-    table = generate_markdown_table(results)
+    table = generate_markdown_table(results, args.github_repo, args.github_run_id)
 
     if args.output:
         # Write to specified output file
