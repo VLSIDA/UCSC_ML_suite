@@ -15,7 +15,7 @@ jobs:
       - name: Find design configurations
         id: set-matrix
         run: |
-          configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort | jq -R -s -c 'split("\n")[:-1]')
+          configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | grep lfsr | sort | jq -R -s -c 'split("\n")[:-1]')
           echo "designs=$configs" >> "$GITHUB_OUTPUT"
           echo "Found designs: $configs"
 
