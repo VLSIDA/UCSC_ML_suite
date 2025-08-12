@@ -15,9 +15,20 @@ jobs:
       - name: Find design configurations
         id: set-matrix
         run: |
-          configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | grep lfsr | sort | jq -R -s -c 'split("\n")[:-1]')
+          # Read designs from the configuration file, filtering out comments and empty lines
+          configs=$(grep -v '^#' designs_to_run.txt | grep -v '^$' | sort | jq -R -s -c 'split("\n")[:-1]')
           echo "designs=$configs" >> "$GITHUB_OUTPUT"
           echo "Found designs: $configs"
+          
+          # Also validate that the config files exist
+          echo "Validating design configurations..."
+          grep -v '^#' designs_to_run.txt | grep -v '^$' | while read config; do
+            if [ -f "$config" ]; then
+              echo "✓ Found: $config"
+            else
+              echo "✗ Missing: $config"
+            fi
+          done
 
   build:
     needs: find-designs
