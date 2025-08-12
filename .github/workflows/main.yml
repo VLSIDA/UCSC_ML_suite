@@ -4,8 +4,28 @@ on:
   push:
 
 jobs:
-  build:
+  find-designs:
     runs-on: ubuntu-latest
+    outputs:
+      designs: ${{ steps.set-matrix.outputs.designs }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Find design configurations
+        id: set-matrix
+        run: |
+          configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort | jq -R -s -c 'split("\n")[:-1]')
+          echo "designs=$configs" >> "$GITHUB_OUTPUT"
+          echo "Found designs: $configs"
+
+  build:
+    needs: find-designs
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        design: ${{ fromJson(needs.find-designs.outputs.designs) }}
+      fail-fast: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,75 +45,53 @@ jobs:
           tag=$(git describe --tags --abbrev=8 2>/dev/null || echo "latest")
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
-      - name: Find and list all designs
-        run: |
-          echo "Finding all design configurations..."
-          configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
-          
-          echo ""
-          echo "===================="
-          echo "DESIGNS TO BE RUN:"
-          echo "===================="
-          
-          count=0
-          for config in $configs; do
-            ((count++))
-            echo "$count. $config"
-          done
-          
-          echo ""
-          echo "Total designs found: $count"
-          echo "===================="
-
-      - name: Run ORFS for all designs
+      - name: Run ORFS for design
         run: |
             tag="${{ steps.get_tag.outputs.tag }}"
+            design="${{ matrix.design }}"
+            echo "Running design: $design"
+            
             docker run --rm \
             -v ${{ github.workspace }}/OpenROAD-flow-scripts/flow:/OpenROAD-flow-scripts/flow \
             -v ${{ github.workspace }}:/OpenROAD-flow-scripts/UCSC_ML_suite \
             -w /OpenROAD-flow-scripts \
             openroad/orfs:$tag \
-            bash -c '
-                set +e
-                git config --global --add safe.directory "*"
+            bash -c "
+                set -e
+                git config --global --add safe.directory '*'
                 cd UCSC_ML_suite
+                echo 'Running design: $design'
+                make DESIGN_CONFIG='$design'
+            "
 
-                # Initialize counters
-                success_count=0
-                failure_count=0
-                total_count=0
+      - name: Upload design artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-results-${{ matrix.design }}
+          path: |
+            logs/
+            reports/
+            results/
+          retention-days: 30
 
-                configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
+  collect-results:
+    needs: [find-designs, build]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-                for config in $configs; do
-                    echo ""
-                    echo "===================="
-                    echo "Running design: $config"
-                    echo "===================="
-                    
-                    ((total_count++))
-                    
-                    if make DESIGN_CONFIG="$config"; then
-                        echo "Design $config completed successfully"
-                        ((success_count++))
-                    else
-                        exit_code=$?
-                        echo "Design $config failed (exit code: $exit_code)"
-                        ((failure_count++))
-                        echo "Continuing with remaining designs..."
-                    fi
-                done
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-                echo ""
-                echo "===================="
-                echo "SUMMARY:"
-                echo "Total designs: $total_count"
-                echo "Successful: $success_count"
-                echo "Failed: $failure_count"
-                echo "===================="
-                
-                exit 0
-            '
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: design-results-*
+          merge-multiple: true
 
       - name: Extract and update results
         run: |
