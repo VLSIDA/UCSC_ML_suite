@@ -64,10 +64,19 @@ jobs:
                 make DESIGN_CONFIG='$design'
             "
 
+      - name: Sanitize design name for artifact
+        id: sanitize
+        run: |
+          design="${{ matrix.design }}"
+          # Replace forward slashes with dashes and remove config.mk
+          sanitized=$(echo "$design" | sed 's|/|-|g' | sed 's|-config\.mk$||')
+          echo "sanitized_name=$sanitized" >> "$GITHUB_OUTPUT"
+          echo "Sanitized artifact name: $sanitized"
+
       - name: Upload design artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: design-results-${{ matrix.design }}
+          name: design-results-${{ steps.sanitize.outputs.sanitized_name }}
           path: |
             logs/
             reports/
