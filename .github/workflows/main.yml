@@ -84,6 +84,14 @@ jobs:
           echo "sanitized_name=$sanitized" >> "$GITHUB_OUTPUT"
           echo "Sanitized artifact name: $sanitized"
 
+      - name: Upload design logs for results
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-logs-${{ steps.sanitize.outputs.sanitized_name }}
+          path: logs/
+          retention-days: 30
+        if: success() || failure()
+
       - name: Prepare image for upload
         run: |
           # Find and copy the final_all.webp image to a flat location
@@ -121,7 +129,7 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: design-results-*
+          pattern: design-logs-*
           merge-multiple: true
 
       - name: Extract and update results
