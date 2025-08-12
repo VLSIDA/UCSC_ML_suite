@@ -84,21 +84,24 @@ jobs:
           echo "sanitized_name=$sanitized" >> "$GITHUB_OUTPUT"
           echo "Sanitized artifact name: $sanitized"
 
-      - name: Upload design artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: design-results-${{ steps.sanitize.outputs.sanitized_name }}
-          path: |
-            logs/
-            reports/
-            results/
-          retention-days: 90
+      - name: Prepare image for upload
+        run: |
+          # Find and copy the final_all.webp image to a flat location
+          mkdir -p image_output
+          image_file=$(find reports -name "final_all.webp" | head -1)
+          if [ -n "$image_file" ]; then
+            cp "$image_file" "image_output/final_all.webp"
+            echo "Image found and copied: $image_file"
+          else
+            echo "No final_all.webp image found"
+          fi
+        if: success() || failure()
 
       - name: Upload design image
         uses: actions/upload-artifact@v4
         with:
           name: design-image-${{ steps.sanitize.outputs.sanitized_name }}
-          path: reports/**/final_all.webp
+          path: image_output/final_all.webp
           retention-days: 90
         if: success() || failure()
 

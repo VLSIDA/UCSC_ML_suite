@@ -1,7 +1,3 @@
-# List of designs to run in CI
-# One design config path per line
-# Lines starting with # are comments and will be ignored
-
 # LFSR designs
 designs/nangate45/lfsr_top/config.mk
 designs/asap7/lfsr_top/config.mk

@@ -93,10 +93,9 @@ Last updated: {}
     for result in sorted_results:
         if github_repo and github_run_id:
             # Generate artifact name for this design's image
-            artifact_name = f"designs-{result['platform']}-{result['design_name']}"
-            artifact_url = f"https://github.com/{github_repo}/actions/runs/{github_run_id}/artifacts"
-            image_link = f"[�️ Image]({artifact_url})"
-            
+            artifact_url = f"https://github.com/{github_repo}/actions/runs/{github_run_id}"
+            image_link = f"[Download]({artifact_url})"
+
             table += f"| {result['design_name']} | {result['platform']} | {result['status']} | {result['total_area']} | {result['utilization']} | {result['instance_count']} | {result['setup_tns']} | {result['setup_wns']} | {result['hold_tns']} | {result['hold_wns']} | {result['total_power']} | {result['clock_skew']} | {result['warnings']} | {result['errors']} | {image_link} |\n"
         else:
             table += f"| {result['design_name']} | {result['platform']} | {result['status']} | {result['total_area']} | {result['utilization']} | {result['instance_count']} | {result['setup_tns']} | {result['setup_wns']} | {result['hold_tns']} | {result['hold_wns']} | {result['total_power']} | {result['clock_skew']} | {result['warnings']} | {result['errors']} |\n"
