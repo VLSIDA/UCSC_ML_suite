@@ -60,10 +60,22 @@ def find_report_files(base_dir):
     return report_files
 
 
-def generate_markdown_table(results, github_repo=None, github_run_id=None):
+def generate_markdown_table(results, github_repo=None, github_run_id=None, artifacts_file=None):
     """Generate a markdown table from the results."""
     if not results:
         return "No results found.\n"
+
+    # Load artifact information if available
+    artifact_map = {}
+    if artifacts_file and os.path.exists(artifacts_file):
+        try:
+            with open(artifacts_file, 'r') as f:
+                artifacts_data = json.load(f)
+                # Create mapping of artifact name to ID
+                for artifact in artifacts_data.get('artifacts', []):
+                    artifact_map[artifact['name']] = artifact['id']
+        except Exception as e:
+            print(f"Warning: Could not load artifacts file: {e}")
 
     # Table header - add Image column if GitHub info is provided
     if github_repo and github_run_id:
@@ -92,9 +104,19 @@ Last updated: {}
     # Table rows
     for result in sorted_results:
         if github_repo and github_run_id:
-            # Generate artifact name for this design's image
-            artifact_url = f"https://github.com/{github_repo}/actions/runs/{github_run_id}"
-            image_link = f"[Download]({artifact_url})"
+            # Generate artifact name for this design's image (matching workflow naming)
+            sanitized_name = f"designs-{result['platform']}-{result['design_name']}"
+            artifact_name = f"design-image-{sanitized_name}"
+            
+            # Try to get the specific artifact ID for direct download
+            if artifact_name in artifact_map:
+                artifact_id = artifact_map[artifact_name]
+                artifact_url = f"https://github.com/{github_repo}/actions/runs/{github_run_id}/artifacts/{artifact_id}"
+                image_link = f"[Download Image]({artifact_url})"
+            else:
+                # Fallback to run page if artifact ID not found
+                artifact_url = f"https://github.com/{github_repo}/actions/runs/{github_run_id}"
+                image_link = f"[View Run]({artifact_url})"
 
             table += f"| {result['design_name']} | {result['platform']} | {result['status']} | {result['total_area']} | {result['utilization']} | {result['instance_count']} | {result['setup_tns']} | {result['setup_wns']} | {result['hold_tns']} | {result['hold_wns']} | {result['total_power']} | {result['clock_skew']} | {result['warnings']} | {result['errors']} | {image_link} |\n"
         else:
@@ -150,6 +172,8 @@ def main():
                         help='GitHub repository (owner/repo) for artifact links')
     parser.add_argument('--github-run-id', default=None,
                         help='GitHub Actions run ID for artifact links')
+    parser.add_argument('--artifacts-file', default=None,
+                        help='JSON file containing GitHub artifacts information')
 
     args = parser.parse_args()
 
@@ -169,7 +193,7 @@ def main():
             results.append(metrics)
 
     # Generate markdown table
-    table = generate_markdown_table(results, args.github_repo, args.github_run_id)
+    table = generate_markdown_table(results, args.github_repo, args.github_run_id, args.artifacts_file)
 
     if args.output:
         # Write to specified output file
