@@ -25,6 +25,26 @@ jobs:
           tag=$(git describe --tags --abbrev=8 2>/dev/null || echo "latest")
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
+      - name: Find and list all designs
+        run: |
+          echo "Finding all design configurations..."
+          configs=$(find designs/nangate45 designs/asap7 designs/sky130hd -name config.mk | sort)
+          
+          echo ""
+          echo "===================="
+          echo "DESIGNS TO BE RUN:"
+          echo "===================="
+          
+          count=0
+          for config in $configs; do
+            ((count++))
+            echo "$count. $config"
+          done
+          
+          echo ""
+          echo "Total designs found: $count"
+          echo "===================="
+
       - name: Run ORFS for all designs
         run: |
             tag="${{ steps.get_tag.outputs.tag }}"
