@@ -23,9 +23,13 @@ cd UCSC_ML_suite
 4. Run a design in the Docker image:
 
 ```bash
-cd UCSC_ML_suite
 make DESIGN_CONFIG=./designs/nangate45/lfsr_top/config.mk
 ```
+## `dev` feature
+
+By default, the suite will run using verilog that has already been generated from its respective source (just like in ORFS). If the user wishes to amend changes to source files, the command `make dev` should be used.
+- `make dev` will perform the generation of verilog from the source repo (it`ll also do any prerequisite installation as well). 
+- The development folder for each design can be found under `src/<DESIGN_NAME>/dev`
 
 ## Goal/Objectives
 
