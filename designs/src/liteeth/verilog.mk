@@ -1,10 +1,10 @@
-export DEV_DESIGN_HOME = liteeth
+export DEV_DESIGN_HOME = liteeth/dev
 
 ifneq ($(wildcard $(DEV_FLAG)),)
 TARGET_DEV_FILE = $(BENCH_DESIGN_HOME)/src/liteeth/dev/$(DESIGN_NAME).v
 # Target yml file to be generated
 export YML_FILE=$(BENCH_DESIGN_HOME)/src/liteeth/dev/repo/examples/axi-lite-mii.yml
-
+export GDS_ALLOW_EMPTY?=^liteeth*
 REPO_FILES=$(YML_FILE)
 $(TARGET_DEV_FILE) : $(REPO_FILES) 
 	@echo "Starting Generation..."
