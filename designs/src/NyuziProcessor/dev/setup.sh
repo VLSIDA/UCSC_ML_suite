@@ -1,10 +1,9 @@
 #!/usr/bin/bash
-# Using OpenROAD-flow-scripts/build_openroad.sh as a template:
+# Using OpenROAD-flow-scripts/build_openroad.sh as a template
 
 set -eu
 
 DIR="$(dirname $(readlink -f $0))"
-echo "This is DIR: $(DIR)"
 cd "$DIR"
 
 

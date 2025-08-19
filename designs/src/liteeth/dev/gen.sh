@@ -4,8 +4,8 @@ set -e
 
 echo "Setting up $DESIGN_NAME..."
 
-LITEETH_DIR="$BENCH_DESIGN_HOME/src/liteeth"
-LITEETH_REPO="$BENCH_DESIGN_HOME/src/liteeth/repo"
+LITEETH_DIR="$BENCH_DESIGN_HOME/src/liteeth/dev"
+LITEETH_REPO="$BENCH_DESIGN_HOME/src/liteeth/dev/repo"
 PY_GEN=$LITEETH_REPO/liteeth/gen.py
 cd "$LITEETH_DIR"
 

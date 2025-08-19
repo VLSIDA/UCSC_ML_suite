@@ -64,12 +64,5 @@ if ! check_package liteiclink; then
     pip install --no-cache-dir git+https://github.com/enjoy-digital/liteiclink.git 
 fi
 
-REPO_LICENSE=$LITEETH_REPO/LICENSE
-LICENSE_FILE=$LITEETH_DIR/LICENSE
-
-if [ ! -f $LICENSE_FILE ]; then
-    echo "Copying $REPO_LICENSE  ->  $LICENSE_FILE"
-    cp -u $REPO_LICENSE $LICENSE_FILE
-fi
 
 echo "Finished Initial Setup"
