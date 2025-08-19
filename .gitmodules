@@ -7,8 +7,8 @@
 [submodule "designs/src/minimax/dev/repo"]
 	path = designs/src/minimax/dev/repo
 	url = https://github.com/gsmecher/minimax.git
-[submodule "designs/src/NyuziProcessor/dev/repo"]
-	path = designs/src/NyuziProcessor/dev/repo
+[submodule "designs/src/nyuzi/dev/repo"]
+	path = designs/src/nyuzi/dev/repo
 	url = https://github.com/jbush001/NyuziProcessor.git
 [submodule "designs/src/liteeth/dev/repo"]
 	path = designs/src/liteeth/dev/repo

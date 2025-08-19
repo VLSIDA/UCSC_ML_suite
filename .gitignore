@@ -5,3 +5,6 @@ results
 logs
 reports
 objects
+.dev*
+.venv
+sv2v
