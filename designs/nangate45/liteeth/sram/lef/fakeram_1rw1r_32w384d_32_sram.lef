@@ -1,7 +1,7 @@
 VERSION 5.7 ;
 BUSBITCHARS "[]" ;
-MACRO liteeth_1rw1r_32w384d_8_sram
-  FOREIGN liteeth_1rw1r_32w384d_8_sram 0 0 ;
+MACRO fakeram_1rw1r_32w384d_32_sram
+  FOREIGN fakeram_1rw1r_32w384d_32_sram 0 0 ;
   SYMMETRY X Y R90 ;
   SIZE 114.000 BY 256.200 ;
   CLASS BLOCK ;
@@ -1701,6 +1701,6 @@ MACRO liteeth_1rw1r_32w384d_8_sram
     LAYER OVERLAP ;
     RECT 0 0 114.000 256.200 ;
   END
-END liteeth_1rw1r_32w384d_8_sram
+END fakeram_1rw1r_32w384d_32_sram
 
 END LIBRARY

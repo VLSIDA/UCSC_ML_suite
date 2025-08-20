@@ -6,12 +6,12 @@ export PLATFORM    = nangate45
 export SDC_FILE      = $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/$(DESIGN_NAME)/constraint.sdc
 
 export ADDITIONAL_LEFS = \
-  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/liteeth_1rw1r_32w384d_32_sram.lef \
-  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/liteeth_1rw1r_32w384d_8_sram.lef
+  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/lef/fakeram_1rw1r_32w384d_32_sram.lef \
+  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/lef/liteeth_1rw1r_32w384d_8_sram.lef
 
 export ADDITIONAL_LIBS = \
-  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/liteeth_1rw1r_32w384d_32_sram.lib \
-  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/liteeth_1rw1r_32w384d_8_sram.lib
+  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/lib/fakeram_1rw1r_32w384d_32_sram.lib \
+  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/lib/fakeram_1rw1r_32w384d_8_sram.lib
 
 export DIE_AREA = 0 0 680 680
 export CORE_AREA = 15 15 665 665

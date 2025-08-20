@@ -23,7 +23,7 @@
 -end
 -assign wishbone_interface_writer_memory0_dat_r = mem[mem_adr0];
 -assign wishbone_interface_sram0_dat_r = mem_dat1;
-+liteeth_1rw1r_32w384d_32_sram u_tx_buffer_0 (
++fakeram_1rw1r_32w384d_32_sram u_tx_buffer_0 (
 +`ifdef USE_POWER_PINS
 +    .vdd(vdd),
 +    .gnd(gnd),
@@ -62,7 +62,7 @@
 -end
 -assign wishbone_interface_writer_memory1_dat_r = mem_1[mem_1_adr0];
 -assign wishbone_interface_sram1_dat_r = mem_1_dat1;
-+liteeth_1rw1r_32w384d_32_sram u_tx_buffer_1 (
++fakeram_1rw1r_32w384d_32_sram u_tx_buffer_1 (
 +`ifdef USE_POWER_PINS
 +    .vdd(vdd),
 +    .gnd(gnd),
@@ -108,7 +108,7 @@
 -end
 -assign wishbone_interface_reader_memory0_dat_r = mem_2_dat0;
 -assign wishbone_interface_sram2_dat_r = mem_2[mem_2_adr1];
-+liteeth_1rw1r_32w384d_8_sram u_rx_buffer_0 (
++fakeram_1rw1r_32w384d_8_sram u_rx_buffer_0 (
 +`ifdef USE_POWER_PINS
 +    .vdd(vdd),
 +    .gnd(gnd),
@@ -152,7 +152,7 @@
 -end
 -assign wishbone_interface_reader_memory1_dat_r = mem_3_dat0;
 -assign wishbone_interface_sram3_dat_r = mem_3[mem_3_adr1];
-+liteeth_1rw1r_32w384d_8_sram u_rx_buffer_1 (
++fakeram_1rw1r_32w384d_8_sram u_rx_buffer_1 (
 +`ifdef USE_POWER_PINS
 +    .vdd(vdd),
 +    .gnd(gnd),
