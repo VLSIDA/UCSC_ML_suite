@@ -17,22 +17,20 @@
 DESIGN_CONFIG ?= ./designs/nangate45/lfsr_top/config.mk
 -include OpenROAD-flow-scripts/flow/Makefile
 
-
-
 # Check if calling "dev" with an ORFS command or by itself.
-DEV_RUN_ID?=x
+DEV_RUN_TAG?=x
 .PHONY: dev do-dev-setup 
 ifeq ($(firstword $(MAKECMDGOALS)),dev)
-DEV_RUN_ID:=$(shell date +%s)
+DEV_RUN_TAG:=$(DESIGN_NAME)-$(shell date +%s%N)
 ifneq ($(lastword $(MAKECMDGOALS)),dev)
 dev: ;@:
 export DESIGN_NICKNAME=$(DESIGN_NAME).dev
 else
 $(info Starting dev run)
-dev: .dev-suite-run$(DEV_RUN_ID)
+dev: .dev-suite-run$(DEV_RUN_TAG)
 endif
 endif
-export DEV_RUN_ID
+export DEV_RUN_TAG
 
 # .dev-suite-run flag is necessary because ORFS makefile unsets all vars for recursion
 .DELETE_ON_ERROR:
