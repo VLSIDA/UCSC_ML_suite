@@ -1,4 +1,4 @@
-current_design core
+current_design nyuzi
 
 set clk_name  clk
 set clk_port_name clk

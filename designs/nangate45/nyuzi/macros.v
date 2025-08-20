@@ -19,14 +19,47 @@ module sram_1r1w_1x256 (
 	input [ADDR_WIDTH - 1:0] write_addr;
 	input [DATA_WIDTH - 1:0] write_data;
 	sram_1x256_1r1w sram (
-		.clk       (clk),
-		.rd_out_r1 (read_data),
-		.addr_r1   (read_addr),
-		.addr_w1   (write_addr),
-		.we_in_w1  (write_en),
-		.wd_in_w1  (write_data),
-   		.ce_r1 	   (1'b1),
-   		.ce_w1	   (1'b1)
+		.r0_clk       (clk),
+		.w0_clk       (clk),
+		.r0_rd_out (read_data),
+		.r0_addr_in   (read_addr),
+		.w0_addr_in   (write_addr),
+		.w0_we_in  (write_en),
+		.w0_wd_in  (write_data),
+   		.r0_ce_in 	   (1'b1),
+   		.w0_ce_in	   (1'b1)
+	);
+endmodule
+module sram_1r1w_18x256 (
+	clk,
+	read_en,
+	read_addr,
+	read_data,
+	write_en,
+	write_addr,
+	write_data
+);
+	parameter DATA_WIDTH = 18;
+	parameter SIZE = 256;
+	parameter READ_DURING_WRITE = "NEW_DATA";
+	parameter ADDR_WIDTH = $clog2(SIZE);
+	input clk;
+	input read_en;
+	input [ADDR_WIDTH - 1:0] read_addr;
+	output reg [DATA_WIDTH - 1:0] read_data;
+	input write_en;
+	input [ADDR_WIDTH - 1:0] write_addr;
+	input [DATA_WIDTH - 1:0] write_data;
+	sram_18x256_1r1w sram (
+		.r0_clk       (clk),
+		.w0_clk       (clk),
+		.r0_rd_out (read_data),
+		.r0_addr_in   (read_addr),
+		.w0_addr_in   (write_addr),
+		.w0_we_in  (write_en),
+		.w0_wd_in  (write_data),
+   		.r0_ce_in 	   (1'b1),
+   		.w0_ce_in	   (1'b1)
 	);
 endmodule
 module sram_1r1w_16x52 (

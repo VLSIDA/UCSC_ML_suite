@@ -27,7 +27,7 @@ Options:
     --install-path PATH     Path to install tools. Default is ${INSTALL_PATH}.
 
     --clean                 Call git clean interactively before compile.
-                            Also removes any files native to NyuziProcessor.
+                            Also removes any files native to nyuzi.
 
     --clean-force           Call clean before compile. WARNING: this option
                             will not ask for confirmation.
@@ -85,7 +85,7 @@ fi
 
 __logging()
 {
-        local log_file="Nyuzi_setup.log"
+        local log_file="nyuzi_setup.log"
         echo "Saving logs to ${log_file}"
         echo "$__CMD"
         exec > >(tee -i "${log_file}")
