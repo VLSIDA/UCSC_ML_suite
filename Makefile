@@ -20,10 +20,10 @@ DESIGN_CONFIG ?= ./designs/nangate45/lfsr_top/config.mk
 
 
 # Check if calling "dev" with an ORFS command or by itself.
-export DEV_RUN_ID?= x
+DEV_RUN_ID?=x
 .PHONY: dev do-dev-setup 
 ifeq ($(firstword $(MAKECMDGOALS)),dev)
-export DEV_RUN_ID:= $(shell date +%s)
+DEV_RUN_ID:=$(shell date +%s)
 ifneq ($(lastword $(MAKECMDGOALS)),dev)
 dev: ;@:
 export DESIGN_NICKNAME=$(DESIGN_NAME).dev
@@ -32,7 +32,7 @@ $(info Starting dev run)
 dev: .dev-suite-run$(DEV_RUN_ID)
 endif
 endif
-
+export DEV_RUN_ID
 
 # .dev-suite-run flag is necessary because ORFS makefile unsets all vars for recursion
 .DELETE_ON_ERROR:
