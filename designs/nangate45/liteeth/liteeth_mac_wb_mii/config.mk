@@ -7,7 +7,7 @@ export SDC_FILE      = $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/$(DESIGN_NAME)/c
 
 export ADDITIONAL_LEFS = \
   $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/lef/fakeram_1rw1r_32w384d_32_sram.lef \
-  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/lef/liteeth_1rw1r_32w384d_8_sram.lef
+  $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/lef/fakeram_1rw1r_32w384d_8_sram.lef
 
 export ADDITIONAL_LIBS = \
   $(BENCH_DESIGN_HOME)/$(PLATFORM)/liteeth/sram/lib/fakeram_1rw1r_32w384d_32_sram.lib \
