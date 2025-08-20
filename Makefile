@@ -21,20 +21,20 @@ DESIGN_CONFIG ?= ./designs/nangate45/lfsr_top/config.mk
 DEV_RUN_TAG?=x
 .PHONY: dev do-dev-setup 
 ifeq ($(firstword $(MAKECMDGOALS)),dev)
-DEV_RUN_TAG:=$(DESIGN_NAME)-$(shell date +%s%N)
+DEV_RUN_TAG:=$(shell date +%s%N)$(shell bash -c "echo $$RANDOM")
 ifneq ($(lastword $(MAKECMDGOALS)),dev)
 dev: ;@:
 export DESIGN_NICKNAME=$(DESIGN_NAME).dev
 else
 $(info Starting dev run)
-dev: .dev-suite-run$(DEV_RUN_TAG)
+dev: .dev-run-$(DESIGN_NAME)-$(DEV_RUN_TAG)
 endif
 endif
 export DEV_RUN_TAG
 
 # .dev-suite-run flag is necessary because ORFS makefile unsets all vars for recursion
 .DELETE_ON_ERROR:
-.dev-suite-run%:
+.dev-run%:
     # Change Design Nickname to avoid conflict between default and dev designs  
 	$(eval export DESIGN_NICKNAME = $(DESIGN_NAME).dev)
 	: > $@
