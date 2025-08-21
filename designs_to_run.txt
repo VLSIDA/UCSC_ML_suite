@@ -4,9 +4,9 @@ designs/asap7/lfsr_top/config.mk
 designs/sky130hd/lfsr_top/config.mk
 
 # Minimax designs
-# designs/nangate45/minimax/config.mk
-# designs/asap7/minimax/config.mk
-# designs/sky130hd/minimax/config.mk
+designs/nangate45/minimax/config.mk
+designs/asap7/minimax/config.mk
+designs/sky130hd/minimax/config.mk
 
 # LiteEth designs
 # designs/nangate45/liteeth/liteeth_mac_axi_mii/config.mk
