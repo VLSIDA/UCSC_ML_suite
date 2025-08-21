@@ -69,6 +69,10 @@ jobs:
             openroad/orfs:$tag \
             bash -c "
                 set -e
+                apt-get update && apt-get install -y wget
+                wget https://github.com/zachjs/sv2v/releases/download/v0.0.11/sv2v-linux-amd64
+                chmod +x sv2v-linux-amd64
+                mv sv2v-linux-amd64 /usr/bin/sv2v
                 git config --global --add safe.directory '*'
                 cd UCSC_ML_suite
                 echo 'Running design: $design'
