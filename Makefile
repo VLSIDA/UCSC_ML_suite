@@ -1,20 +1,23 @@
 
 ###            Comprehensive Design List (nangate45, sky130hd, asap7)            ###
+
 # DESIGN_CONFIG=./designs/nangate45/lfsr_top/config.mk
 # DESIGN_CONFIG=./designs/nangate45/liteeth/liteeth_mac_axi_mii/config.mk
 # DESIGN_CONFIG=./designs/nangate45/liteeth/liteeth_mac_wb_mii/config.mk
 # DESIGN_CONFIG=./designs/nangate45/minimax/config.mk
-# DESIGN_CONFIG=./designs/nangate45/nyuzi/config.mk
-# 
+# DESIGN_CONFIG=./designs/nangate45/NyuziProcessor/config.mk
+
 # DESIGN_CONFIG=./designs/sky130hd/lfsr_top/config.mk
 # DESIGN_CONFIG=./designs/sky130hd/liteeth/liteeth_mac_axi_mii/config.mk
 # DESIGN_CONFIG=./designs/sky130hd/liteeth/liteeth_mac_wb_mii/config.mk
 # DESIGN_CONFIG=./designs/sky130hd/minimax/config.mk
-#
+#  
+
 # DESIGN_CONFIG=./designs/asap7/minimax/config.mk
 # DESIGN_CONFIG=./designs/asap7/lfsr_top/config.mk
+# DESIGN_CONFIG=./designs/asap7/liteeth/liteeth_mac_axi_mii/config.mk
 
-DESIGN_CONFIG ?= ./designs/nangate45/lfsr_top/config.mk
+DESIGN_CONFIG ?= ./designs/nangate45/lfsr_prbs_gen/config.mk
 -include OpenROAD-flow-scripts/flow/Makefile
 
 # Check if calling "dev" with an ORFS command or by itself.

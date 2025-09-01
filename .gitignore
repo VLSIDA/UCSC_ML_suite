@@ -8,5 +8,4 @@ objects
 .dev*
 .venv
 sv2v
-**/dev/*.v*
 **/dev/liteeth_builds
