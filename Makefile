@@ -19,7 +19,6 @@
 DESIGN_CONFIG ?= ./designs/nangate45/lfsr_prbs_gen/config.mk
 -include OpenROAD-flow-scripts/flow/Makefile
 # Designs with RAM macros use FakeRAM (LEF generated for pins, no internal logic)
-export GDS_ALLOW_EMPTY=fakeram.*
 # Check if calling "dev" with an ORFS command or by itself.
 DEV_RUN_TAG?=x
 .PHONY: dev
@@ -50,7 +49,12 @@ do-dev-setup:
     # Change Design Nickname to avoid conflict between default and dev designs  
 	: > $@
 	$(MAKE) do-dev-setup 
+<<<<<<< Updated upstream
 	@if [ ! -f "$(RESULTS_DIR)/1_synth.v" ]; then \
+=======
+    # Check where the design was at (if continuing a run), otherwise run entire flow to finish
+	@if [ ! -f "$(RESULTS_DIR)/1_synth.rtlil" ]; then \
+>>>>>>> Stashed changes
 		$(MAKE) finish; \
 	elif [ ! -f "$(RESULTS_DIR)/2_floorplan.odb" ]; then \
 		$(MAKE) do-floorplan do-place do-cts do-route do-finish; \
