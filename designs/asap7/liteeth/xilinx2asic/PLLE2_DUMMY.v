@@ -1,4 +1,58 @@
-// `timescale 1 ps / 1 ps
+///////////////////////////////////////////////////////////////////////////////
+//     Copyright (c) 1995/2017 Xilinx, Inc.
+// 
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+// 
+//        http://www.apache.org/licenses/LICENSE-2.0
+// 
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+///////////////////////////////////////////////////////////////////////////////
+//   ____  ____
+//  /   /\/   /
+// /___/  \  /     Vendor      : Xilinx
+// \   \   \/      Version     : 2017.4
+//  \   \          Description : Xilinx Unified Simulation Library Component
+//  /   /                        Advanced Phase-Locked Loop (PLL)
+// /___/   /\      Filename    : PLLE2_ADV.v
+// \   \  /  \
+//  \___\/\___\
+//
+///////////////////////////////////////////////////////////////////////////////
+//  Revision:
+//  12/09/09 - Initial version.
+//  03/24/10 - Change CLKFBOUT_MULT defaut to 5, CLKIN_PERIOD range.
+//  04/28/10 - Fix CLKIN1_PERIOD check (CR557962)
+//  06/03/10 - Change DIVCLK_DIVIDE range to 56 according yaml.
+//  07/12/10 - Add RST to LOCKED iopath (CR567807)
+//  07/28/10 - Change ref parameter values (CR569262)
+//  08/06/10 - Remove CASCADE from COMPENSATION (CR571190)
+//  08/17/10 - Add Decay output clocks when input clock stopped (CR555324)
+//  09/03/10 - Change to bus timing.
+//  09/26/10 - Add RST to LOCKED timing path (CR567807)
+//  02/22/11 - reduce clkin period check resolution to 0.001 (CR594003)
+//  03/03/11 - Keep 100ps dealy only on RST to LOCKED for unisim (CR595354)
+//  05/05/11 - Update cp_res table (CR609232)
+//  10/26/11 - Add DRC check for samples CLKIN period with parameter setting (CR631150)
+//  12/13/11 - Added `celldefine and `endcelldefine (CR 524859).
+//  02/22/12 - Modify DRC (638094).
+//  03/07/12 - added vcoflag (CR 638088, CR 636493)
+//  04/19/12 - 654951 - rounding issue with clk_out_para_cal
+//  05/03/12 - jittery clock (CR 652401)
+//  05/03/12 - incorrect period (CR 654951)
+//  06/11/12 - update cp and res settings (CR 664278)
+//  06/20/12 - modify reset drc (CR 643540)
+//  04/04/13 - change error to warning (CR 708090)
+//  04/09/13 - Added DRP monitor (CR 695630).
+//  10/22/2014 808642 - Added #1 to $finish
+//  10/13/25 - ASIC synthesizable.
+//  End Revision:
+///////////////////////////////////////////////////////////////////////////////
 
 module PLLE2_DUMMY #(
   // PLL Configuration Parameters

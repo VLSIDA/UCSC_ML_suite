@@ -1,16 +1,36 @@
 ///////////////////////////////////////////////////////
-//     ASIC-Compatible Version of GTPE2_COMMON
-//     Converted from Xilinx primitive for OpenROAD flow
-//     
-//     Description: Dual PLL common block for gigabit transceivers
-//     - Two independent PLLs with configurable feedback/reference dividers
-//     - Dynamic Reconfiguration Port (DRP) interface
-//     - Multiple reference clock inputs with selection
-//     - Clock monitoring and lock detection
-//     - Synthesizable behavioral model using standard cells
+//     Copyright (c) 2011 Xilinx Inc.
+// 
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+// 
+//        http://www.apache.org/licenses/LICENSE-2.0
+// 
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
 ///////////////////////////////////////////////////////
-
-// `timescale 1 ps / 1 ps
+//
+//   ____   ___
+//  /   /\/   / 
+// /___/  \  /     Vendor      : Xilinx 
+// \  \    \/      Version     :  13.1
+//  \  \           Description : 
+//  /  /                      
+// /__/   /\       Filename    : GTPE2_COMMON.uniprim.v
+// \  \  /  \ 
+//  \__\/\__ \                    
+//                                 
+//  Revision:		1.0
+//  11/8/12  - 686589 - YML default changes
+//  01/18/13 - 695630 - added drp monitor
+//  08/29/14 - 821138 - add negedge specify section for IS_INVERTED*CLK*
+//  10/13/25 - ASIC synthesizable.
+//  End Revision:
+///////////////////////////////////////////////////////
 
 module GTPE2_COMMON_DUMMY (
   output wire        PLL0OUTCLK,

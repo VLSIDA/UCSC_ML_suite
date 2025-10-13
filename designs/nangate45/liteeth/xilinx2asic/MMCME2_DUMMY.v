@@ -1,4 +1,132 @@
-// `timescale 1ps / 1ps
+///////////////////////////////////////////////////////////////////////////////
+//     Copyright (c) 1995/2017 Xilinx, Inc.
+// 
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+// 
+//        http://www.apache.org/licenses/LICENSE-2.0
+// 
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+///////////////////////////////////////////////////////////////////////////////
+//   ____  ____
+//  /   /\/   /
+// /___/  \  /     Vendor      : Xilinx
+// \   \   \/      Version     : 2017.1
+//  \   \          Description : Xilinx Unified Simulation Library Component
+//  /   /                        Advanced Mixed Mode Clock Manager (MMCM)
+// /___/   /\      Filename    : MMCME2_ADV.v
+// \   \  /  \
+//  \___\/\___\
+//
+///////////////////////////////////////////////////////////////////////////////
+//  Revision:
+//  07/07/08 - Initial version.
+//  09/19/08 - Change CLKFBOUT_MULT to CLKFBOUT_MULT_F
+//                    CLKOUT0_DIVIDE to CLKOUT0_DIVIDE_F
+//  10/03/08 - Initial all signals.
+//  10/30/08 - Clock source switching without reset (CR492263).
+//  11/18/08 - Add timing check for DADDR[6:5].
+//  12/02/08 - Fix bug of Duty cycle calculation (CR498696)
+//  12/05/08 - change pll_res according to hardware spreadsheet (CR496137)
+//  12/09/08 - Enable output at CLKFBOUT_MULT_F*8 for fraction mode (CR499322)
+//  01/08/09 - Add phase and duty cycle checks for fraction divide (CR501181)
+//  01/09/09 - make pll_res same for BANDWIDTH=HIGH and OPTIMIZED (CR496137)
+//  01/14/09 - Fine phase shift wrap around to 0 after 56 times;
+//           - PSEN to PSDONE change to 12 PSCLK; RST minpusle to 5ns;
+//           - add pulldown to PWRDWN pin. (CR503425)
+//  01/14/09 - increase clkout_en_time for fraction mode (CR499322)
+//  01/21/09 - align CLKFBOUT to CLKIN for fraction mode (CR504602)
+//  01/27/09 - update DRP register address (CR505271)
+//  01/28/09 - assign clkout_en0 and clkout_en1 to 0 when RST=1 (CR505767)
+//  02/03/09 - Fix bug in clkfb fine phase shift.
+//          - Add delay to clkout_en0_tmp (CR506530).
+//  02/05/09 - Add ps_in_ps calculation to clkvco_delay when clkfb_fps_en=1.
+//           - round clk_ht clk_lt for duty_cycle (CR506531)
+//  02/11/09 - Change VCO_FREQ_MAX and MIN to 1601 and 399 to cover the rounded
+//             error (CR507969)
+//  02/25/09 - round clk_ht clk_lt for duty_cycle (509386)
+//  02/26/09 - Fix for clkin and clkfbin stop case (CR503425)
+//  03/04/09 - Fix for CLOCK_HOLD (CR510820).
+//  03/27/09 - set default 1 to CLKINSEL pin (CR516951)
+//  04/13/09 - Check vco range when CLKINSEL not connected (CR516951)
+//  04/22/09 - Add reset to clkinstopped related signals (CR519102)
+//  04/27/09 - Make duty cycle of fraction mode 50/50 (CR519505)
+//  05/13/09 - Use period_avg for clkvco_delay calculation (CR521120)
+//  07/23/09 - fix bug in clk0_dt (CR527643)
+//  07/27/09 - Do divide when period_avg > 0 (CR528090)
+//           - Change DIVCLK_DIVIDE to 80 (CR525904)
+//           - Add initial lock setting (CR524523)
+//           - Update RES CP setting (CR524522)
+//  07/31/09  - Add if else to handle the fracion and nonfraction for clkout_en.
+//  08/10/09  - Calculate clkin_lost_val after lock_period=1 (CR528520).
+//  08/15/09 - Update LFHF (CR524522)
+//  08/19/09 - Set clkfb_lost_val initial value (CR531354)
+//  08/28/09 - add clkin_period_tmp_t to handle period_avg calculation
+//             when clkin has jitter (CR528520)
+//  09/11/09 - Change CLKIN_FREQ_MIN to 10 Mhz (CR532774)
+//  10/01/09 - Change CLKIN_FREQ_MAX to 800Mhz (CR535076)
+//             Add reset check for clock switchover (CR534900)
+//  10/08/09 - Change CLKIN_FREQ MAX & MIN, CLKPFD_FREQ
+//             MAX & MIN to parameter (CR535828)
+//  10/14/09 - Add clkin_chk_t1 and clkin_chk_t2 to handle check (CR535662)
+//  10/22/09 - Add period_vco_mf for clkvco_delay calculation (CR536951)
+//             Add cmpvco to compensate period_vco rounded error (CR537073)
+//  12/02/09 - not stop clkvco_lk when jitter (CR538717)
+//  01/08/10 - Change minimum RST pulse width from 5 ns to 1.5 ns
+//             Add 1 ns delay to locked_out_tmp when RST=1 (CR543857)
+//  01/19/10 - make change to clkvoc_lk_tmp to handle M=1 case (CR544970)
+//  02/09/10 - Add global PLL_LOCKG (CR547918)
+//  02/23/10 - Not use edge for locked_out_tmp (CR549667)
+//  03/04/10 - Change CLKFBOUT_MULT_F range to 5-64 (CR551618)
+//  03/22/10 - Change CLKFBOUT_MULT_F default to 5 (554618)
+//  03/24/10 - Add SIM_DEVICE attribute
+//  04/07/10 - Generate clkvco_ps_tmp2_en correctly when ps_lock_dly rising
+//             and clkout_ps=1 case; increase lock_period time to 10 (CR556468)
+//  05/07/10 - Use period_vco_half_rm1 to reduce jitter (CR558966)
+//  07/28/10 - Update ref parameter values (CR569260)
+//  08/17/10 - Add Decay output clocks when input clock stopped (CR555324)
+//  09/03/10 - use %f for M_MIN and M_MAX  (CR574247)
+//  09/09/10 - Change to bus timing.
+//  09/26/10 - Add RST to LOCKED timing path (CR567807)
+//  02/22/11 - reduce clkin period check resolution to 0.001 (CR594003)
+//  03/08/11 - Support fraction mode phase shifting with phase parameter
+//             setting (CR596402)
+//  04/26/11 - Support fraction mode phase shifting with DRP(CR607989)
+//  05/24/11 - Set frac_wf_f to 1 when divide=2.125 (CR611840)
+//  06/06/11 - set period_vco_half_rm2 to 0 when period_vco=0 (CR613021)
+//  06/08/11 - Disable clk0 fraction mode when CLKOUT0_DIVIDE_F in range
+//             greater than 1 and less than 2. Add DRC check for it (608893)
+//  08/03/11 - use clk0_frac instead of clk0_sfrac (CR 618600)
+//  10/26/11 - Add DRC check for samples CLKIN period with parameter setting (CR631150)
+//             Add spectrum attributes.
+//  12/13/11 - Added `celldefine and `endcelldefine (CR 524859).
+//  02/22/12 - Modify DRC (638094).
+//  03/01/12 - fraction enable for m/d (CR 648429)
+//  03/07/12 - added vcoflag (CR 638088, CR 636493)
+//  04/19/12 - 654951 - rounding issue with clk_out_para_cal
+//  05/03/12 - ncsim issue with clkfb_frac_en (CR 655792)
+//  05/03/12 - jittery clock (CR 652401)
+//  05/03/12 - incorrect period (CR 654951)
+//  05/10/12 - fractional divide calculation issue (CR 658151)
+//  05/18/12 - fractional divide calculation issue (CR 660657)
+//  06/11/12 - update cp and res settings (CR 664278)
+//  06/20/12 - modify reset drc (CR 643540)
+//  09/06/12 - 655711 - modify displayed MAX on CLK_DUTY_CYCLE
+//  12/12/12 - fix clk_osc process for ncsim (CR 676829)
+//  04/04/13 - fix clkvco_frac_en for DRP (CR 709093)
+//  04/09/13 - Added DRP monitor (CR 695630).
+//  05/03/13 - 670208 Fractional clock alignment issue
+//  05/31/13 - 720783 - revert clock alignment fix
+//  10/22/2014 808642 - Added #1 to $finish
+//  11/26/2014 829050 - remove CLKIN -> CLKOUT* timing paths
+//  10/13/25 - ASIC synthesizable.
+//  End Revision:
+///////////////////////////////////////////////////////////////////////////////
 
 module MMCME2_DUMMY #(
   parameter BANDWIDTH = "OPTIMIZED",

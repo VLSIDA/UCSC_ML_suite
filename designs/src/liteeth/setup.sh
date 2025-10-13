@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Tested and working on WSL Ubuntu on Windows 11 in ./runorfs.sh
-
 echo "Starting Setup..."
 
 # Change to the script's directory to ensure .venv is created in the right place
