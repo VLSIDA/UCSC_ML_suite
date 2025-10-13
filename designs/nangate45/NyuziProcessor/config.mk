@@ -29,11 +29,11 @@ export ABC_AREA = 1
 
 export SDC_FILE      = $(BENCH_DESIGN_HOME)/$(PLATFORM)/$(DESIGN_NAME)/constraint.sdc
 
-export CORE_UTILIZATION = 50
+export CORE_UTILIZATION = 49
 
 export PLACE_DENSITY_LB_ADDON = 0.1
 
-export MACRO_PLACE_HALO    = 30 30
+export MACRO_PLACE_HALO    = 40 40
 
 export TNS_END_PERCENT     = 100
 
