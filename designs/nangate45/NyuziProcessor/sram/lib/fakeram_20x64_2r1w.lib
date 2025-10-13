@@ -2,7 +2,7 @@ library(fakeram_20x64_2r1w) {
     technology (cmos);
     delay_model : table_lookup;
     revision : 1.0;
-    date : "2025-08-22 01:56:05Z";
+    date : "2025-10-10 17:45:39Z";
     comment : "SRAM";
     time_unit : "1ns";
     voltage_unit : "1V";
@@ -87,13 +87,13 @@ library(fakeram_20x64_2r1w) {
         bit_to : 0 ;
         downto : true ;
     }
-   cell(fakeram_20x64_2r1w) {
-       area : 13631.604;
-       interface_timing : true;
-       memory() {
-           type : ram;
-           address_width : 6;
-           word_width : 20;
+cell(fakeram_20x64_2r1w) {
+    area : 13304.256;
+    interface_timing : true;
+    memory() {
+        type : ram;
+        address_width : 6;
+        word_width : 20;
     }
     pin(r0_clk)   {
         direction : input;
@@ -113,6 +113,23 @@ library(fakeram_20x64_2r1w) {
     }
 
     pin(r1_clk)   {
+        direction : input;
+        capacitance : 0.025;
+        clock : true;
+        min_period           : 0.194 ;
+        internal_power(){
+            rise_power(fakeram_20x64_2r1w_energy_template_clkslew) {
+                index_1 ("0.009, 0.227");
+                values ("1.922, 1.922")
+            }
+            fall_power(fakeram_20x64_2r1w_energy_template_clkslew) {
+                index_1 ("0.009, 0.227");
+                values ("1.922, 1.922")
+            }
+        }
+    }
+
+    pin(w0_clk)   {
         direction : input;
         capacitance : 0.025;
         clock : true;
@@ -203,11 +220,11 @@ library(fakeram_20x64_2r1w) {
             }
         }
     }
-    pin(r0_ce_in){
+    pin(w0_we_in)   {
         direction : input;
         capacitance : 0.005;
         timing() {
-            related_pin : "r0_clk";
+            related_pin : w0_clk;
             timing_type : setup_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -227,7 +244,7 @@ library(fakeram_20x64_2r1w) {
             }
         } 
         timing() {
-            related_pin : "r0_clk";
+            related_pin : w0_clk;
             timing_type : hold_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -257,11 +274,11 @@ library(fakeram_20x64_2r1w) {
             }
         }
     }
-    pin(r1_ce_in){
+    pin(r0_ce_in)   {
         direction : input;
         capacitance : 0.005;
         timing() {
-            related_pin : "r1_clk";
+            related_pin : r0_clk;
             timing_type : setup_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -281,7 +298,7 @@ library(fakeram_20x64_2r1w) {
             }
         } 
         timing() {
-            related_pin : "r1_clk";
+            related_pin : r0_clk;
             timing_type : hold_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -311,12 +328,11 @@ library(fakeram_20x64_2r1w) {
             }
         }
     }
-    bus(r0_addr_in)   {
-        bus_type : fakeram_20x64_2r1w_ADDRESS;
+    pin(r1_ce_in)   {
         direction : input;
         capacitance : 0.005;
         timing() {
-            related_pin : "r0_clk";
+            related_pin : r1_clk;
             timing_type : setup_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -336,7 +352,7 @@ library(fakeram_20x64_2r1w) {
             }
         } 
         timing() {
-            related_pin : "r0_clk";
+            related_pin : r1_clk;
             timing_type : hold_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -366,12 +382,11 @@ library(fakeram_20x64_2r1w) {
             }
         }
     }
-    bus(r1_addr_in)   {
-        bus_type : fakeram_20x64_2r1w_ADDRESS;
+    pin(w0_ce_in)   {
         direction : input;
         capacitance : 0.005;
         timing() {
-            related_pin : "r1_clk";
+            related_pin : w0_clk;
             timing_type : setup_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -391,78 +406,7 @@ library(fakeram_20x64_2r1w) {
             }
         } 
         timing() {
-            related_pin : "r1_clk";
-            timing_type : hold_rising ;
-            rise_constraint(fakeram_20x64_2r1w_constraint_template) {
-                index_1 ("0.009, 0.227");
-                index_2 ("0.009, 0.227");
-                values ( \
-                  "0.050, 0.050", \
-                  "0.050, 0.050" \
-                )
-            }
-            fall_constraint(fakeram_20x64_2r1w_constraint_template) {
-                index_1 ("0.009, 0.227");
-                index_2 ("0.009, 0.227");
-                values ( \
-                  "0.050, 0.050", \
-                  "0.050, 0.050" \
-                )
-            }
-        }
-        internal_power(){
-            rise_power(fakeram_20x64_2r1w_energy_template_sigslew) {
-                index_1 ("0.009, 0.227");
-                values ("0.019, 0.019")
-            }
-            fall_power(fakeram_20x64_2r1w_energy_template_sigslew) {
-                index_1 ("0.009, 0.227");
-                values ("0.019, 0.019")
-            }
-        }
-    }
-    pin(w0_clk)   {
-        direction : input;
-        capacitance : 0.025;
-        clock : true;
-        min_period           : 0.194 ;
-        internal_power(){
-            rise_power(fakeram_20x64_2r1w_energy_template_clkslew) {
-                index_1 ("0.009, 0.227");
-                values ("1.922, 1.922")
-            }
-            fall_power(fakeram_20x64_2r1w_energy_template_clkslew) {
-                index_1 ("0.009, 0.227");
-                values ("1.922, 1.922")
-            }
-        }
-    }
-
-    pin(w0_we_in){
-        direction : input;
-        capacitance : 0.005;
-        timing() {
-            related_pin : "w0_clk";
-            timing_type : setup_rising ;
-            rise_constraint(fakeram_20x64_2r1w_constraint_template) {
-                index_1 ("0.009, 0.227");
-                index_2 ("0.009, 0.227");
-                values ( \
-                  "0.050, 0.050", \
-                  "0.050, 0.050" \
-                )
-            }
-            fall_constraint(fakeram_20x64_2r1w_constraint_template) {
-                index_1 ("0.009, 0.227");
-                index_2 ("0.009, 0.227");
-                values ( \
-                  "0.050, 0.050", \
-                  "0.050, 0.050" \
-                )
-            }
-        } 
-        timing() {
-            related_pin : "w0_clk";
+            related_pin : w0_clk;
             timing_type : hold_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -501,7 +445,7 @@ library(fakeram_20x64_2r1w) {
         direction : input;
         capacitance : 0.005;
         timing() {
-            related_pin     : "w0_clk";
+            related_pin     : w0_clk;
             timing_type     : setup_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -521,7 +465,7 @@ library(fakeram_20x64_2r1w) {
             }
         } 
         timing() {
-            related_pin     : "w0_clk";
+            related_pin     : w0_clk;
             timing_type     : hold_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -563,11 +507,12 @@ library(fakeram_20x64_2r1w) {
             }
         }
     }
-    pin(w0_ce_in){
+    bus(r0_addr_in)   {
+        bus_type : fakeram_20x64_2r1w_ADDRESS;
         direction : input;
         capacitance : 0.005;
         timing() {
-            related_pin : "w0_clk";
+            related_pin : r0_clk;
             timing_type : setup_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -587,7 +532,62 @@ library(fakeram_20x64_2r1w) {
             }
         } 
         timing() {
-            related_pin : "w0_clk";
+            related_pin : r0_clk;
+            timing_type : hold_rising ;
+            rise_constraint(fakeram_20x64_2r1w_constraint_template) {
+                index_1 ("0.009, 0.227");
+                index_2 ("0.009, 0.227");
+                values ( \
+                  "0.050, 0.050", \
+                  "0.050, 0.050" \
+                )
+            }
+            fall_constraint(fakeram_20x64_2r1w_constraint_template) {
+                index_1 ("0.009, 0.227");
+                index_2 ("0.009, 0.227");
+                values ( \
+                  "0.050, 0.050", \
+                  "0.050, 0.050" \
+                )
+            }
+        }
+        internal_power(){
+            rise_power(fakeram_20x64_2r1w_energy_template_sigslew) {
+                index_1 ("0.009, 0.227");
+                values ("0.019, 0.019")
+            }
+            fall_power(fakeram_20x64_2r1w_energy_template_sigslew) {
+                index_1 ("0.009, 0.227");
+                values ("0.019, 0.019")
+            }
+        }
+    }
+    bus(r1_addr_in)   {
+        bus_type : fakeram_20x64_2r1w_ADDRESS;
+        direction : input;
+        capacitance : 0.005;
+        timing() {
+            related_pin : r1_clk;
+            timing_type : setup_rising ;
+            rise_constraint(fakeram_20x64_2r1w_constraint_template) {
+                index_1 ("0.009, 0.227");
+                index_2 ("0.009, 0.227");
+                values ( \
+                  "0.050, 0.050", \
+                  "0.050, 0.050" \
+                )
+            }
+            fall_constraint(fakeram_20x64_2r1w_constraint_template) {
+                index_1 ("0.009, 0.227");
+                index_2 ("0.009, 0.227");
+                values ( \
+                  "0.050, 0.050", \
+                  "0.050, 0.050" \
+                )
+            }
+        } 
+        timing() {
+            related_pin : r1_clk;
             timing_type : hold_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -622,7 +622,7 @@ library(fakeram_20x64_2r1w) {
         direction : input;
         capacitance : 0.005;
         timing() {
-            related_pin : "w0_clk";
+            related_pin : w0_clk;
             timing_type : setup_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -642,7 +642,7 @@ library(fakeram_20x64_2r1w) {
             }
         } 
         timing() {
-            related_pin : "w0_clk";
+            related_pin : w0_clk;
             timing_type : hold_rising ;
             rise_constraint(fakeram_20x64_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
