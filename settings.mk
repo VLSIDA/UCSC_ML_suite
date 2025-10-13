@@ -1,3 +1,4 @@
 export BENCH_DESIGN_HOME = $(abspath $(dir $(firstword $(MAKEFILE_LIST)))/designs)
 export DEV_FLAG          = $(abspath $(dir $(firstword $(MAKEFILE_LIST)))/.dev-run-$(DESIGN_NAME)-$(DEV_RUN_TAG))
 export DEV_DESIGN_HOME  ?= $(DESIGN_NAME)/dev
+export GDS_ALLOW_EMPTY:=fakeram.*
