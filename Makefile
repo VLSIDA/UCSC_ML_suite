@@ -50,7 +50,7 @@ do-dev-setup:
     # Change Design Nickname to avoid conflict between default and dev designs  
 	: > $@
 	$(MAKE) do-dev-setup 
-	@if [ ! -f "$(RESULTS_DIR)/1_synth.rtlil" ]; then \
+	@if [ ! -f "$(RESULTS_DIR)/1_synth.v" ]; then \
 		$(MAKE) finish; \
 	elif [ ! -f "$(RESULTS_DIR)/2_floorplan.odb" ]; then \
 		$(MAKE) do-floorplan do-place do-cts do-route do-finish; \
