@@ -25,5 +25,5 @@ export VERILOG_FILES = $(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/NyuziProcessor.v 
                        $(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/macros.v
 endif
 
-export VERILOG_FILES = $(DESIGN_HOME)/src/$(DESIGN_NAME)/NyuziProcessor.v \
-                       $(DESIGN_HOME)/src/$(DESIGN_NAME)/macros.v
+export VERILOG_FILES = $(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/NyuziProcessor.v \
+                       $(BENCH_DESIGN_HOME)/src/$(DESIGN_NAME)/macros.v
