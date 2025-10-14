@@ -17,26 +17,21 @@ $(TARGET_FILE) : $(USED_REPO_FILES)
 
 export VERILOG_FILES = $(TARGET_FILE) \
                        $(PLATFORM_DESIGN_DIR)/xilinx2asic/FDPE.v \
-                       $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_32_sram.v \
-                       $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_8_sram.v
+                       $(PLATFORM_DESIGN_DIR)/sram/verilog/fakeram_1rw1r_32w384d_sram.v \
+                       $(PLATFORM_DESIGN_DIR)/sram/verilog/fakeram_1rw1r_32w384d_8wm_sram.v
 
 export SDC_FILE            = $(PLATFORM_DESIGN_DIR)/$(DESIGN_NAME)/constraint.sdc
 
-export MACRO_PLACEMENT_TCL = $(PLATFORM_DESIGN_DIR)/$(DESIGN_NAME)/macro_placement.tcl
-
 export ADDITIONAL_LEFS = \
-  $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_32_sram.lef \
-  $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_8_sram.lef
+  $(PLATFORM_DESIGN_DIR)/sram/lef/fakeram_1rw1r_32w384d_sram.lef \
+  $(PLATFORM_DESIGN_DIR)/sram/lef/fakeram_1rw1r_32w384d_8wm_sram.lef
 
 export ADDITIONAL_LIBS = \
-  $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_32_sram.lib \
-  $(PLATFORM_DESIGN_DIR)/sram/liteeth_1rw1r_32w384d_8_sram.lib
+  $(PLATFORM_DESIGN_DIR)/sram/lib/fakeram_1rw1r_32w384d_sram.lib \
+  $(PLATFORM_DESIGN_DIR)/sram/lib/fakeram_1rw1r_32w384d_8wm_sram.lib
 
-export CORE_UTILIZATION = 35
-export PLACE_DENSITY = 0.2
-
-export CAP_MARGIN = 0.02
-export SLEW_MARGIN = 0.02
-export MACRO_PLACE_HALO = 30 30
-
-export ROUTING_LAYER_ADJUSTMENT = 0.25
+export GDS_ALLOW_EMPTY=fakeram*
+export CORE_UTILIZATION = 40
+export PLACE_DENSITY = 0.15
+export MACRO_PLACE_HALO = 20 20
+export ROUTING_LAYER_ADJUSTMENT = 0.2
