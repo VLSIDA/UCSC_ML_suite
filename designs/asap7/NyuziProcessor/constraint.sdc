@@ -2,8 +2,8 @@ current_design NyuziProcessor
 
 set clk_name  clk
 set clk_port_name clk
-set clk_period 4.5
-set clk_io_pct 0.25
+set clk_period 2400
+set clk_io_pct 0.15
 
 set clk_port [get_ports $clk_port_name]
 
