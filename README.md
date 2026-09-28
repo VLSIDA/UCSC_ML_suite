@@ -46,7 +46,43 @@ tools/bazel_to_orfs.sh --run --flow-home ~/OpenROAD-flow-scripts \
   designs/asap7/lfsr synth floorplan place
 ```
 
-**What it produces.** For each design it materializes the RTL via bazel
+For a flow-independent input export, add `--benchmark-dir`. This mode
+materializes RTL and design configuration only, copies each pinned ORFS
+platform once, and deliberately emits no runner or physical-design results:
+
+```bash
+tools/bazel_to_orfs.sh --benchmark-dir .hightide_export all
+```
+
+The export has a shared suite-level layout:
+
+```
+.hightide_export/
+  platforms/
+    common/
+    asap7/
+    gt2n/
+    nangate45/
+    sky130hd/
+  designs/
+    <platform>/<design>/
+      inputs/      materialized RTL, includes, SDC, macro LEF/LIB, design Tcl
+      config.mk    resolved design configuration; no run.sh
+```
+
+Set `HIGHTIDE_BUNDLE_ROOT` to the export directory when resolving a design's
+Make-compatible `config.mk`. Its `PREPARED_INPUTS` and `PLATFORM_DIR` defaults
+then point into the portable tree. Preparing this export builds only RTL
+generator targets and cheap configuration output groups, then copies the
+pinned ORFS platform trees; it does **not** run synthesis, floorplanning,
+placement, CTS, routing, or finish. The command still requires the supported
+Linux/Bazel environment to materialize generated RTL and pinned repositories.
+
+As with the default bundle mode, adding `--run --flow-home <ORFS>` explicitly
+requests an ORFS run after export. Other physical-design tools consume the
+export through their own adapter.
+
+**What the default ORFS mode produces.** For each design it materializes the RTL via bazel
 (fetching the hermetic `http_archive` sources / running any RTL genrules —
 but *not* synthesis), extracts the resolved `config.mk`, and copies every
 input into a self-contained, relocatable bundle:
