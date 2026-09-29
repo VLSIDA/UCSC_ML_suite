@@ -162,7 +162,7 @@ fi
 # platform dirs (designs/asap7) don't — they just hold subpackages.
 enumerate_designs() {   # <dir> -> prints each design package under it
     find "$1" -name BUILD.bazel 2>/dev/null | sort | while read -r bf; do
-        grep -q 'hightide_design\|orfs_flow' "$bf" && dirname "$bf"
+        grep -Eq '^[[:space:]]*(hightide_design|orfs_flow)\(' "$bf" && dirname "$bf"
     done
 }
 
@@ -188,7 +188,7 @@ if [ -n "$root" ]; then
     mapfile -t design_list < <(enumerate_designs "$root")
 else
     p=${sel%:*}; p=${p%/}       # drop any :target and trailing slash
-    if [ -f "$p/BUILD.bazel" ] && grep -q 'hightide_design\|orfs_flow' "$p/BUILD.bazel"; then
+    if [ -f "$p/BUILD.bazel" ] && grep -Eq '^[[:space:]]*(hightide_design|orfs_flow)\(' "$p/BUILD.bazel"; then
         design_list=("$p")                              # a single design
     elif [ -d "$p" ]; then
         mapfile -t design_list < <(enumerate_designs "$p")  # container/platform dir
