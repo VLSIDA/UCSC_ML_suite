@@ -293,11 +293,22 @@ if [ -z "$config" ]; then
 fi
 config=$(realpath "$config")
 
-echo ">> Staging inputs into $work_dir/inputs (portable, self-contained) ..." >&2
-python3 "$repo_root/tools/stage_prepared_inputs.py" "$config" "$work_dir/inputs" >&2
-
 if [ -n "$benchmark_dir" ]; then
     stage_benchmark_platform
+fi
+
+echo ">> Staging inputs into $work_dir/inputs (portable, self-contained) ..." >&2
+stage_args=()
+if [ -n "$benchmark_dir" ]; then
+    stage_args+=(
+        --manifest "$work_dir/manifest.json"
+        --platform-dir "$benchmark_dir/platforms/$platform"
+    )
+fi
+python3 "$repo_root/tools/stage_prepared_inputs.py" \
+    "${stage_args[@]}" "$config" "$work_dir/inputs" >&2
+
+if [ -n "$benchmark_dir" ]; then
     design_rel=${work_dir#"$benchmark_dir"/}
     cat >> "$config" <<EOF
 
@@ -312,6 +323,7 @@ EOF
 >> Exported benchmark inputs only — $platform / $name
    design    : $work_dir
    platform  : $benchmark_dir/platforms/$platform
+   manifest  : $work_dir/manifest.json
    config    : $config
 
    No synthesis or physical-design flow was run. Point your tool adapter at

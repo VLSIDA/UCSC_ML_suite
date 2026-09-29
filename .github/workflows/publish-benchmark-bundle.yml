@@ -49,10 +49,15 @@ jobs:
           test -d "$BUNDLE/designs"
           test -d "$BUNDLE/platforms"
           design_count=$(find "$BUNDLE/designs" -name config.mk -type f | wc -l)
+          manifest_count=$(find "$BUNDLE/designs" -name manifest.json -type f | wc -l)
           platform_count=$(find "$BUNDLE/platforms" -mindepth 2 -maxdepth 2 \
             -name config.mk -type f | wc -l)
+          platform_manifest_count=$(find "$BUNDLE/platforms" -mindepth 2 -maxdepth 2 \
+            -name manifest.json -type f | wc -l)
           test "$design_count" -gt 0
+          test "$manifest_count" -eq "$design_count"
           test "$platform_count" -gt 0
+          test "$platform_manifest_count" -eq "$platform_count"
           while IFS= read -r config; do
             test ! -e "$(dirname "$config")/run.sh"
           done < <(find "$BUNDLE/designs" -name config.mk -type f)
@@ -75,6 +80,7 @@ jobs:
 
           - ${DESIGN_COUNT} platform/design configurations
           - ${PLATFORM_COUNT} shared ORFS platform directories
+          - Tool-neutral JSON manifests plus ORFS-compatible config.mk files
           - Materialized RTL, SDC, macro LEF/Liberty, and design configuration
           - No synthesis, place-and-route results, or runner scripts
 

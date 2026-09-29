@@ -67,12 +67,17 @@ The export has a shared suite-level layout:
   designs/
     <platform>/<design>/
       inputs/      materialized RTL, includes, SDC, macro LEF/LIB, design Tcl
+      manifest.json  tool-neutral design contract with relative input paths
       config.mk    resolved design configuration; no run.sh
 ```
 
-Set `HIGHTIDE_BUNDLE_ROOT` to the export directory when resolving a design's
-Make-compatible `config.mk`. Its `PREPARED_INPUTS` and `PLATFORM_DIR` defaults
-then point into the portable tree. Preparing this export builds only RTL
+Each shared `platforms/<platform>/` directory also contains a `manifest.json`
+that identifies its technology LEF, cell LEF/Liberty/GDS, routing data, and
+setup scripts. External tools can consume the versioned JSON manifests without
+evaluating Make. The Make-compatible `config.mk` files remain available for
+direct ORFS comparisons; set `HIGHTIDE_BUNDLE_ROOT` to the export directory
+when using them so `PREPARED_INPUTS` and `PLATFORM_DIR` point into the portable
+tree. Preparing this export builds only RTL
 generator targets and cheap configuration output groups, then copies the
 pinned ORFS platform trees; it does **not** run synthesis, floorplanning,
 placement, CTS, routing, or finish. The command still requires the supported
