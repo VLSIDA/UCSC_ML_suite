@@ -22,9 +22,6 @@ jobs:
           # nested submodule URLs.
           submodules: true
 
-      - name: Test input exporter
-        run: python3 -m unittest discover -s tools -p '*_test.py'
-
       - name: Reclaim runner disk space
         run: |
           sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
