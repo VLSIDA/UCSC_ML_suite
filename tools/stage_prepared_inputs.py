@@ -29,6 +29,7 @@ import os
 import re
 import shutil
 import sys
+from pathlib import Path
 
 from benchmark_manifest import write_manifests
 
@@ -56,6 +57,8 @@ def _dst_for(src, inputs):
 
 
 def stage_prepared_inputs(cfg, inputs, manifest=None, platform_dir=None):
+    if manifest and not platform_dir:
+        raise ValueError("--manifest requires --platform-dir")
     os.makedirs(inputs, exist_ok=True)
 
     out_lines = []
@@ -83,19 +86,30 @@ def stage_prepared_inputs(cfg, inputs, manifest=None, platform_dir=None):
                     new_toks.append(tok)  # leave dangling tokens as-is
                     continue
                 rel, dst = _dst_for(tok, inputs)
-                if not os.path.exists(dst):
-                    os.makedirs(os.path.dirname(dst), exist_ok=True)
-                    if os.path.isdir(tok):
-                        shutil.copytree(
-                            tok,
-                            dst,
-                            symlinks=False,
-                            ignore_dangling_symlinks=True,
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                if os.path.isdir(tok):
+                    if os.path.exists(dst):
+                        shutil.rmtree(dst)
+                    shutil.copytree(tok, dst, symlinks=False)
+                else:
+                    shutil.copy2(os.path.realpath(tok), dst)
+                copied += 1
+                new_toks.append("$(PREPARED_INPUTS)/" + rel)
+            if key == "VERILOG_FILES":
+                # Match bazel-orfs EXPAND_VERILOG_DIRS: expand each TreeArtifact
+                # in place, sorting within it rather than across the RTL list.
+                expanded = []
+                for tok in new_toks:
+                    path = Path(tok.replace("$(PREPARED_INPUTS)", os.fspath(inputs)))
+                    if path.is_dir():
+                        expanded.extend(
+                            tok + "/" + file.relative_to(path).as_posix()
+                            for file in sorted(path.rglob("*"))
+                            if file.is_file() and file.suffix in (".v", ".sv", ".svh")
                         )
                     else:
-                        shutil.copy2(os.path.realpath(tok), dst)
-                    copied += 1
-                new_toks.append("$(PREPARED_INPUTS)/" + rel)
+                        expanded.append(tok)
+                new_toks = expanded
             values[key] = " ".join(new_toks)
             out_lines.append(
                 "%s%s%s%s" % (prefix or "", key, assign, " ".join(new_toks))
@@ -104,8 +118,6 @@ def stage_prepared_inputs(cfg, inputs, manifest=None, platform_dir=None):
     with open(cfg, "w") as fh:
         fh.write("\n".join(out_lines) + "\n")
     if manifest:
-        if not platform_dir:
-            raise ValueError("--manifest requires --platform-dir")
         write_manifests(manifest, inputs, values, platform_dir)
     print("Staged %d input files/dirs into %s" % (copied, inputs), file=sys.stderr)
 

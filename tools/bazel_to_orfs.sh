@@ -153,6 +153,7 @@ repo_root=$(git rev-parse --show-toplevel)
 cd "$repo_root"
 
 if [ -n "$benchmark_dir" ]; then
+    [ -z "$work_dir" ] || { echo "ERROR: --benchmark-dir and --work-dir are mutually exclusive." >&2; exit 1; }
     benchmark_dir=$(python3 -c 'import os, sys; print(os.path.abspath(sys.argv[1]))' "$benchmark_dir")
     flags+=(--benchmark-dir "$benchmark_dir")
 fi
@@ -286,6 +287,10 @@ if [ "$no_build" = 0 ]; then
     [ -n "$vfiles" ] && bazel build $vfiles >&2
 fi
 
+if [ -n "$benchmark_dir" ]; then
+    stage_benchmark_platform
+fi
+
 if [ -z "$config" ]; then
     config="$work_dir/config.mk"
     echo ">> Extracting config.mk -> $config" >&2
@@ -293,8 +298,9 @@ if [ -z "$config" ]; then
 fi
 config=$(realpath "$config")
 
-if [ -n "$benchmark_dir" ]; then
-    stage_benchmark_platform
+if [ -n "$benchmark_dir" ] && ! [ "$config" -ef "$work_dir/config.mk" ]; then
+    cp "$config" "$work_dir/config.mk"
+    config="$work_dir/config.mk"
 fi
 
 echo ">> Staging inputs into $work_dir/inputs (portable, self-contained) ..." >&2

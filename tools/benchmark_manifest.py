@@ -4,6 +4,7 @@ import json
 import os
 import shlex
 import subprocess
+from pathlib import Path
 
 _DESIGN_SCRIPTS = {
     "io_constraints": "IO_CONSTRAINTS",
@@ -27,6 +28,12 @@ _FLOORPLAN_LISTS = {
     "macro_place_halo": "MACRO_PLACE_HALO",
     "macro_blockage_halo": "MACRO_BLOCKAGE_HALO",
 }
+_ROUTING_LAYERS = {
+    "minimum_signal_layer": "MIN_ROUTING_LAYER",
+    "maximum_signal_layer": "MAX_ROUTING_LAYER",
+    "minimum_clock_layer": "MIN_CLK_ROUTING_LAYER",
+    "maximum_clock_layer": "MAX_CLK_ROUTING_LAYER",
+}
 _PLATFORM_PATH_LISTS = {
     "technology_lef": ("TECH_LEF",),
     "cell_lefs": ("SC_LEF", "ADDITIONAL_LEFS"),
@@ -41,15 +48,9 @@ _PLATFORM_SCRIPTS = {
     "fastroute": "FASTROUTE_TCL",
 }
 _PLATFORM_VARIABLES = (
-    "TECH_LEF",
-    "SC_LEF",
-    "ADDITIONAL_LEFS",
-    "LIB_FILES",
-    "GDS_FILES",
+    *(key for keys in _PLATFORM_PATH_LISTS.values() for key in keys),
     "PLACE_SITE",
-    "MIN_ROUTING_LAYER",
-    "MAX_ROUTING_LAYER",
-    "MIN_CLK_ROUTING_LAYER",
+    *_ROUTING_LAYERS.values(),
     "RCX_RULES",
     "PWR_NETS_VOLTAGES",
     "GND_NETS_VOLTAGES",
@@ -57,40 +58,11 @@ _PLATFORM_VARIABLES = (
 )
 
 
-def _arguments(value):
-    if not value:
-        return []
-    try:
-        return shlex.split(value)
-    except ValueError:
-        return value.split()
-
-
-def _frontend_arguments(value):
-    """Drop include paths; portable include directories have their own field."""
-    arguments = _arguments(value)
-    portable = []
-    index = 0
-    while index < len(arguments):
-        argument = arguments[index]
-        if argument == "-I":
-            index += 2
-        elif argument.startswith("-I"):
-            index += 1
-        else:
-            portable.append(argument)
-            index += 1
-    return portable
-
-
 def _number(value):
     if value is None or value == "":
         return None
-    try:
-        number = float(value)
-        return int(number) if number.is_integer() else number
-    except ValueError:
-        return value
+    number = float(value)
+    return int(number) if number.is_integer() else number
 
 
 def _numbers(value):
@@ -98,22 +70,17 @@ def _numbers(value):
 
 
 def _bool(value):
-    if value is None:
-        return None
-    if value in ("1", "true", "True"):
-        return True
-    if value in ("0", "false", "False"):
-        return False
-    return value
+    return {"0": False, "1": True}[value] if value is not None else None
 
 
 def _design_path(token, inputs, manifest_dir):
     prefix = "$(PREPARED_INPUTS)/"
-    if token.startswith(prefix):
-        token = os.path.join(inputs, token[len(prefix) :])
-    if os.path.isabs(token):
-        return os.path.relpath(token, manifest_dir)
-    return token
+    if not token.startswith(prefix):
+        raise ValueError(f"Input was not staged: {token}")
+    path = Path(inputs) / token[len(prefix) :]
+    if not path.exists():
+        raise FileNotFoundError(path)
+    return os.path.relpath(path, manifest_dir)
 
 
 def _design_paths(values, key, inputs, manifest_dir):
@@ -132,6 +99,8 @@ def _platform_paths(variables, keys, platform_dir):
     paths = []
     for key in keys:
         for token in variables.get(key, "").split():
+            if not (Path(platform_dir) / token).is_file():
+                raise FileNotFoundError(f"{key}: {token}")
             if os.path.isabs(token):
                 token = os.path.relpath(token, platform_dir)
             if token and token not in paths:
@@ -164,6 +133,8 @@ def resolve_platform_variables(platform_dir):
         text=True,
         capture_output=True,
         check=True,
+        # Shell overrides (including MAKEFLAGS) must not affect a pinned export.
+        env={"PATH": os.environ.get("PATH", os.defpath)},
     )
     variables = {}
     for line in result.stdout.splitlines():
@@ -175,9 +146,6 @@ def resolve_platform_variables(platform_dir):
 
 def _write_platform_manifest(platform_dir, platform):
     destination = os.path.join(platform_dir, "manifest.json")
-    if os.path.exists(destination):
-        return destination
-
     variables = resolve_platform_variables(platform_dir)
     scripts = {
         name: paths[0]
@@ -194,18 +162,19 @@ def _write_platform_manifest(platform_dir, platform):
         },
         "place_site": variables.get("PLACE_SITE") or None,
         "routing": {
-            "minimum_signal_layer": variables.get("MIN_ROUTING_LAYER") or None,
-            "maximum_signal_layer": variables.get("MAX_ROUTING_LAYER") or None,
-            "minimum_clock_layer": variables.get("MIN_CLK_ROUTING_LAYER") or None,
+            **{
+                name: variables.get(key) or None
+                for name, key in _ROUTING_LAYERS.items()
+            },
             "rcx_rules": (
                 _platform_paths(variables, ("RCX_RULES",), platform_dir) or [None]
             )[0],
         },
         "power": {
-            "power_nets_and_voltages": _arguments(
+            "power_nets_and_voltages": shlex.split(
                 variables.get("PWR_NETS_VOLTAGES", "")
             ),
-            "ground_nets_and_voltages": _arguments(
+            "ground_nets_and_voltages": shlex.split(
                 variables.get("GND_NETS_VOLTAGES", "")
             ),
         },
@@ -219,6 +188,9 @@ def _write_platform_manifest(platform_dir, platform):
 
 def write_manifests(destination, inputs, values, platform_dir):
     """Write one design manifest and its shared platform manifest."""
+    slang_arguments = shlex.split(values.get("SYNTH_SLANG_ARGS", ""))
+    if any(argument.startswith("-I") for argument in slang_arguments):
+        raise ValueError("Move Slang -I paths to VERILOG_INCLUDE_DIRS before staging")
     manifest_dir = os.path.dirname(os.path.abspath(destination))
     platform = values["PLATFORM"]
     platform_manifest = _write_platform_manifest(platform_dir, platform)
@@ -252,8 +224,8 @@ def write_manifests(destination, inputs, values, platform_dir):
             "include_directories": _design_paths(
                 values, "VERILOG_INCLUDE_DIRS", inputs, manifest_dir
             ),
-            "defines": _arguments(values.get("VERILOG_DEFINES", "")),
-            "top_parameters": _arguments(values.get("VERILOG_TOP_PARAMS", "")),
+            "defines": shlex.split(values.get("VERILOG_DEFINES", "")),
+            "top_parameters": shlex.split(values.get("VERILOG_TOP_PARAMS", "")),
             "frontend": values.get("SYNTH_HDL_FRONTEND") or None,
         },
         "constraints": {
@@ -269,11 +241,14 @@ def write_manifests(destination, inputs, values, platform_dir):
         },
         "synthesis": {
             "hierarchical": _bool(values.get("SYNTH_HIERARCHICAL")),
-            "arguments": _arguments(values.get("SYNTH_ARGS", "")),
-            "slang_arguments": _frontend_arguments(values.get("SYNTH_SLANG_ARGS", "")),
+            "arguments": shlex.split(values.get("SYNTH_ARGS", "")),
+            "slang_arguments": slang_arguments,
             "memory_max_bits": _number(values.get("SYNTH_MEMORY_MAX_BITS")),
         },
         "floorplan": floorplan,
+        "routing": {
+            name: values[key] for name, key in _ROUTING_LAYERS.items() if key in values
+        },
     }
     with open(destination, "w") as manifest_file:
         json.dump(manifest, manifest_file, indent=2, sort_keys=True)

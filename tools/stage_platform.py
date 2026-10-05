@@ -53,18 +53,14 @@ def stage_platform(
     if marker.is_file():
         previous_id = json.loads(marker.read_text()).get("source_id")
 
-    if previous_id != source_id:
-        existing = [path for path in destination_root.iterdir() if path != marker]
-        if existing and previous_id is None:
-            raise RuntimeError(
-                f"refusing to replace non-HighTide platform directory: {destination_root}"
-            )
-        for path in existing:
-            if path.is_dir() and not path.is_symlink():
-                shutil.rmtree(path)
-            else:
-                path.unlink()
-        marker.unlink(missing_ok=True)
+    if previous_id not in (None, source_id):
+        # Replacing shared platforms would invalidate designs already exported
+        # against the old pin, including designs outside this invocation.
+        raise RuntimeError("platform source changed; use a new --benchmark-dir")
+    if previous_id is None and any(destination_root.iterdir()):
+        raise RuntimeError(
+            f"refusing to replace non-HighTide platform directory: {destination_root}"
+        )
 
     changed = False
     common_source = source_root / "common"

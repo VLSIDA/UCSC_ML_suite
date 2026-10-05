@@ -46,46 +46,40 @@ tools/bazel_to_orfs.sh --run --flow-home ~/OpenROAD-flow-scripts \
   designs/asap7/lfsr synth floorplan place
 ```
 
-For a flow-independent input export, add `--benchmark-dir`. This mode
-materializes RTL and design configuration only, copies each pinned ORFS
-platform once, and deliberately emits no runner or physical-design results:
+For a tool-neutral input export, add `--benchmark-dir`:
 
 ```bash
 tools/bazel_to_orfs.sh --benchmark-dir .hightide_export all
 ```
 
-The export has a shared suite-level layout:
-
 ```
 .hightide_export/
-  platforms/
-    common/
-    asap7/
-    gt2n/
-    nangate45/
-    sky130hd/
-  designs/
-    <platform>/<design>/
-      inputs/      materialized RTL, includes, SDC, macro LEF/LIB, design Tcl
-      manifest.json  tool-neutral design contract with relative input paths
-      config.mk    resolved design configuration; no run.sh
+  platforms/common/
+  platforms/<platform>/        shared pinned platform files + manifest.json
+  designs/<platform>/<design>/
+    inputs/                   RTL, includes, SDC, macro LEF/LIB, design Tcl
+    manifest.json             design inputs and selected configuration
+    config.mk                 ORFS configuration; no run.sh by default
 ```
 
-Each shared `platforms/<platform>/` directory also contains a `manifest.json`
-that identifies its technology LEF, cell LEF/Liberty/GDS, routing data, and
-setup scripts. External tools can consume the versioned JSON manifests without
-evaluating Make. The Make-compatible `config.mk` files remain available for
-direct ORFS comparisons; set `HIGHTIDE_BUNDLE_ROOT` to the export directory
-when using them so `PREPARED_INPUTS` and `PLATFORM_DIR` point into the portable
-tree. Preparing this export builds only RTL
-generator targets and cheap configuration output groups, then copies the
-pinned ORFS platform trees; it does **not** run synthesis, floorplanning,
-placement, CTS, routing, or finish. The command still requires the supported
-Linux/Bazel environment to materialize generated RTL and pinned repositories.
+Consumers can read the versioned JSON without Make. Paths are relative to
+the manifest containing them. `design.name` is the RTL top module;
+`rtl.files` preserves source order, expanding generated directories in place.
+The platform manifest describes its default LEF/Liberty/GDS files, placement
+site, routing limits, and setup scripts. Design routing fields override the
+corresponding platform defaults.
 
-As with the default bundle mode, adding `--run --flow-home <ORFS>` explicitly
-requests an ORFS run after export. Other physical-design tools consume the
-export through their own adapter.
+This is a portable input contract, not a complete tool-independent flow:
+synthesis arguments and Tcl scripts still use Yosys/Slang/OpenROAD syntax.
+Other tools need adapters, including synthesis-mode defines such as
+`SYNTHESIS`; absent fields do not encode every ORFS default or workaround.
+The retained `config.mk` files provide the ORFS configuration. Set
+`HIGHTIDE_BUNDLE_ROOT` to the extracted export directory when resolving them.
+
+Export requires Linux/Bazel and builds only RTL generators and configuration
+output groups—not synthesis or physical design. Use a new output directory
+after changing the platform pin. Adding `--run --flow-home <ORFS>` explicitly
+creates a runner and runs ORFS after export.
 
 **What the default ORFS mode produces.** For each design it materializes the RTL via bazel
 (fetching the hermetic `http_archive` sources / running any RTL genrules —
